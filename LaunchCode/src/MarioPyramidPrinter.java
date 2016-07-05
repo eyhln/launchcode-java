@@ -56,19 +56,23 @@ public class MarioPyramidPrinter {
 		stringBuilder = new StringBuilder();
 		int lineWidth = heightInSteps;
 		for (int i = 0; i < lineWidth; i++) {
-			stringBuilder.setLength(0);
-			addSpacesToLine(i);
-			addBlocksToLine(i);
+			clearElementsFromStringBuilder();
+			addSpacesToStringBuilder(i);
+			addBlocksToStringBuilder(i);
 			System.out.println(stringBuilder);
 			}
 	}
 	
-	private void addSpacesToLine(int i) {
+	private void clearElementsFromStringBuilder() {
+			stringBuilder.setLength(0);
+	}
+	 
+	private void addSpacesToStringBuilder(int i) {
 		for (int j = heightInSteps-2-i; j >= 0; j--)
 			stringBuilder.append(" ");
 	}
 	
-	private void addBlocksToLine(int i) {
+	private void addBlocksToStringBuilder(int i) {
 		for (int k = 1+i; k >= 0; k--)
 			stringBuilder.append("#");
 	}
