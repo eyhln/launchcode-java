@@ -42,7 +42,7 @@ public class MarioPyramidPrinter {
 					heightInSteps = Integer.parseInt(input);
 					break;
 			} catch (NumberFormatException e) {
-					System.out.println("Please enter a small integer (whole number).");
+					System.out.println("Please enter an integer (whole number) from 0 to 23.");
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class MarioPyramidPrinter {
 		if (0 <= heightInSteps && heightInSteps <= 23) 
 			return true;
 		else
-			System.out.println("The number of steps must be from 0 to 23.");
+			System.out.println("The number of steps must be in the range 0 to 23.");
 		return false;
 	}
 	
