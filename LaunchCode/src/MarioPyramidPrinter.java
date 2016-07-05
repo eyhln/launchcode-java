@@ -3,7 +3,8 @@ import java.util.Scanner;
 public class MarioPyramidPrinter {
 	
 	private int heightInSteps;
-	private StringBuilder stringBuilder;
+	private StringBuilder line;
+	private Scanner scanner;
 	
 	public static void main (String[] args) {
 		MarioPyramidPrinter mpp = new MarioPyramidPrinter();
@@ -16,65 +17,56 @@ public class MarioPyramidPrinter {
 	}
 
 	private void getUserInput() {
-		Scanner scanner = new Scanner(System.in);
-		promptUserUntilGetValidInput(scanner);
+		scanner = new Scanner(System.in);
+		do {
+			getIntegerInput();
+		} while (inputIsInRange() == false);
 		scanner.close();
 	}
 	
-	private void promptUserUntilGetValidInput(Scanner scanner) {
-		boolean isValidInput;	
-		do {
-			getIntegerInput(scanner);
-			isValidInput = testRangeOfInput();
-		} while (isValidInput == false);
+	private void printPyramid() {
+		line = new StringBuilder();
+		for (int rowNumber = 0; rowNumber < heightInSteps; rowNumber++) {
+			clearElementsToStartNewLine();
+			addSpacesToLine(rowNumber);
+			addHashesToLine(rowNumber);
+			System.out.println(line);
+		}
 	}
-
-	
-	private void getIntegerInput(Scanner scan) {
+		
+	private void getIntegerInput() {
 		while (true) {
 			try {
 					System.out.println("Enter a number of steps for a printed pyramid:");
-					String input = scan.nextLine();
+					String input = scanner.nextLine();
 					heightInSteps = Integer.parseInt(input);
 					break;
 			} catch (NumberFormatException e) {
-					System.out.println("Please enter an integer (whole number).");
+					System.out.println("Please enter a small integer (whole number).");
 			}
 		}
 	}
 	
-	private boolean testRangeOfInput() {
+	private boolean inputIsInRange() {
 		if (0 <= heightInSteps && heightInSteps <= 23) 
 			return true;
 		else
 			System.out.println("The number of steps must be from 0 to 23.");
-			return false;
+		return false;
 	}
 	
-	
-	private void printPyramid() {
-		stringBuilder = new StringBuilder();
-		int lineWidth = heightInSteps;
-		for (int i = 0; i < lineWidth; i++) {
-			clearElementsFromStringBuilder();
-			addSpacesToStringBuilder(i);
-			addBlocksToStringBuilder(i);
-			System.out.println(stringBuilder);
-			}
-	}
-	
-	private void clearElementsFromStringBuilder() {
-			stringBuilder.setLength(0);
+	private void clearElementsToStartNewLine() {
+		line.setLength(0);
 	}
 	 
-	private void addSpacesToStringBuilder(int i) {
-		for (int j = heightInSteps-2-i; j >= 0; j--)
-			stringBuilder.append(" ");
+	private void addSpacesToLine(int rowNumber) {
+		for (int j = heightInSteps-2-rowNumber; j >= 0; j--)
+			line.append(" ");
 	}
 	
-	private void addBlocksToStringBuilder(int i) {
-		for (int k = 1+i; k >= 0; k--)
-			stringBuilder.append("#");
+	private void addHashesToLine(int rowNumber) {
+		for (int k = 1+rowNumber; k >= 0; k--)
+			line.append("#");
 	}
 		
 }
