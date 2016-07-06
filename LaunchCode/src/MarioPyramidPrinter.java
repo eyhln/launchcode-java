@@ -27,7 +27,7 @@ public class MarioPyramidPrinter {
 	private void printPyramid() {
 		line = new StringBuilder();
 		for (int rowNumber = 0; rowNumber < heightInSteps; rowNumber++) {
-			clearElementsToStartNewLine();
+			startNewLine();
 			addSpacesToLine(rowNumber);
 			addHashesToLine(rowNumber);
 			System.out.println(line);
@@ -55,17 +55,17 @@ public class MarioPyramidPrinter {
 		return false;
 	}
 	
-	private void clearElementsToStartNewLine() {
+	private void startNewLine() {
 		line.setLength(0);
 	}
 	 
 	private void addSpacesToLine(int rowNumber) {
-		for (int j = heightInSteps-2-rowNumber; j >= 0; j--)
+		for (int i = heightInSteps-2-rowNumber; i >= 0; i--)
 			line.append(" ");
 	}
 	
 	private void addHashesToLine(int rowNumber) {
-		for (int k = 1+rowNumber; k >= 0; k--)
+		for (int i = 1+rowNumber; i >= 0; i--)
 			line.append("#");
 	}
 		
