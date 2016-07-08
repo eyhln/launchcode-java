@@ -1,29 +1,26 @@
 package pyramidPrint;
 
-import java.util.Scanner;
-
 class TextBasedMenu {
 	
+	private TerminalIntegerInputPrompt optionPrompter;
+	private String prompt;
+	
+	TextBasedMenu() {
+		optionPrompter = new TerminalIntegerInputPrompt();
+		prompt = "Select an option number: ";
+	}
+	
 	int getUserSelectionFromMenu(String...options) {
+		printOptionsList(options);
+		int optionSelected = optionPrompter.getBoundedIntegerInput(1, options.length, prompt);
+		return optionSelected-1;
+	}
+	
+	private void printOptionsList(String[] options) {
 		System.out.println();
 		for (int i = 0; i < options.length; i++)
 			System.out.printf("   (%d) %s\n", i+1, options[i]);
-		String prompt = "\nSelect an option number: ";
-		Scanner scanner = new Scanner(System.in);
-		int optionSelected = 0;
-		//TODO input is only valid if it is an option on the menu
-		// will still need to catch errors for input that is not int
-		while (true) {
-			try {
-					System.out.println(prompt);
-					String input = scanner.nextLine();
-					optionSelected = Integer.parseInt(input);
-					break;
-			} catch (NumberFormatException e) {
-					System.out.println("Error: Input must be an integer (whole number).");
-			}
-		}
-		return optionSelected-1;
+		System.out.println();
 	}
 	
 	void printMenuHeader(int width, String title) {

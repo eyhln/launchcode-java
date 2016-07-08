@@ -29,7 +29,7 @@ public class MarioPyramidPrinter {
 			heightInSteps = heightGetter.getBoundedIntegerInput(0,23,prompt);
 			printPyramidToStandardOutput();
 		}
-		if (option == 1) {
+		else if (option == 1) {
 			
 		}
 
