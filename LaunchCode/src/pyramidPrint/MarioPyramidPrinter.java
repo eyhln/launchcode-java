@@ -1,17 +1,18 @@
 package pyramidPrint;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 public class MarioPyramidPrinter {
 	
-	private TextPyramidBuilder pyramid;
+	private TextPyramidBuilder pyramidBuilder;
 	private IntegerInputPrompt heightGetter;
 	private TextBasedMenu menu;
 	private FilePathPrompt pathPrompt;
-	
+
 	public MarioPyramidPrinter() {
-		pyramid = new TextPyramidBuilder();
+		pyramidBuilder = new TextPyramidBuilder();
 		heightGetter = new IntegerInputPrompt();
 		menu = new TextBasedMenu();
 		pathPrompt = new FilePathPrompt();
@@ -47,14 +48,22 @@ public class MarioPyramidPrinter {
 	}
 	
 	private void printPyramidToStandardOutput(int heightInSteps) {
-		String pyramidOutput = pyramid.buildPyramidString(heightInSteps);
+		String pyramidOutput = pyramidBuilder.buildPyramidString(heightInSteps);
 		System.out.println(pyramidOutput);
 	}
 	
 	private void printPyramidToFile(int heightInSteps) {
 		String filePath = pathPrompt.promptFilePath();
-		System.out.println("validFilePath");
-
+		String pyramidOutput = pyramidBuilder.buildPyramidString(heightInSteps);
+		try {
+			FileWriter writer = new FileWriter(filePath);
+			PrintWriter out = new PrintWriter(writer);
+			out.print(pyramidOutput);
+			System.out.println("File written");
+			out.close();
+		} catch (IOException e) {
+			System.out.println("Error: Unable to write file");
+		} 
 	}
 	
 }

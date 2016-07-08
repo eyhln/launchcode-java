@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class FilePathPrompt {
 	
 	private Scanner scanner;
-	
+
 	FilePathPrompt() {
 		scanner = new Scanner(System.in);
 	}
@@ -27,9 +27,7 @@ public class FilePathPrompt {
 			try {
 				if (file.exists()) 
 				    return true;
-			} catch (SecurityException e) {
-				System.out.println("Error: No permissions for this path");
-			}	catch (Exception e) {
+			} catch (Exception e) {
 				System.out.println("Error: Invalid path");
 				System.out.println("Examples of valid paths:   Unix-like: /home/user/docs/Pyramid.txt\n" +
 													 "                           Windows: C:\\user\\docs\\Pyramid.txt");
