@@ -37,12 +37,12 @@ public class MarioPyramidPrinter {
 	private void getIntegerInput() {
 		while (true) {
 			try {
-					System.out.println("Enter a number of steps for a printed pyramid:");
-					String input = scanner.nextLine();
-					heightInSteps = Integer.parseInt(input);
-					break;
+				System.out.println("Enter a number of steps for a printed pyramid:");
+				String input = scanner.nextLine();
+				heightInSteps = Integer.parseInt(input);
+				break;
 			} catch (NumberFormatException e) {
-					System.out.println("Please enter an integer (whole number) from 0 to 23.");
+				System.out.println("Please enter an integer (whole number) from 0 to 23.");
 			}
 		}
 	}
