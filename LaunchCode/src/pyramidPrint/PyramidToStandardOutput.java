@@ -1,3 +1,4 @@
+package pyramidPrint;
 
 public class PyramidToStandardOutput {
 	
