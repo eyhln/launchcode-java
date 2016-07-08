@@ -19,13 +19,11 @@ public class MarioPyramidPrinter {
 	}
 	
 	public void printPyramid() {
-		String title = "MARIO PYRAMID PRINTER";
-		menu.printMenuHeader(50, title);
 		String option1 = "Print pyramid to standard output";
 		String option2 = "Print pyramid to file";
 		int option = menu.getUserSelectionFromMenu(option1, option2);
 		if (option == 0) {
-			String prompt = "Enter a number of steps for a printed pyramid: ";
+			String prompt = "Enter a height in steps for the pyramid: ";
 			heightInSteps = heightGetter.getBoundedIntegerInput(0,23,prompt);
 			printPyramidToStandardOutput();
 		}

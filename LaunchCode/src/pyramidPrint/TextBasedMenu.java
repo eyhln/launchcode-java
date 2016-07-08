@@ -23,24 +23,4 @@ class TextBasedMenu {
 		System.out.println();
 	}
 	
-	void printMenuHeader(int width, String title) {
-		// TODO width must be a positive number! Cannot be 0 or 1?
-		// length of title must not be less than the width
-		// String title must not be null
-		String ruleComponent = "-";
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < width; i++)
-			sb.append(ruleComponent);
-		String rule = sb.toString();
-		sb.setLength(0);
-		for (int i = 0; i < (width/2) - (title.length()/2); i++) 
-			sb.append(" ");
-		sb.append(title);
-		for (int i = 0; i < (width/2) - (title.length()/2); i++) 
-			sb.append(" ");
-		String titleLine = sb.toString();
-		System.out.println(rule);
-		System.out.println(titleLine);
-		System.out.println(rule);
-	}
 }
