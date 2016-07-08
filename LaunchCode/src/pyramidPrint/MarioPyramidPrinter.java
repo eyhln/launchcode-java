@@ -55,12 +55,9 @@ public class MarioPyramidPrinter {
 	private void printPyramidToFile(int heightInSteps) {
 		String filePath = pathPrompt.promptFilePath();
 		String pyramidOutput = pyramidBuilder.buildPyramidString(heightInSteps);
-		try {
-			FileWriter writer = new FileWriter(filePath);
-			PrintWriter out = new PrintWriter(writer);
+		try (PrintWriter out = new PrintWriter(new FileWriter(filePath))) {
 			out.print(pyramidOutput);
 			System.out.println("File written");
-			out.close();
 		} catch (IOException e) {
 			System.out.println("Error: Unable to write file");
 		} 

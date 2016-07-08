@@ -27,11 +27,12 @@ public class FilePathPrompt {
 			try {
 				if (file.exists()) 
 				    return true;
-			} catch (Exception e) {
+			} catch (NullPointerException e) {
 				System.out.println("Error: Invalid path");
 				System.out.println("Examples of valid paths:   Unix-like: /home/user/docs/Pyramid.txt\n" +
 													 "                           Windows: C:\\user\\docs\\Pyramid.txt");
 			}
+			System.out.println("Error: Directory does not exist");
 			return false;
 	}
 

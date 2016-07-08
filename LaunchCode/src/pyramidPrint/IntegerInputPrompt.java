@@ -13,34 +13,31 @@ class IntegerInputPrompt {
 	IntegerInputPrompt() { 
 			scanner = new Scanner(System.in);
 	}
-	
-  //TODO improve the specificity of error handling, may need to define a custom error
-  // ...naming could be improved (getInput, promptInput)
   
   int getBoundedIntegerInput(int minAcceptedValue, int maxAcceptedValue, String promptForUser) {
   	try {
   		setRangeValues(minAcceptedValue, maxAcceptedValue);
   		setPromptValue(promptForUser);
   		getInput(minAcceptedValue, maxAcceptedValue);
-  	} catch (Exception e) {
+  	} catch (IllegalArgumentException e) {
   		e.printStackTrace();
   	}
 		return userInputInteger;
   }
 
-  private void setRangeValues(int minAcceptedValue, int maxAcceptedValue) throws Exception {
+  private void setRangeValues(int minAcceptedValue, int maxAcceptedValue) throws IllegalArgumentException {
   	if (min > max)
-  		throw new Exception();
+  		throw new IllegalArgumentException();
   	else
   		min = minAcceptedValue;
   		max = maxAcceptedValue;
   }
   
-  private void setPromptValue(String promptForUser) throws Exception {
+  private void setPromptValue(String promptForUser) throws IllegalArgumentException {
   	if (promptForUser.length() > 0) 
   			prompt = promptForUser;
   	else
-  		throw new Exception();
+  		throw new IllegalArgumentException();
   }
   
   private void getInput(int min, int max) {
