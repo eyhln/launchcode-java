@@ -3,12 +3,12 @@ package pyramidPrint;
 public class MarioPyramidPrinter {
 	
 	private int heightInSteps;
-	private PyramidBuilder pyramid;
-	private PyramidHeightInputGetter heightGetter;
+	private TextPyramidBuilder pyramid;
+	private TerminalIntegerInputPrompt heightGetter;
 	
 	public MarioPyramidPrinter() {
-		pyramid = new PyramidBuilder();
-		heightGetter = new PyramidHeightInputGetter();
+		pyramid = new TextPyramidBuilder();
+		heightGetter = new TerminalIntegerInputPrompt();
 	}
 	
 	public static void main (String[] args) {
@@ -17,7 +17,8 @@ public class MarioPyramidPrinter {
 	}
 	
 	public void printPyramid() {
-		heightInSteps = heightGetter.getUserInput();
+	  String prompt = "Enter a number of steps for a printed pyramid: ";
+		heightInSteps = heightGetter.getBoundedIntegerInput(0,23,prompt);
 		printPyramidToStandardOutput();
 	}
 	
