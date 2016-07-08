@@ -5,8 +5,10 @@ import java.util.Scanner;
 class IntegerInputPrompt {
 	
 	private Scanner scanner;
+	private int min;
+	private int max;
 	private String prompt;
-	private int number;
+	private int userInputInteger;
 	
 	IntegerInputPrompt() { 
 			scanner = new Scanner(System.in);
@@ -17,21 +19,24 @@ class IntegerInputPrompt {
   
   int getBoundedIntegerInput(int minAcceptedValue, int maxAcceptedValue, String promptForUser) {
   	try {
-  		testRangeParameters(minAcceptedValue, maxAcceptedValue);
-  		testPromptParameter(promptForUser);
+  		setRangeValues(minAcceptedValue, maxAcceptedValue);
+  		setPromptValue(promptForUser);
   		getInput(minAcceptedValue, maxAcceptedValue);
   	} catch (Exception e) {
   		e.printStackTrace();
   	}
-		return number;
+		return userInputInteger;
   }
 
-  private void testRangeParameters(int min, int max) throws Exception {
+  private void setRangeValues(int minAcceptedValue, int maxAcceptedValue) throws Exception {
   	if (min > max)
   		throw new Exception();
+  	else
+  		min = minAcceptedValue;
+  		max = maxAcceptedValue;
   }
   
-  private void testPromptParameter(String promptForUser) throws Exception {
+  private void setPromptValue(String promptForUser) throws Exception {
   	if (promptForUser.length() > 0) 
   			prompt = promptForUser;
   	else
@@ -39,29 +44,29 @@ class IntegerInputPrompt {
   }
   
   private void getInput(int min, int max) {
+  	String input;
   	do {
-			promptInput();
-		} while (inputIsInRange(min, max) == false);
+			System.out.println(prompt);
+			input = scanner.nextLine();
+		} while (isValid(input) == false);
+  }
+  
+  private boolean isValid(String input) {
+  	try {
+					userInputInteger = Integer.parseInt(input);
+					if (inputIsInRange() == true)
+						return true;
+			} catch (NumberFormatException e) {
+					System.out.println("Error: Input must be an integer (whole number)");
+			}
+  	return false;
   }
 		
-	private void promptInput() {
-		while (true) {
-			try {
-					System.out.println(prompt);
-					String input = scanner.nextLine();
-					number = Integer.parseInt(input);
-					break;
-			} catch (NumberFormatException e) {
-					System.out.println("Error: Input must be an integer (whole number).");
-			}
-		}
-	}
-	
-	private boolean inputIsInRange(int min, int max) {
-		if (min <= number && number <= max) 
+	private boolean inputIsInRange() {
+		if (min <= userInputInteger && userInputInteger <= max) 
 			return true;
 		else
-			System.out.printf("Error: Input must be in the range %d to %d.\n",min,max);
+			System.out.printf("Error: Input must be in the range %d to %d\n",min,max);
 		return false;
 	}
 		
