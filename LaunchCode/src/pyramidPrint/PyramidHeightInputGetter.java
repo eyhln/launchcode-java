@@ -2,12 +2,12 @@ package pyramidPrint;
 
 import java.util.Scanner;
 
-public class UserInputCollector {
+class PyramidHeightInputGetter {
 	
 	private int heightInSteps;
 	private Scanner scanner;
-
-	public int getUserInput() {
+	
+  int getUserInput() {
 		scanner = new Scanner(System.in);
 		do {
 			getIntegerInput();
