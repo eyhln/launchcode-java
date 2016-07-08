@@ -6,14 +6,14 @@ public class MarioPyramidPrinter {
 	private PyramidOutput pyramidPrinter;
 	private PyramidHeightInputGetter heightGetter;
 	
-	public MarioPyramidPrinter() {
-		pyramidPrinter = new PyramidOutput();
-		heightGetter = new PyramidHeightInputGetter();
-	}
-	
 	public static void main (String[] args) {
 		MarioPyramidPrinter mpp = new MarioPyramidPrinter();
 		mpp.printPyramid();
+	}
+	
+	public MarioPyramidPrinter() {
+		pyramidPrinter = new PyramidOutput();
+		heightGetter = new PyramidHeightInputGetter();
 	}
 	
 	public void printPyramid() {

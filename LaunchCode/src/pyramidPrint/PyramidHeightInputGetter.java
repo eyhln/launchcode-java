@@ -7,12 +7,14 @@ class PyramidHeightInputGetter {
 	private int heightInSteps;
 	private Scanner scanner;
 	
+	PyramidHeightInputGetter() {
+			scanner = new Scanner(System.in);
+	}
+	
   int getUserInput() {
-		scanner = new Scanner(System.in);
 		do {
 			getIntegerInput();
 		} while (inputIsInRange() == false);
-		scanner.close();
 		return heightInSteps;
 	}
 		
