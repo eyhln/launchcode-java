@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 
+=======
+/bin
+<<<<<<< HEAD
+/.settings/org.eclipse.jdt.core.prefs
+>>>>>>> addPrintToFile
 =======
 *.class
 
@@ -12,4 +18,8 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+<<<<<<< HEAD
 
+=======
+>>>>>>> f41be0b20655d7e2a7f222dbc340356a7e99800d
+>>>>>>> addPrintToFile
