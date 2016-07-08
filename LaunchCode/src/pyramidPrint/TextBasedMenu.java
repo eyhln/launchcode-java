@@ -2,11 +2,11 @@ package pyramidPrint;
 
 class TextBasedMenu {
 	
-	private TerminalIntegerInputPrompt optionPrompter;
+	private IntegerInputPrompt optionPrompter;
 	private String prompt;
 	
 	TextBasedMenu() {
-		optionPrompter = new TerminalIntegerInputPrompt();
+		optionPrompter = new IntegerInputPrompt();
 		prompt = "Select an option number: ";
 	}
 	

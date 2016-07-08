@@ -2,23 +2,18 @@ package pyramidPrint;
 
 import java.util.Scanner;
 
-class TerminalIntegerInputPrompt {
+class IntegerInputPrompt {
 	
 	private Scanner scanner;
 	private String prompt;
 	private int number;
 	
-	TerminalIntegerInputPrompt() { 
+	IntegerInputPrompt() { 
 			scanner = new Scanner(System.in);
 	}
 	
-  int getIntegerInput(String promptForUser) {
-  	getBoundedIntegerInput(Integer.MIN_VALUE, Integer.MAX_VALUE, promptForUser);
-  	return number;
-	}
-  
   //TODO improve the specificity of error handling, may need to define a custom error
-  // naming could be improved (getInput, promptInput)
+  // ...naming could be improved (getInput, promptInput)
   
   int getBoundedIntegerInput(int minAcceptedValue, int maxAcceptedValue, String promptForUser) {
   	try {
