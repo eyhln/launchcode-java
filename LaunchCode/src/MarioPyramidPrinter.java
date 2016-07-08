@@ -2,36 +2,23 @@ import java.util.Scanner;
 
 public class MarioPyramidPrinter {
 	
-	private int heightInSteps;
-	private StringBuilder line;
+	private static int heightInSteps;
+
 	private Scanner scanner;
 	
 	public static void main (String[] args) {
 		MarioPyramidPrinter mpp = new MarioPyramidPrinter();
-		mpp.printPyramidToUserSpecifiedHeight();
+		mpp.getUserInput();
+		PyramidToStandardOutput ptso = new PyramidToStandardOutput();
+		ptso.printPyramidToStandardOutput(heightInSteps);
 	}
 		
-	public void printPyramidToUserSpecifiedHeight() {
-		getUserInput();
-		printPyramid();
-	}
-
 	private void getUserInput() {
 		scanner = new Scanner(System.in);
 		do {
 			getIntegerInput();
 		} while (inputIsInRange() == false);
 		scanner.close();
-	}
-	
-	private void printPyramid() {
-		line = new StringBuilder();
-		for (int rowNumber = 0; rowNumber < heightInSteps; rowNumber++) {
-			startNewLine();
-			addSpacesToLine(rowNumber);
-			addHashesToLine(rowNumber);
-			System.out.println(line);
-		}
 	}
 		
 	private void getIntegerInput() {
@@ -53,20 +40,6 @@ public class MarioPyramidPrinter {
 		else
 			System.out.println("The number of steps must be in the range 0 to 23.");
 		return false;
-	}
-	
-	private void startNewLine() {
-		line.setLength(0);
-	}
-	 
-	private void addSpacesToLine(int rowNumber) {
-		for (int i = heightInSteps-2-rowNumber; i >= 0; i--)
-			line.append(" ");
-	}
-	
-	private void addHashesToLine(int rowNumber) {
-		for (int i = 1+rowNumber; i >= 0; i--)
-			line.append("#");
 	}
 		
 }
