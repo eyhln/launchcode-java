@@ -5,20 +5,20 @@ import output.OutputContext;
 import output.StandardOutputPrinter;
 import output.StringOutput;
 
-public class MarioPyramidPrinter {
+public class MarioPyramidPrinterApplication {
 	
 	private TextPyramidBuilder pyramidBuilder;
 	private IntegerInputPrompt heightGetter;
 	private TextBasedMenu menu;
 
-	public MarioPyramidPrinter() {
+	public MarioPyramidPrinterApplication() {
 		pyramidBuilder = new TextPyramidBuilder();
 		heightGetter = new IntegerInputPrompt();
 		menu = new TextBasedMenu();
 	}
 	
 	public static void main (String[] args) {
-		MarioPyramidPrinter mpp = new MarioPyramidPrinter();
+		MarioPyramidPrinterApplication mpp = new MarioPyramidPrinterApplication();
 		mpp.printPyramidToUserSpecification();
 	}
 	
