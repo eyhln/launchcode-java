@@ -6,7 +6,8 @@ import java.io.PrintWriter;
 
 public class FilePrinter implements StringOutput {
 	
-	FilePathPrompt pathPrompt; 
+	private FilePathPrompt pathPrompt; 
+	private String output;
 	
 	public FilePrinter() {
 		pathPrompt = new FilePathPrompt();
@@ -14,18 +15,36 @@ public class FilePrinter implements StringOutput {
 	
 	@Override
 	public void outputString(String output) {
-		boolean processSuccessful = false;
-		do {
-		String filePath = pathPrompt.promptFilePath();
-			try (PrintWriter out = new PrintWriter(new FileWriter(filePath))) {
-				out.print(output);
-				System.out.println("File written");
-				processSuccessful = true;
-			} catch (IOException e) {
-				System.out.println("Error: Unable to write file\n "
+		this.output = output;
+		boolean sucessful = false;
+		do {			
+			sucessful = writeToFile();
+		} while (sucessful == false);
+	}
+	
+	private boolean writeToFile() {
+		String filePath = pathPrompt.promptFilePathFromUser();
+		return attemptToWriteFile(filePath);
+	}
+	
+	private boolean attemptToWriteFile(String filePath) {
+		try (PrintWriter out = new PrintWriter(new FileWriter(filePath))) {
+			out.print(output);
+			printSuccessMessage();
+			return true;
+		} catch (IOException e) {
+			printWriteErrorMessage();
+		} 
+		return false;
+	}
+	
+	private void printSuccessMessage() {
+			System.out.println("File written");
+	}
+	
+	private void printWriteErrorMessage() {
+		System.out.println("Error: Unable to write file\n "
 						+ "      Check file permissions and target directory");
-			} 
-		} while (processSuccessful == false);	
 	}
 
 }
