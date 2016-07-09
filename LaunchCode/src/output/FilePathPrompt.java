@@ -11,7 +11,7 @@ public class FilePathPrompt {
 		scanner = new Scanner(System.in);
 	}
 	
-	String promptFilePath() {
+	String promptFilePathFromUser() {
 		String input;
 		do {
 			System.out.println("Enter a path destination for the file: ");
