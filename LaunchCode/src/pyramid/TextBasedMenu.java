@@ -5,15 +5,15 @@ import java.util.ArrayList;
 class TextBasedMenu {
 	
 	private IntegerInputPrompt optionPrompter;
-	private String prompt;
 	private ArrayList<String> optionTexts;
 	private ArrayList<Object> actions;
+	private String prompt;
 	
 	TextBasedMenu() {
 		optionPrompter = new IntegerInputPrompt();
-		prompt = "Select an option number: ";
 		optionTexts = new ArrayList<String>();
 		actions = new ArrayList<Object>();
+		prompt = "Select an option number: ";
 	}
 	
 	void addOption(String optionText, Object action) {
@@ -25,7 +25,8 @@ class TextBasedMenu {
 		if (optionTexts.size() == 0) 
 			throw new NullPointerException();
 		printOptionsList();
-		int optionSelected = optionPrompter.getBoundedIntegerInput(1, optionTexts.size(), prompt);			 
+		int optionSelected = 
+				optionPrompter.getBoundedIntegerInput(1, optionTexts.size(), prompt);			 
 		Object actionSelected = actions.get(optionSelected-1);
 		return actionSelected;
 	}
