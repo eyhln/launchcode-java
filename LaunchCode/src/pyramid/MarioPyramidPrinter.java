@@ -19,12 +19,13 @@ public class MarioPyramidPrinter {
 	
 	public static void main (String[] args) {
 		MarioPyramidPrinter mpp = new MarioPyramidPrinter();
-		mpp.printPyramid();
+		mpp.printPyramidToUserSpecification();
 	}
 	
-	public void printPyramid() {
+	public void printPyramidToUserSpecification() {
 		Object outputType = promptUserForOutputType();
-		String pyramidOutput = pyramidBuilder.buildPyramidString(promptUserForPyramidHeight());
+		int heightInSteps = promptUserForPyramidHeight();
+		String pyramidOutput = pyramidBuilder.buildPyramidString(heightInSteps);
 		OutputContext output = new OutputContext((StringOutput) outputType);
 		output.outputString(pyramidOutput);
 	}
@@ -42,7 +43,6 @@ public class MarioPyramidPrinter {
 		return heightInSteps;
 	}
 	
-
 }
 		
 	
