@@ -22,19 +22,33 @@ public class FilePathPrompt {
 	
 	private boolean isValid (String filePath) {
 		File file = new File(filePath);
-			if (!file.isDirectory())
-			   file = file.getParentFile();
-			try {
-				if (file.exists()) 
-				    return true;
-				System.out.println("Error: Directory does not exist");
-			} catch (NullPointerException e) {
-				System.out.println("Error: Invalid path");
-				System.out.println("Examples of valid paths:   Unix-like: /home/user/docs/Pyramid.txt\n" +
+		try {
+			if (DirectoryForFileExists(file)) 
+				return true;
+		} catch (NullPointerException e) {
+			printInvalidPathMessage();
+		}
+		return false;
+	}
+	
+	private boolean DirectoryForFileExists(File file) {
+		if (!file.isDirectory())
+			file = file.getParentFile();
+		if (file.exists()) 
+			 return true;
+		else
+			printDoesNotExistMessage();
+		return false;
+	}
+	
+	private void printDoesNotExistMessage() {
+		System.out.println("Error: Directory does not exist");
+	}
+	
+	private void printInvalidPathMessage() {
+		System.out.println("Error: Invalid path");
+		System.out.println("Examples of valid paths:   Unix-like: /home/user/docs/Pyramid.txt\n" +
 													 "                           Windows: C:\\user\\docs\\Pyramid.txt");
-			}
-
-			return false;
 	}
 
 }
