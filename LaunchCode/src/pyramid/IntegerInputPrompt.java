@@ -50,9 +50,9 @@ class IntegerInputPrompt {
   
   private boolean isValid(String input) {
   	try {
-					userInputInteger = Integer.parseInt(input);
-					if (inputIsInRange() == true)
-						return true;
+				userInputInteger = Integer.parseInt(input);
+				if (inputIsInRange() == true)
+					return true;
 			} catch (NumberFormatException e) {
 					System.out.println("Error: Input must be an integer (whole number)");
 			}
