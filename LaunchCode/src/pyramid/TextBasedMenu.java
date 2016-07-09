@@ -25,8 +25,7 @@ class TextBasedMenu {
 		if (optionTexts.size() == 0) 
 			throw new NullPointerException();
 		printOptionsList();
-		int optionSelected = optionPrompter.getBoundedIntegerInput
-																			(1, optionTexts.size(), prompt);
+		int optionSelected = optionPrompter.getBoundedIntegerInput(1, optionTexts.size(), prompt);			 
 		Object actionSelected = actions.get(optionSelected-1);
 		return actionSelected;
 	}
@@ -34,15 +33,14 @@ class TextBasedMenu {
 	private void printOptionsList() {
 		System.out.print("\n");
 		for (int i = 0; i < optionTexts.size(); i++) {
-			System.out.printf("   (%d, args) %s\n\n", i+1, optionTexts.get(i));
+			System.out.printf("   (%d) %s\n", i+1, optionTexts.get(i));
 		}
+		System.out.print("\n");
 	}
-	
 	
 	int getNumberOfUserSelectionFromMenu(String...options) {
 		printOptionsList(options);
-		int optionSelected = optionPrompter.getBoundedIntegerInput
-																							(1, options.length, prompt);
+		int optionSelected = optionPrompter.getBoundedIntegerInput(1, options.length, prompt);													 
 		return optionSelected-1;
 	}
 	
