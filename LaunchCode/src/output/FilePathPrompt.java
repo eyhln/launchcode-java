@@ -1,4 +1,4 @@
-package pyramidPrint;
+package output;
 
 import java.io.File;
 import java.util.Scanner;
@@ -27,12 +27,13 @@ public class FilePathPrompt {
 			try {
 				if (file.exists()) 
 				    return true;
+				System.out.println("Error: Directory does not exist");
 			} catch (NullPointerException e) {
 				System.out.println("Error: Invalid path");
 				System.out.println("Examples of valid paths:   Unix-like: /home/user/docs/Pyramid.txt\n" +
 													 "                           Windows: C:\\user\\docs\\Pyramid.txt");
 			}
-			System.out.println("Error: Directory does not exist");
+
 			return false;
 	}
 

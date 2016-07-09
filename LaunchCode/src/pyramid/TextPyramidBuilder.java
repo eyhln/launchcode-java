@@ -1,4 +1,4 @@
-package pyramidPrint;
+package pyramid;
 
 /*
  * Creates text-based half pyramid strings using spaces and hashes. 
@@ -24,11 +24,16 @@ class TextPyramidBuilder {
 	}
 	
 	String buildPyramidString(int heightInSteps) {
+		clearCharactersFromBuilder();
 		height = heightInSteps;
 		for (int lineNumber = 0; lineNumber < height; lineNumber++) {
 			createLine(lineNumber);
 		}
 		return pyramid.toString();
+	}
+	
+	private void clearCharactersFromBuilder() {
+		pyramid.setLength(0);
 	}
 	
 	private void createLine(int lineNumber) {

@@ -1,4 +1,4 @@
-package pyramidPrint;
+package pyramid;
 
 class TextBasedMenu {
 	
