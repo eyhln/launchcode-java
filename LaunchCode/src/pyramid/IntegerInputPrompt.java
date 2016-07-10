@@ -25,17 +25,17 @@ class IntegerInputPrompt {
 		return userInputInteger;
   }
 
-  private void setRangeValues(int minAcceptedValue, int maxAcceptedValue) throws IllegalArgumentException {
+  private void setRangeValues(int min, int max) throws IllegalArgumentException {
   	if (min > max)
   		throw new IllegalArgumentException();
   	else
-  		min = minAcceptedValue;
-  		max = maxAcceptedValue;
+  		this.min = min;
+  		this.max = max;
   }
   
-  private void setPromptValue(String promptForUser) throws IllegalArgumentException {
-  	if (promptForUser.length() > 0) 
-  			prompt = promptForUser;
+  private void setPromptValue(String prompt) throws IllegalArgumentException {
+  	if (prompt.length() > 0) 
+  			this.prompt = prompt;
   	else
   		throw new IllegalArgumentException();
   }
