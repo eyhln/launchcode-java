@@ -25,9 +25,9 @@ public class Mario {
 	public void printPyramidToUserSpecification() {
 		Object outputType = promptUserForOutputType();
 		int heightInSteps = promptUserForPyramidHeight();
-		String pyramidOutput = pyramidBuilder.buildPyramidString(heightInSteps);
+		String pyramid = pyramidBuilder.buildPyramidString(heightInSteps);
 		OutputContext output = new OutputContext((StringOutput) outputType);
-		output.outputString(pyramidOutput);
+		output.outputString(pyramid);
 	}
 	
 	private Object promptUserForOutputType() {
