@@ -23,7 +23,7 @@ public class FilePathPrompt {
 	private boolean isValid (String filePath) {
 		File file = new File(filePath);
 		try {
-			if (DirectoryForFileExists(file)) 
+			if (directoryForFileExists(file)) 
 				return true;
 		} catch (NullPointerException e) {
 			printInvalidPathMessage();
@@ -31,7 +31,7 @@ public class FilePathPrompt {
 		return false;
 	}
 	
-	private boolean DirectoryForFileExists(File file) {
+	private boolean directoryForFileExists(File file) {
 		if (!file.isDirectory())
 			file = file.getParentFile();
 		if (file.exists()) 
