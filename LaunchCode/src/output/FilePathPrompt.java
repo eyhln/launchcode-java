@@ -14,7 +14,7 @@ public class FilePathPrompt {
 	String promptFilePathFromUser() {
 		String input;
 		do {
-			System.out.println("Enter a path destination for the file: ");
+			promptUserForFilepath();
 			input = scanner.nextLine();
 		} while (isValid(input) == false);
 		return input;
@@ -39,6 +39,10 @@ public class FilePathPrompt {
 		else
 			printDoesNotExistMessage();
 		return false;
+	}
+	
+	private void promptUserForFilepath() {
+			System.out.println("Enter a path destination for the file: ");
 	}
 	
 	private void printDoesNotExistMessage() {
