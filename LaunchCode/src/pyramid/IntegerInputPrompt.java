@@ -5,6 +5,7 @@ import java.util.Scanner;
 class IntegerInputPrompt {
 	
 	private Scanner scanner;
+	private String notAnIntegerMessage;
 	private int min;
 	private int max;
 	private String prompt;
@@ -12,6 +13,7 @@ class IntegerInputPrompt {
 	
 	IntegerInputPrompt() { 
 			scanner = new Scanner(System.in);
+			notAnIntegerMessage = "Error: Input must be an integer (whole number)";
 	}
   
   int getBoundedIntegerInput(int minAcceptedValue, int maxAcceptedValue, String promptForUser) {
@@ -54,7 +56,7 @@ class IntegerInputPrompt {
 				if (inputIsInRange() == true)
 					return true;
 			} catch (NumberFormatException e) {
-					System.out.println("Error: Input must be an integer (whole number)");
+					System.out.println(notAnIntegerMessage);
 			}
   	return false;
   }
@@ -65,6 +67,10 @@ class IntegerInputPrompt {
 		else
 			System.out.printf("Error: Input must be in the range %d to %d\n",min,max);
 		return false;
+	}
+	
+	void setNotAnIntegerMessage(String message) {
+		notAnIntegerMessage = message;
 	}
 		
 }
