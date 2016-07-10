@@ -25,6 +25,7 @@ class TextBasedMenu {
 		if (optionTexts.size() == 0) 
 			throw new NullPointerException();
 		printOptionsList();
+		optionPrompter.setNotAnIntegerMessage("Error: Not a menu item number");
 		int optionSelected = 
 				optionPrompter.getBoundedIntegerInput(1, optionTexts.size(), prompt);			 
 		Object actionSelected = actions.get(optionSelected-1);
