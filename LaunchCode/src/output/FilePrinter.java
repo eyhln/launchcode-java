@@ -44,7 +44,7 @@ public class FilePrinter implements StringOutput {
 	
 	private void printWriteErrorMessage() {
 		System.out.println("Error: Unable to write file\n "
-						+ "      Check file permissions and target directory");
+						+ "      Check write permissions and type of target directory");
 	}
 
 }
