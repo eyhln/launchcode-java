@@ -14,7 +14,7 @@ package pyramid;
  *
  */
 
-class Pyramid {
+public class Pyramid {
 	
 	private StringBuilder builder;
 	private int heightInSteps;
