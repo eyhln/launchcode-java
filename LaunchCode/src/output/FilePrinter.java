@@ -4,7 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class FilePrinter implements StringOutput {
+import pyramid.Pyramid;
+
+public class FilePrinter implements PyramidPrinter {
 	
 	private FilePathPrompt pathPrompt; 
 	private String output;
@@ -14,8 +16,8 @@ public class FilePrinter implements StringOutput {
 	}
 	
 	@Override
-	public void outputString(String output) {
-		this.output = output;
+	public void outputPyramid(Pyramid pyramidToOutput) {
+		this.output = pyramidToOutput.toString();
 		boolean sucessful = false;
 		do {			
 			sucessful = writeToFile();

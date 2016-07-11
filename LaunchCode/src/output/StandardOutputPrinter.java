@@ -1,10 +1,12 @@
 package output;
 
-public class StandardOutputPrinter implements StringOutput{
+import pyramid.Pyramid;
+
+public class StandardOutputPrinter implements PyramidPrinter{
 	
 	@Override
-	public void outputString(String output) {
-		System.out.println(output);
+	public void outputPyramid(Pyramid pyramidToOutput) {
+		System.out.println(pyramidToOutput.toString());
 	}
 
 }

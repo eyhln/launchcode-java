@@ -1,15 +1,17 @@
 package output;
 
+import pyramid.Pyramid;
+
 public class OutputContext {
 	
-	private StringOutput out;
+	private PyramidPrinter out;
 	
-	public OutputContext(StringOutput out) {
+	public OutputContext(PyramidPrinter out) {
 		this.out = out;
 	}
 	
-	public void outputString(String output) {
-		out.outputString(output);
+	public void outputPyramid(Pyramid pyramidToOutput) {
+		out.outputPyramid(pyramidToOutput);
 	}
 
 }
