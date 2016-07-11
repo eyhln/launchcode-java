@@ -2,7 +2,7 @@ package output;
 
 import pyramid.Pyramid;
 
-public class StandardOutputPrinter implements PyramidPrinter{
+public class PyramidToStandardOutputPrinter implements PyramidPrinter{
 	
 	@Override
 	public void outputPyramid(Pyramid pyramidToOutput) {

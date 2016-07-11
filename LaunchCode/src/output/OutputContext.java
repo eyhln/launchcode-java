@@ -13,5 +13,5 @@ public class OutputContext {
 	public void outputPyramid(Pyramid pyramidToOutput) {
 		out.outputPyramid(pyramidToOutput);
 	}
-
+	
 }

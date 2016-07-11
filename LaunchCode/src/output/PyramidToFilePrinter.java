@@ -6,12 +6,12 @@ import java.io.PrintWriter;
 
 import pyramid.Pyramid;
 
-public class FilePrinter implements PyramidPrinter {
+public class PyramidToFilePrinter implements PyramidPrinter {
 	
 	private FilePathPrompt pathPrompt; 
 	private String output;
 	
-	public FilePrinter() {
+	public PyramidToFilePrinter() {
 		pathPrompt = new FilePathPrompt();
 	}
 	
