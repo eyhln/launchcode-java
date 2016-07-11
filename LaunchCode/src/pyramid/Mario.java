@@ -3,7 +3,7 @@ package pyramid;
 import output.FilePrinter;
 import output.OutputContext;
 import output.StandardOutputPrinter;
-import output.StringOutput;
+import output.PyramidPrinter;
 
 public class Mario {
 	
@@ -23,9 +23,9 @@ public class Mario {
 	public void printPyramidToUserSpecification() {
 		Object outputType = promptUserForOutputType();
 		int heightInSteps = promptUserForPyramidHeight();
-		String pyramid = (new Pyramid(heightInSteps)).toString();
-		OutputContext output = new OutputContext((StringOutput) outputType);
-		output.outputString(pyramid);
+		Pyramid pyramid = (new Pyramid(heightInSteps));
+		OutputContext output = new OutputContext((PyramidPrinter) outputType);
+		output.outputPyramid(pyramid);
 	}
 	
 	private Object promptUserForOutputType() {
