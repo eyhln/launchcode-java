@@ -9,10 +9,12 @@ public class Mario {
 	
 	private IntegerInputPrompt heightGetter;
 	private TextBasedMenu menu;
+	private PyramidFactory pyramidFactory;
 
 	public Mario() {
 		heightGetter = new IntegerInputPrompt();
 		menu = new TextBasedMenu();
+		pyramidFactory = new PyramidFactory();
 	}
 	
 	public static void main (String[] args) {
@@ -23,7 +25,7 @@ public class Mario {
 	public void printPyramidToUserSpecification() {
 		Object outputType = promptUserForOutputType();
 		int heightInSteps = promptUserForPyramidHeight();
-		Pyramid pyramid = (new Pyramid(heightInSteps));
+		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps);
 		OutputContext output = new OutputContext((PyramidPrinter) outputType);
 		output.outputPyramid(pyramid);
 	}
