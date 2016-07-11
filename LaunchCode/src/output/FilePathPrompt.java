@@ -3,7 +3,7 @@ package output;
 import java.io.File;
 import java.util.Scanner;
 
-public class FilePathPrompt {
+class FilePathPrompt {
 	
 	private Scanner scanner;
 
@@ -51,8 +51,6 @@ public class FilePathPrompt {
 	
 	private void printInvalidPathMessage() {
 		System.out.println("Error: Invalid path");
-		System.out.println("Examples of valid paths:   Unix-like: /home/user/docs/Pyramid.txt\n" +
-													 "                           Windows: C:\\user\\docs\\Pyramid.txt");
 	}
 
 }
