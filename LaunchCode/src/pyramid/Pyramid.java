@@ -14,13 +14,19 @@ package pyramid;
  *
  */
 
-class TextPyramidBuilder {
+class Pyramid {
 	
-	private StringBuilder pyramid;
+	private StringBuilder builder;
 	private int heightInSteps;
 	
-	TextPyramidBuilder() {
-			pyramid = new StringBuilder(); 
+	Pyramid(int heightInSteps) {
+			builder = new StringBuilder();
+			this.heightInSteps = heightInSteps;
+	}
+	
+	@Override
+	public String toString() {
+		return buildPyramidString(heightInSteps);
 	}
 	
 	String buildPyramidString(int heightInSteps) {
@@ -29,11 +35,11 @@ class TextPyramidBuilder {
 		for (int lineNumber = 0; lineNumber < heightInSteps; lineNumber++) {
 			createLine(lineNumber);
 		}
-		return pyramid.toString();
+		return builder.toString();
 	}
 	
 	private void clearCharactersFromBuilder() {
-		pyramid.setLength(0);
+		builder.setLength(0);
 	}
 	
 	private void createLine(int lineNumber) {
@@ -43,16 +49,16 @@ class TextPyramidBuilder {
 	}
 	
 	private void startNewLine() {
-		pyramid.append("\n");
+		builder.append("\n");
 	}
 	 
 	private void addSpacesToLine(int lineNumber) {
 		for (int i = heightInSteps-2-lineNumber; i >= 0; i--)
-			pyramid.append(" ");
+			builder.append(" ");
 	}
 	
 	private void addHashesToLine(int lineNumber) {
 		for (int i = 1+lineNumber; i >= 0; i--)
-			pyramid.append("#");
+			builder.append("#");
 	}
 }
