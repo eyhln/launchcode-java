@@ -17,7 +17,7 @@ package pyramid;
 class TextPyramidBuilder {
 	
 	private StringBuilder pyramid;
-	private int height;
+	private int heightInSteps;
 	
 	TextPyramidBuilder() {
 			pyramid = new StringBuilder(); 
@@ -25,8 +25,8 @@ class TextPyramidBuilder {
 	
 	String buildPyramidString(int heightInSteps) {
 		clearCharactersFromBuilder();
-		height = heightInSteps;
-		for (int lineNumber = 0; lineNumber < height; lineNumber++) {
+		this.heightInSteps = heightInSteps;
+		for (int lineNumber = 0; lineNumber < heightInSteps; lineNumber++) {
 			createLine(lineNumber);
 		}
 		return pyramid.toString();
@@ -47,7 +47,7 @@ class TextPyramidBuilder {
 	}
 	 
 	private void addSpacesToLine(int lineNumber) {
-		for (int i = height-2-lineNumber; i >= 0; i--)
+		for (int i = heightInSteps-2-lineNumber; i >= 0; i--)
 			pyramid.append(" ");
 	}
 	
