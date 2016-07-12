@@ -6,15 +6,13 @@ public class OutputContext {
 	
 	private PyramidPrinter out;
 	
-	public void outputPyramid(String outputType) {
+	public void outputPyramid(String outputType, Pyramid pyramid) {
 		if (outputType.equals("standard output")) 
 			out = new PyramidToStandardOutputPrinter();
-		else if (outputType.equals("file")) 
+		else if (outputType.equals("file"))  
 			out = new PyramidToFilePrinter();
-	}
-	
-	public void outputPyramid(Pyramid pyramidToOutput) {
-		out.outputPyramid(pyramidToOutput);
+		
+		out.outputPyramid(pyramid);
 	}
 	
 }

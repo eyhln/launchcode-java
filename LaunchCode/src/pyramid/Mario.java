@@ -1,8 +1,8 @@
 package pyramid;
 
-import output.FilePrinter;
+import output.PyramidToFilePrinter;
 import output.OutputContext;
-import output.StandardOutputPrinter;
+import output.PyramidToStandardOutputPrinter;
 import output.PyramidPrinter;
 
 public class Mario {
@@ -10,11 +10,14 @@ public class Mario {
 	private IntegerInputPrompt heightGetter;
 	private TextBasedMenu menu;
 	private PyramidFactory pyramidFactory;
+	private PyramidPrinter out;
+	private OutputContext output;
 
 	public Mario() {
 		heightGetter = new IntegerInputPrompt();
 		menu = new TextBasedMenu();
 		pyramidFactory = new PyramidFactory();
+		output = new OutputContext();
 	}
 	
 	public static void main (String[] args) {
@@ -23,17 +26,16 @@ public class Mario {
 	}
 	
 	public void printPyramidToUserSpecification() {
-		Object outputType = promptUserForOutputType();
+		String outputType = promptUserForOutputType();
 		int heightInSteps = promptUserForPyramidHeight();
 		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps);
-		OutputContext output = new OutputContext((PyramidPrinter) outputType);
-		output.outputPyramid(pyramid);
+		output.outputPyramid(outputType, pyramid);
 	}
 	
-	private Object promptUserForOutputType() {
-		menu.addOption("Print pyramid to standard output", new StandardOutputPrinter());
-		menu.addOption("Print pyramid to file", new FilePrinter());
-		Object outputType = menu.getSelectionFromMenu();
+	private String promptUserForOutputType() {
+		menu.addOption("Print pyramid to standard output", "standard output");
+		menu.addOption("Print pyramid to file", "file");
+		String outputType = menu.getSelectionFromMenu();
 		return outputType;
 	}
 	
@@ -41,6 +43,10 @@ public class Mario {
 		String prompt = "Enter a height in steps for the pyramid: ";
 		int heightInSteps = heightGetter.getBoundedIntegerInput(0,23,prompt);
 		return heightInSteps;
+	}
+	
+	public void outputPyramid(Pyramid pyramid) {
+		out.outputPyramid(pyramid);
 	}
 	
 }
