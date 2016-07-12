@@ -1,8 +1,6 @@
 package pyramid;
 
-import output.PyramidToFilePrinter;
 import output.OutputContext;
-import output.PyramidToStandardOutputPrinter;
 import output.PyramidPrinter;
 
 public class Mario {
