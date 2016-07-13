@@ -43,10 +43,6 @@ public class Mario {
 		return heightInSteps;
 	}
 	
-	public void outputPyramid(Pyramid pyramid) {
-		out.outputPyramid(pyramid);
-	}
-	
 }
 		
 	
