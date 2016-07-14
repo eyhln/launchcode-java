@@ -1,4 +1,4 @@
-package pyramid;
+package input;
 
 import java.util.Scanner;
 

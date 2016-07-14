@@ -4,6 +4,6 @@ import pyramid.Pyramid;
 
 public interface PyramidPrinter {
 
-	public void outputPyramid(Pyramid pyramidToOutput);
+	public void print(Pyramid pyramid);
 	
 }

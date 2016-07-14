@@ -1,17 +1,17 @@
-package output;
+package input;
 
 import java.io.File;
 import java.util.Scanner;
 
-class FilePathPrompt {
+public class FilePathPrompt {
 	
 	private Scanner scanner;
 
-	FilePathPrompt() {
+	public FilePathPrompt() {
 		scanner = new Scanner(System.in);
 	}
 	
-	String promptFilePathFromUser() {
+	public String promptFilePathFromUser() {
 		String input;
 		do {
 			promptUserForFilepath();

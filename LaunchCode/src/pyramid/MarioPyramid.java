@@ -1,19 +1,5 @@
 package pyramid;
 
-/*
- * Creates text-based half pyramid strings using spaces and hashes. 
- * Example for height of 7:
- * 
- *        ##
-		     ###
-		    ####
-		   #####
-		  ######
-		 #######
-		########
- *
- */
-
 public class MarioPyramid implements Pyramid {
 	
 	private StringBuilder builder;
