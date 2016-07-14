@@ -1,4 +1,4 @@
-package input;
+package mario;
 
 import output.PyramidPrinter;
 import output.PyramidToFilePrinter;

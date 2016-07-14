@@ -1,4 +1,4 @@
-package input;
+package mario;
 
 import java.io.File;
 import java.util.Scanner;
