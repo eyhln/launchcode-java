@@ -30,12 +30,6 @@ public class Mario {
 		printer.print(pyramid);
 	}
 	
-	private int promptUserForPyramidHeight() {
-		String prompt = "Enter a height in steps for the pyramid: ";
-		int heightInSteps = integerInputPrompt.getBoundedIntegerInput(0,23,prompt);
-		return heightInSteps;
-	}
-	
 	private void promptUserToSetOutputType() {
 		printOptionsList();
 		integerInputPrompt.setNotAnIntegerMessage("Error: Not a menu item number");
@@ -44,7 +38,13 @@ public class Mario {
 		if (optionSelected == 2)
 			printer = new PyramidToFilePrinter();
 	}
-			
+	
+	private int promptUserForPyramidHeight() {
+		String prompt = "Enter a height in steps for the pyramid: ";
+		int heightInSteps = integerInputPrompt.getBoundedIntegerInput(0,23,prompt);
+		return heightInSteps;
+	}
+	
 	private void printOptionsList() {
 		System.out.print("\n");
 		System.out.println("  (1) Printer pyramid to standard output");
