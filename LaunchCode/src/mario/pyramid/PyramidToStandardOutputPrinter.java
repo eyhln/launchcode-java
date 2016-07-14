@@ -1,6 +1,4 @@
-package output;
-
-import pyramid.Pyramid;
+package mario.pyramid;
 
 public class PyramidToStandardOutputPrinter implements PyramidPrinter{
 	

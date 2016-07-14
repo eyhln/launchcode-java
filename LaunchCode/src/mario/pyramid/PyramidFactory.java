@@ -1,4 +1,4 @@
-package pyramid;
+package mario.pyramid;
 
 public class PyramidFactory {
 	

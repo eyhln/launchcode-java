@@ -1,18 +1,28 @@
-package pyramid;
+package mario.pyramid;
 
 public class MarioPyramid implements Pyramid {
 	
 	private StringBuilder builder;
 	private int heightInSteps;
+	private PyramidPrinter printer;
 	
 	MarioPyramid(int heightInSteps) {
 			builder = new StringBuilder();
 			this.heightInSteps = heightInSteps;
+			printer = new PyramidToStandardOutputPrinter();
 	}
 	
 	@Override
 	public String toString() {
 		return buildPyramid(heightInSteps);
+	}
+	
+	public void setPrinter(PyramidPrinter printer) {
+		this.printer = printer;
+	}
+	
+	public void print() {
+		printer.print(this);
 	}
 	
 	String buildPyramid(int heightInSteps) {
