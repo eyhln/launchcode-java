@@ -1,15 +1,10 @@
 package mario;
 
-import mario.pyramid.Pyramid;
-import mario.pyramid.PyramidFactory;
-import mario.pyramid.PyramidPrinter;
-import mario.pyramid.PyramidToFilePrinter;
-import mario.pyramid.PyramidToStandardOutputPrinter;
-
 public class Mario {
 	
 	private IntegerInputPrompt integerInputPrompt;
 	private PyramidFactory pyramidFactory;
+	private PrinterFactory printerFactory;
 
 	public Mario() {
 		integerInputPrompt = new IntegerInputPrompt();
@@ -41,15 +36,15 @@ public class Mario {
 	}
 	
 	private int promptUserForPyramidHeight() {
-		String prompt = "\nEnter a height in steps for the pyramid: ";
+		String prompt = "Enter a height in steps for the pyramid: ";
 		int heightInSteps = integerInputPrompt.getBoundedIntegerInput(0,23,prompt);
 		return heightInSteps;
 	}
 	
 	private void printOptionsList() {
 		System.out.print("\n");
-		System.out.println("  (1) Print pyramid to standard output");
-		System.out.println("  (2) Print pyramid to file");
+		System.out.println(" (1) Print pyramid to standard output");
+		System.out.println(" (2) Print pyramid to file");
 		System.out.print("\n");
 	}
 	

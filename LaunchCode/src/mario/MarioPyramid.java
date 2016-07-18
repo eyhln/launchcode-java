@@ -1,4 +1,4 @@
-package mario.pyramid;
+package mario;
 
 public class MarioPyramid implements Pyramid {
 	
