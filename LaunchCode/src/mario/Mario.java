@@ -9,6 +9,7 @@ public class Mario {
 	public Mario() {
 		integerInputPrompt = new IntegerInputPrompt();
 		pyramidFactory = new PyramidFactory();
+		printerFactory = new PyramidPrinterFactory();
 	}
 	
 	public static void main (String[] args) {
