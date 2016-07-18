@@ -11,17 +11,17 @@ public class MarioPyramid implements Pyramid {
 			this.heightInSteps = heightInSteps;
 	}
 	
-	@Override
-	public String toString() {
-		return buildPyramid(heightInSteps);
-	}
-	
 	public void setPrinter(PyramidPrinter printer) {
 		this.printer = printer;
 	}
 	
 	public void print() {
 		printer.print(this);
+	}
+	
+	@Override
+	public String toString() {
+		return buildPyramid(heightInSteps);
 	}
 	
 	String buildPyramid(int heightInSteps) {
