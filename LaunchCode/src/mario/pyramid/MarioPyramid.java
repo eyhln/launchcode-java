@@ -9,7 +9,6 @@ public class MarioPyramid implements Pyramid {
 	MarioPyramid(int heightInSteps) {
 			builder = new StringBuilder();
 			this.heightInSteps = heightInSteps;
-			printer = new PyramidToStandardOutputPrinter();
 	}
 	
 	@Override
