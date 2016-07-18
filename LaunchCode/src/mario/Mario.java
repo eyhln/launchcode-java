@@ -4,7 +4,7 @@ public class Mario {
 	
 	private IntegerInputPrompt integerInputPrompt;
 	private PyramidFactory pyramidFactory;
-	private PrinterFactory printerFactory;
+	private PyramidPrinterFactory printerFactory;
 
 	public Mario() {
 		integerInputPrompt = new IntegerInputPrompt();
@@ -28,11 +28,7 @@ public class Mario {
 		integerInputPrompt.setNotAnIntegerMessage("Error: Not a menu item number");
 		int optionSelected = 
 				integerInputPrompt.getBoundedIntegerInput(1, 2, "Select an option number: ");	
-		if (optionSelected == 1)
-			return new PyramidToStandardOutputPrinter();
-		else if (optionSelected == 2)
-			return new PyramidToFilePrinter();
-		return null;
+		return printerFactory.getPyramidPrinter(optionSelected);
 	}
 	
 	private int promptUserForPyramidHeight() {
