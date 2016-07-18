@@ -6,16 +6,10 @@ public class MarioPyramid implements Pyramid {
 	
 	private StringBuilder builder;
 	private int heightInSteps;
-	private PyramidPrinter printer;
 	
-	MarioPyramid(int heightInSteps, PyramidPrinter printer) {
+	MarioPyramid(int heightInSteps) {
 			builder = new StringBuilder();
 			this.heightInSteps = heightInSteps;
-			this.printer = printer;
-	}
-	
-	public void print() {
-		printer.print(this);
 	}
 	
 	@Override
