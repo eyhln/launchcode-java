@@ -1,8 +1,8 @@
-package mario;
+package mario.userinput;
 
 import java.util.Scanner;
 
-class IntegerInputPrompt {
+public class IntegerInputPrompt {
 	
 	private Scanner scanner;
 	private String notAnIntegerMessage;
@@ -11,12 +11,12 @@ class IntegerInputPrompt {
 	private String prompt;
 	private int userInputInteger;
 	
-	IntegerInputPrompt() { 
+	public IntegerInputPrompt() { 
 			scanner = new Scanner(System.in);
 			notAnIntegerMessage = "Error: Input must be an integer (whole number)";
 	}
   
-  int getBoundedIntegerInput(int minAcceptedValue, int maxAcceptedValue, String promptForUser) {
+  public int getBoundedIntegerInput(int minAcceptedValue, int maxAcceptedValue, String promptForUser) {
   	try {
   		setRangeValues(minAcceptedValue, maxAcceptedValue);
   		setPromptValue(promptForUser);
@@ -69,7 +69,7 @@ class IntegerInputPrompt {
 		return false;
 	}
 	
-	void setNotAnIntegerMessage(String message) {
+	public void setNotAnIntegerMessage(String message) {
 		notAnIntegerMessage = message;
 	}
 		

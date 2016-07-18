@@ -1,4 +1,4 @@
-package mario;
+package mario.printer;
 
 public class PyramidPrinterFactory {
 

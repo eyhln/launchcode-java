@@ -1,4 +1,4 @@
-package mario;
+package mario.pyramid;
 
 public interface Pyramid {
 

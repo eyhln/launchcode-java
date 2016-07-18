@@ -1,8 +1,11 @@
-package mario;
+package mario.printer;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import mario.pyramid.Pyramid;
+import mario.userinput.FilePathPrompt;
 
 public class PyramidToFilePrinter implements PyramidPrinter {
 	

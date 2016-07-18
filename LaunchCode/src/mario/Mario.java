@@ -1,5 +1,11 @@
 package mario;
 
+import mario.printer.PyramidPrinter;
+import mario.printer.PyramidPrinterFactory;
+import mario.pyramid.Pyramid;
+import mario.pyramid.PyramidFactory;
+import mario.userinput.IntegerInputPrompt;
+
 public class Mario {
 	
 	private IntegerInputPrompt integerInputPrompt;

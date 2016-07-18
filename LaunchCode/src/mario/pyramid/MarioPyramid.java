@@ -1,4 +1,6 @@
-package mario;
+package mario.pyramid;
+
+import mario.printer.PyramidPrinter;
 
 public class MarioPyramid implements Pyramid {
 	
