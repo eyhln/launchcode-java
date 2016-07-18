@@ -3,6 +3,7 @@ package mario;
 import mario.pyramid.Pyramid;
 import mario.pyramid.PyramidFactory;
 import mario.pyramid.PyramidToFilePrinter;
+import mario.pyramid.PyramidToStandardOutputPrinter;
 
 public class Mario {
 	
@@ -31,7 +32,9 @@ public class Mario {
 		integerInputPrompt.setNotAnIntegerMessage("Error: Not a menu item number");
 		int optionSelected = 
 				integerInputPrompt.getBoundedIntegerInput(1, 2, "Select an option number: ");	
-		if (optionSelected == 2)
+		if (optionSelected == 1)
+			pyramid.setPrinter(new PyramidToStandardOutputPrinter());
+		else if (optionSelected == 2)
 			pyramid.setPrinter(new PyramidToFilePrinter());
 	}
 	
