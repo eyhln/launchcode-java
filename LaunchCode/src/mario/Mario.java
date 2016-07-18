@@ -2,6 +2,7 @@ package mario;
 
 import mario.pyramid.Pyramid;
 import mario.pyramid.PyramidFactory;
+import mario.pyramid.PyramidPrinter;
 import mario.pyramid.PyramidToFilePrinter;
 import mario.pyramid.PyramidToStandardOutputPrinter;
 
@@ -22,20 +23,21 @@ public class Mario {
 	
 	public void printPyramidToUserSpecification() {
 		int heightInSteps = promptUserForPyramidHeight();
-		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps);
-		promptUserToSetOutputType(pyramid);
+		PyramidPrinter printer = promptUserToSetOutputType();
+		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps, printer);
 		pyramid.print();
 	}
 	
-	private void promptUserToSetOutputType(Pyramid pyramid) {
+	private PyramidPrinter promptUserToSetOutputType() {
 		printOptionsList();
 		integerInputPrompt.setNotAnIntegerMessage("Error: Not a menu item number");
 		int optionSelected = 
 				integerInputPrompt.getBoundedIntegerInput(1, 2, "Select an option number: ");	
 		if (optionSelected == 1)
-			pyramid.setPrinter(new PyramidToStandardOutputPrinter());
+			return new PyramidToStandardOutputPrinter();
 		else if (optionSelected == 2)
-			pyramid.setPrinter(new PyramidToFilePrinter());
+			return new PyramidToFilePrinter();
+		return null;
 	}
 	
 	private int promptUserForPyramidHeight() {
