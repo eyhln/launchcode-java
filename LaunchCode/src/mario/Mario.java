@@ -26,8 +26,8 @@ public class Mario {
 	public void printPyramidToUserSpecification() {
 		int heightInSteps = promptUserForPyramidHeight();
 		PyramidPrinter printer = promptUserToSetOutputType();
-		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps, printer);
-		pyramid.print();
+		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps);
+		printer.print(pyramid);
 	}
 	
 	private PyramidPrinter promptUserToSetOutputType() {
