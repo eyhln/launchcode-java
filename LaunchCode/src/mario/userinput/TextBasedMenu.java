@@ -2,26 +2,26 @@ package mario.userinput;
 
 import java.util.ArrayList;
 
-class TextBasedMenu {
+public class TextBasedMenu {
 	
 	private IntegerInputPrompt optionPrompter;
 	private ArrayList<String> optionTexts;
 	private ArrayList<Object> actions;
 	private String prompt;
 	
-	TextBasedMenu() {
+	public TextBasedMenu() {
 		optionPrompter = new IntegerInputPrompt();
 		optionTexts = new ArrayList<String>();
 		actions = new ArrayList<Object>();
 		prompt = "Select an option number: ";
 	}
 	
-	void addOption(String optionText, Object action) {
+	public void addOption(String optionText, Object action) {
 			optionTexts.add(optionText);
 			actions.add(action);
 	}
 	
-	Object getSelectionFromMenu() throws NullPointerException {
+	public Object getSelectionFromMenu() throws NullPointerException {
 		if (optionTexts.size() == 0) 
 			throw new NullPointerException();
 		printOptionsList();
