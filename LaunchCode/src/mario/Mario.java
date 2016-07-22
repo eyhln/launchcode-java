@@ -10,14 +10,10 @@ import mario.userinput.TextBasedMenu;
 public class Mario {
 	
 	private IntegerInputPrompt integerInputPrompt;
-	private PyramidFactory pyramidFactory;
-	private PyramidPrinterFactory printerFactory;
 	private TextBasedMenu menu;
 
 	public Mario() {
 		integerInputPrompt = new IntegerInputPrompt();
-		pyramidFactory = new PyramidFactory();
-		printerFactory = new PyramidPrinterFactory();
 		menu = new TextBasedMenu();
 	}
 	
@@ -29,7 +25,7 @@ public class Mario {
 	public void printPyramidToUserSpecification() {
 		int heightInSteps = promptUserForPyramidHeight();
 		PyramidPrinter printer = promptUserForOutputType();
-		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps);
+		Pyramid pyramid = PyramidFactory.getPyramid(heightInSteps);
 		printer.print(pyramid);
 	}
 	
