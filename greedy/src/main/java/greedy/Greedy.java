@@ -2,10 +2,12 @@ package greedy;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
 public class Greedy {
 	
@@ -19,10 +21,13 @@ public class Greedy {
 	
 	Scanner scanner; 
 	CoinCalculator coinCalculator;
+	ResourceBundleMessageSource messageSource;
 	NumberFormat defaultLocaleCurrencyFormat = NumberFormat.getCurrencyInstance();
+	Locale defaultLocale = Locale.US;
 
-	public Greedy(CoinCalculator coinCalculator) {
+	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource) {
 		this.coinCalculator = coinCalculator;
+		this.messageSource = messageSource;
 		scanner = new Scanner(System.in);
 	}
 	
@@ -30,21 +35,23 @@ public class Greedy {
 		try {
 			runProgram();
 		} catch (ParseException e) {
-			System.out.println("invalid.");
+			System.err.println(messageSource.getMessage("errorMsg", null, defaultLocale));
 		}
 	}
 	
 	private void runProgram() throws ParseException {
 		greetUser();
 		int moneyValueInCents = getInput();
+		int minNumberOfCoins = coinCalculator.calculateChange(moneyValueInCents);
+		System.out.println(minNumberOfCoins);
 	}
 	
 	void greetUser() {
-		System.out.println("Enter an amount of money or press ESC to quit.");
+		System.out.println(messageSource.getMessage("instructionsMsg", null, defaultLocale));
 	}
 	
 	int getInput() throws ParseException {
-		System.out.println("Amount: ");
+		System.out.println(messageSource.getMessage("promptMsg", null, defaultLocale));
 		String input = scanner.nextLine();
 		return parseInput(input);
 	}

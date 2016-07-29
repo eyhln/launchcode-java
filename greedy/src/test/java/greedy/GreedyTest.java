@@ -3,6 +3,7 @@ package greedy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,7 +20,7 @@ public class GreedyTest {
 	
 	@Before
 	public void initialize() {
-		greedy = new Greedy(new CoinCalculator());
+		greedy = new Greedy(new CoinCalculator(), new ResourceBundleMessageSource());
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
 	}
@@ -35,12 +36,15 @@ public class GreedyTest {
 	public void testParseInputShouldSuccessfullyParseDifferentFormats() {
 		try {
 			assertEquals(100, greedy.parseInput("$1.00"));
-			assertEquals(45, greedy.parseInput("$.45"));
 			assertEquals(100, greedy.parseInput("$1"));
+			assertEquals(100, greedy.parseInput("$1.0"));
+			assertEquals(100, greedy.parseInput("$1-"));
 			assertEquals(80, greedy.parseInput("$.8"));
 			assertEquals(80, greedy.parseInput("$.80"));
+			assertEquals(45, greedy.parseInput("$.45"));
 			assertEquals(45, greedy.parseInput("$0.45"));
 			assertEquals(45, greedy.parseInput("  $0.45 "));
+			assertEquals(45, greedy.parseInput("$0.45abcde"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -60,7 +64,7 @@ public class GreedyTest {
 	
 	@Test
 	public void testParseInputShouldThrowAnExceptionForWords() {
-		boolean exceptionCaught = attemptParse("hw34-");
+		boolean exceptionCaught = attemptParse("hw$34-");
 		assertEquals(true, exceptionCaught);
 	}
 	

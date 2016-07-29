@@ -5,8 +5,13 @@
     
 	<bean id="greedy" class="greedy.Greedy">
 		<constructor-arg name="coinCalculator" ref="coinCalculator"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
 	</bean>
 
     <bean id="coinCalculator" class="greedy.CoinCalculator"></bean>
     
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    	<property name="basename" value="i18n/messages"/>
+    </bean>
+    		
 </beans>
