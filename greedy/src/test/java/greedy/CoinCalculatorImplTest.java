@@ -5,7 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import org.junit.Before;
 
@@ -17,7 +16,7 @@ public class CoinCalculatorImplTest {
 
 	@Before
 	public void initialize() {
-		coinSpec = (CoinSpecification) new USDollarCoinSpec(Locale.US);
+		coinSpec = (CoinSpecification) new USDollarCoinSpec();
 		cc = new CoinCalculatorImpl(coinSpec);
 		coinsNeeded = new HashMap<String,Integer>();
 	}
@@ -50,30 +49,30 @@ public class CoinCalculatorImplTest {
 	
 	@Test
 	public void testCalculateChangeFive() {
-		coinsNeeded.put("nickels", 1);
+		coinsNeeded.put("coin.4", 1);
 		assertEquals(coinsNeeded, cc.calculateChange(5));
 	}
 	
 	@Test
 	public void testCalculateChangeSix() {
-		coinsNeeded.put("nickels", 1);
-		coinsNeeded.put("pennies", 1);
+		coinsNeeded.put("coin.4", 1);
+		coinsNeeded.put("coin.5", 1);
 		assertEquals(coinsNeeded, cc.calculateChange(6));
 	}
 	
 	@Test
 	public void testCalculateChangeThirtyTwo() {
-		coinsNeeded.put("quarters", 1);
-		coinsNeeded.put("nickels", 1);
-		coinsNeeded.put("pennies", 2);
+		coinsNeeded.put("coin.4", 1);
+		coinsNeeded.put("coin.2", 1);
+		coinsNeeded.put("coin.5", 2);
 		assertEquals(coinsNeeded, cc.calculateChange(32));
 	}
 	
 	@Test
 	public void testCalculateChangeFourHundredEleven() {
-		coinsNeeded.put("dollar coins",400);
-		coinsNeeded.put("dimes", 1);
-		coinsNeeded.put("pennies", 1);
+		coinsNeeded.put("coin.1",400);
+		coinsNeeded.put("coin.3", 1);
+		coinsNeeded.put("coin.5", 1);
 		assertEquals(coinsNeeded, cc.calculateChange(40011));
 	}
 

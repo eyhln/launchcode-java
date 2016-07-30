@@ -20,7 +20,7 @@ public class GreedyTest {
 	
 	@Before
 	public void initialize() {
-		greedy = new Greedy(new CoinCalculatorImpl(), new ResourceBundleMessageSource());
+		greedy = new Greedy(new CoinCalculatorImpl(null), new ResourceBundleMessageSource());
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
 	}
@@ -83,6 +83,8 @@ public class GreedyTest {
 		}
 		return exceptionCaught;
 	}
+	
+	
 	
 	
 	@After

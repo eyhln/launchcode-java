@@ -2,6 +2,8 @@ package greedy;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -22,13 +24,16 @@ public class Greedy {
 	Scanner scanner; 
 	CoinCalculator coinCalculator;
 	ResourceBundleMessageSource messageSource;
-	NumberFormat defaultLocaleCurrencyFormat = NumberFormat.getCurrencyInstance();
-	Locale defaultLocale = new Locale("en");
+	NumberFormat defaultLocaleCurrencyFormat;
+	Locale defaultLocale = new Locale("en", "US");
+	HashMap<String,Integer> coinsUsed;
 
 	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource) {
 		this.coinCalculator = coinCalculator;
 		this.messageSource = messageSource;
+		defaultLocaleCurrencyFormat = NumberFormat.getCurrencyInstance();
 		scanner = new Scanner(System.in);
+		coinsUsed = new HashMap<String,Integer>();
 	}
 	
 	public void start() {
@@ -42,8 +47,8 @@ public class Greedy {
 	private void runProgram() throws ParseException {
 		giveInstructions();
 		int moneyValueInCents = getInput();
-		int minNumberOfCoins = coinCalculator.calculateChange(moneyValueInCents);
-		giveOutput(minNumberOfCoins);
+		coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
+		printOutput();
 	}
 	
 	void giveInstructions() {
@@ -64,8 +69,13 @@ public class Greedy {
 		return moneyValueInCents;
 	}
 	
-	void giveOutput(int minNumberOfCoins) {
-		System.out.println(minNumberOfCoins);
+	void printOutput() {
+		Object[] coinCodes = coinsUsed.keySet().toArray();
+		Arrays.sort(coinCodes);
+		for (Object code : coinCodes) {
+			System.out.println(messageSource.getMessage((String)code, null, defaultLocale) + 
+					": " + coinsUsed.get(code));
+		}
 	}
    
 
