@@ -4,20 +4,27 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
+import java.util.Locale;
+
 import org.junit.Before;
 
 public class CoinCalculatorImplTest {
 	
 	CoinCalculatorImpl cc;
+	CoinSpecification coinSpec;
+	HashMap<String,Integer> coinsNeeded;
 
 	@Before
 	public void initialize() {
-		cc = new CoinCalculatorImpl();
+		coinSpec = (CoinSpecification) new USDollarCoinSpec(Locale.US);
+		cc = new CoinCalculatorImpl(coinSpec);
+		coinsNeeded = new HashMap<String,Integer>();
 	}
 	
 	@Test
 	public void testProcessCoinValuesEmptyArray() {
-		int[] empty = new int[0];
+		Object[] empty = new Object[0];
 		cc.coinValues = empty;
 		cc.processCoinValues();
 		for (int i = 0; i < empty.length; i++) {
@@ -27,7 +34,7 @@ public class CoinCalculatorImplTest {
 	
 	@Test
 	public void testProcessCoinValuesUnorderedArray() {
-		int[] unordered = {1,3,90,43,18,0};
+		Object[] unordered = {1,3,90,43,18,0};
 		int[] sorted = {90,43,18,3,1,0};
 		cc.coinValues = unordered;
 		cc.processCoinValues();
@@ -38,27 +45,36 @@ public class CoinCalculatorImplTest {
 	
 	@Test
 	public void testCalculateChangeZero() {
-		assertEquals(0,cc.calculateChange(0));
+		assertEquals(coinsNeeded, cc.calculateChange(0));
 	}
 	
 	@Test
 	public void testCalculateChangeFive() {
-		assertEquals(1,cc.calculateChange(5));
+		coinsNeeded.put("nickels", 1);
+		assertEquals(coinsNeeded, cc.calculateChange(5));
 	}
 	
 	@Test
 	public void testCalculateChangeSix() {
-		assertEquals(2,cc.calculateChange(6));
+		coinsNeeded.put("nickels", 1);
+		coinsNeeded.put("pennies", 1);
+		assertEquals(coinsNeeded, cc.calculateChange(6));
 	}
 	
 	@Test
 	public void testCalculateChangeThirtyTwo() {
-		assertEquals(4,cc.calculateChange(32));
+		coinsNeeded.put("quarters", 1);
+		coinsNeeded.put("nickels", 1);
+		coinsNeeded.put("pennies", 2);
+		assertEquals(coinsNeeded, cc.calculateChange(32));
 	}
 	
 	@Test
 	public void testCalculateChangeFourHundredEleven() {
-		assertEquals(402,cc.calculateChange(40011));
+		coinsNeeded.put("dollar coins",400);
+		coinsNeeded.put("dimes", 1);
+		coinsNeeded.put("pennies", 1);
+		assertEquals(coinsNeeded, cc.calculateChange(40011));
 	}
 
 }

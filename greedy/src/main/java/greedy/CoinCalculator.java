@@ -1,6 +1,8 @@
 package greedy;
 
+import java.util.HashMap;
+
 public interface CoinCalculator {
 
-	public int calculateChange(int nonNegativeAmountInCents);
+	public HashMap<String,Integer> calculateChange(int nonNegativeAmountInCents);
 }
