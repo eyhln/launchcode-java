@@ -2,7 +2,7 @@ package greedy;
 
 import java.util.Arrays;
 
-public class CoinCalculator {
+public class CoinCalculatorImpl implements CoinCalculator {
 	
 	private int totalRemaining;
 	int[] coinValues = {1,5,10,25,100}; 

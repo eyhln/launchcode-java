@@ -23,7 +23,7 @@ public class Greedy {
 	CoinCalculator coinCalculator;
 	ResourceBundleMessageSource messageSource;
 	NumberFormat defaultLocaleCurrencyFormat = NumberFormat.getCurrencyInstance();
-	Locale defaultLocale = Locale.US;
+	Locale defaultLocale = new Locale("en");
 
 	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource) {
 		this.coinCalculator = coinCalculator;
@@ -40,18 +40,18 @@ public class Greedy {
 	}
 	
 	private void runProgram() throws ParseException {
-		greetUser();
+		giveInstructions();
 		int moneyValueInCents = getInput();
 		int minNumberOfCoins = coinCalculator.calculateChange(moneyValueInCents);
-		System.out.println(minNumberOfCoins);
+		giveOutput(minNumberOfCoins);
 	}
 	
-	void greetUser() {
+	void giveInstructions() {
 		System.out.println(messageSource.getMessage("instructionsMsg", null, defaultLocale));
 	}
 	
 	int getInput() throws ParseException {
-		System.out.println(messageSource.getMessage("promptMsg", null, defaultLocale));
+		System.out.println(messageSource.getMessage("promptMsg", null, defaultLocale)  + ": ");
 		String input = scanner.nextLine();
 		return parseInput(input);
 	}
@@ -62,6 +62,10 @@ public class Greedy {
 		double moneyValue = amountOfMoney.doubleValue();
 		int moneyValueInCents = (int)Math.round(moneyValue * 100); 
 		return moneyValueInCents;
+	}
+	
+	void giveOutput(int minNumberOfCoins) {
+		System.out.println(minNumberOfCoins);
 	}
    
 

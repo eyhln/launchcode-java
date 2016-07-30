@@ -20,15 +20,15 @@ public class GreedyTest {
 	
 	@Before
 	public void initialize() {
-		greedy = new Greedy(new CoinCalculator(), new ResourceBundleMessageSource());
+		greedy = new Greedy(new CoinCalculatorImpl(), new ResourceBundleMessageSource());
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
 	}
 	
 	@Test
-	public void testGreetUser() {
-		greedy.greetUser();
-		assertEquals("Enter an amount of money or press ESC to quit.", 
+	public void testGiveInstructions() {
+		greedy.giveInstructions();
+		assertEquals("Enter an amount of money or press ESC to quit", 
 				outContent.toString().trim());
 	}
 	

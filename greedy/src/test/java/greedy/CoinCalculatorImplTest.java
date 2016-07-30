@@ -6,13 +6,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 
-public class CoinCalculatorTest {
+public class CoinCalculatorImplTest {
 	
-	CoinCalculator cc;
+	CoinCalculatorImpl cc;
 
 	@Before
 	public void initialize() {
-		cc = new CoinCalculator();
+		cc = new CoinCalculatorImpl();
 	}
 	
 	@Test
