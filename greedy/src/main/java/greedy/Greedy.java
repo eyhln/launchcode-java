@@ -25,7 +25,7 @@ public class Greedy {
 	CoinCalculator coinCalculator;
 	ResourceBundleMessageSource messageSource;
 	NumberFormat defaultLocaleCurrencyFormat;
-	Locale defaultLocale = new Locale("en", "US");
+	Locale defaultLocale = Locale.getDefault();
 	HashMap<String,Integer> coinsUsed;
 
 	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource) {
