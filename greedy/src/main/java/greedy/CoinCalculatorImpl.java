@@ -2,31 +2,33 @@ package greedy;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CoinCalculatorImpl implements CoinCalculator {
 	
 	private int totalCentsRemaining;
-	private CoinSpecification coinSpec;
 	HashMap<Integer,String> coinTypesAvailable;
 	Object[] coinValues;
 	HashMap<String,Integer> coinsSelected;
 	
-	public CoinCalculatorImpl(CoinSpecification coinSpec) {
-		this.coinSpec = coinSpec;
+	public CoinCalculatorImpl() {
 		coinTypesAvailable = new HashMap<Integer,String>();
 		coinsSelected = new HashMap<String,Integer>();
+	}
+	
+	public void setCoinTypesAvailable(Map<Integer,String> coinSpecification) {
+		this.coinTypesAvailable = (HashMap<Integer, String>) coinSpecification;
 	}
 
     public HashMap<String,Integer> calculateChange(int nonNegativeAmountInCents) {
     	totalCentsRemaining = nonNegativeAmountInCents;
-    	initializeHashMap();
+    	initializeCoinValues();
     	processCoinValues();
     	selectMinNumberOfCoins();
 		return coinsSelected;
     }
     
-	private void initializeHashMap() {
-		coinTypesAvailable = coinSpec.getCoinMap();
+	private void initializeCoinValues() {
 		coinValues = coinTypesAvailable.keySet().toArray();
 	}
 	

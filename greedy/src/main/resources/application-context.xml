@@ -5,18 +5,24 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
     
 	<bean id="greedy" class="greedy.Greedy">
-		<constructor-arg name="coinCalculator" ref="coinCalculator"/>
+		<constructor-arg name="coinCalculator" ref="USDollarCoinCalculator"/>
 		<constructor-arg name="messageSource" ref="messageSource"/>
 	</bean>
 
-    <bean id="coinCalculator" class="greedy.CoinCalculatorImpl">
-    	<constructor-arg name="coinSpec" ref="USDollarCoinSpec"/>
+    <bean id="USDollarCoinCalculator" class="greedy.CoinCalculatorImpl">
+    	<property name="coinTypesAvailable">
+    		<map>
+    			<entry key="100" value="coin.1"/>
+    			<entry key="25" value="coin.2"/>
+    			<entry key="10" value="coin.3"/>
+    			<entry key="5" value="coin.4"/>
+    			<entry key="1" value="coin.5"/>
+    		</map>
+    	</property>
     </bean>
     
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basename" value="i18n/messages"/>
     </bean>
-    
-    <bean id="USDollarCoinSpec" class="greedy.USDollarCoinSpec"></bean>
     	
 </beans>
