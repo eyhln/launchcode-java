@@ -1,8 +1,6 @@
 package greedy;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -14,7 +12,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 public class Greedy {
 	
 	private ResourceBundleMessageSource messageSource;
-	private NumberFormat defaultLocaleCurrencyFormat;
+	private CurrencyParser currencyParser;
 	private Locale defaultLocale;
 	
 	private CoinCalculator coinCalculator;
@@ -29,11 +27,12 @@ public class Greedy {
 		 greedy.calculateLeastNumberOfCoins(varArgs);
 	    }
 
-	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource) {
+	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource,
+			CurrencyParser currencyParser) {
 		this.coinCalculator = coinCalculator;
 		this.messageSource = messageSource;
+		this.currencyParser = currencyParser;
 		defaultLocale = Locale.getDefault();
-		defaultLocaleCurrencyFormat = NumberFormat.getCurrencyInstance();
 		coinsUsed = new HashMap<String,Integer>();
 	}
 	
@@ -48,7 +47,7 @@ public class Greedy {
 	
 	private void runProgram() throws ParseException {
 		String input = convertInputToString();
-		int moneyValueInCents = parseInput(input);
+		int moneyValueInCents = currencyParser.parseInput(input);
 		coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
 		printOutput();
 	}
@@ -61,19 +60,6 @@ public class Greedy {
 		return input;
 	}
 	
-	int parseInput(String input) throws ParseException {
-		ParsePosition parsePosition = new ParsePosition(0);
-		Number amountOfMoney = 
-				(Number)defaultLocaleCurrencyFormat.parseObject(input, parsePosition);
-		if (input.length() == 0)
-			throw new ParseException("Empty string", 0);
-		if (parsePosition.getIndex() < input.length())
-			throw new ParseException("Did not parse entire string", 0);
-		double moneyValue = amountOfMoney.doubleValue();	
-		int moneyValueInCents = (int)Math.round(moneyValue * 100); 
-		return moneyValueInCents;
-	}
-
 	void printOutput() {
 		Object[] coinCodes = coinsUsed.keySet().toArray();
 		Arrays.sort(coinCodes);
