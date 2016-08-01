@@ -22,18 +22,9 @@ public class GreedyTest {
 	@Before
 	public void initialize() {
 		messageSource = new ResourceBundleMessageSource();
-		greedy = new Greedy(new CoinCalculatorImpl(null), new ResourceBundleMessageSource());
+		greedy = new Greedy(new CoinCalculatorImpl(), new ResourceBundleMessageSource());
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
-	}
-	
-	@Test
-	public void testVarArgInput() {
-		String[] varArgs = {"$", "100"};
-		Greedy.main(varArgs);
-		for (int i = 0; i < varArgs.length; i++) {
-			assertEquals(varArgs[i], greedy.varArgs[i]);
-		}
 	}
 	
 	@Test
