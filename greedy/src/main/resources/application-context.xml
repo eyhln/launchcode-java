@@ -18,7 +18,5 @@
     </bean>
     
     <bean id="USDollarCoinSpec" class="greedy.USDollarCoinSpec"></bean>
-    
-    <context:property-placeholder location="classpath:i18n/live-config.properties" />
     	
 </beans>
