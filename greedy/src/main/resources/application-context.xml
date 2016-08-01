@@ -7,6 +7,7 @@
 	<bean id="greedy" class="greedy.Greedy">
 		<constructor-arg name="coinCalculator" ref="USDollarCoinCalculator"/>
 		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="currencyParser" ref="currencyParser"/>
 	</bean>
 
     <bean id="USDollarCoinCalculator" class="greedy.CoinCalculatorImpl">
@@ -23,6 +24,15 @@
     
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basename" value="i18n/messages"/>
+    </bean>
+    
+    <bean id="currencyParser" class="greedy.CurrencyParser">
+    	<property name="locationCodesForAcceptedCurrencyFormats">
+    		<array>
+    			<value>"_en_US"</value>
+    			<value>"_es_US"</value>
+    		</array>
+    	</property>
     </bean>
     	
 </beans>

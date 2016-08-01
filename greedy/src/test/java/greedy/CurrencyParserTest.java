@@ -3,7 +3,6 @@ package greedy;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
-import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,61 +13,75 @@ public class CurrencyParserTest {
 	
 	@Before
 	public void initialize() {
+		String[] locations = {"_en_US", "_es_US"};
 		cp = new CurrencyParser();
+		cp.setLocationCodesForAcceptedCurrencyFormats(locations);
+	}
+	
+	@Test
+	public void testProcessLocaleInformation() {
+		cp.processLocaleInformation();
+		assertEquals("$100.00", cp.acceptedCurrencyFormats.get(0).format(100));
+		assertEquals("US$100.00", cp.acceptedCurrencyFormats.get(1).format(100));
 	}
 
 	@Test
-	public void testParseInputSucessfullyParseStandard() throws ParseException {
+	public void testSucessfullyParseStandardEnUS() throws ParseException {
 		assertEquals(100, cp.parseInput("$1.00"));
 	}
 	
 	@Test
-	public void testParseInputSucessfullyParseNoDecimal() throws ParseException {
+	public void testSucessfullyParseStandardEsUS() throws ParseException {
+		assertEquals(100, cp.parseInput("US$1.00"));
+	}
+	
+	@Test
+	public void testSucessfullyParseNoDecimalEnUS() throws ParseException {
 		assertEquals(100, cp.parseInput("$1"));
 	}
 	
 	@Test
-	public void testParseInputSucessfullyParseLeadingDecimal() throws ParseException {
+	public void testSucessfullyParseLeadingDecimalEnUS() throws ParseException {
 		assertEquals(80, cp.parseInput("$.8"));
 	}
 	
 	@Test
-	public void testParseInputSucessfullyParseThousandsSeparator() throws ParseException {
+	public void testSucessfullyParseThousandsSeparatorEnUS() throws ParseException {
 		assertEquals(100000, cp.parseInput("$1,000.00"));
 	}
 	
 	@Test
-	public void testParseInputShouldThrowAnExceptionForNoCurrencySymbol() {
+	public void testShouldThrowAnExceptionForNoCurrencySymbol() {
 		boolean exceptionCaught = attemptParse("45.00");
 		assertEquals(true, exceptionCaught);
 	}
 	
 	@Test
-	public void testParseInputShouldThrowAnExceptionForWords() {
+	public void testtShouldThrowAnExceptionForWords() {
 		boolean exceptionCaught = attemptParse("hw$34-");
 		assertEquals(true, exceptionCaught);
 	}
 	
 	@Test
-	public void testParseInputShouldThrowAnExceptionForNothing() {
+	public void testShouldThrowAnExceptionForNothing() {
 		boolean exceptionCaught = attemptParse("");
 		assertEquals(true, exceptionCaught);
 	}
 	
 	@Test
-	public void testParseInputShouldThrowAnExceptionInvalidCurrencyFormat() {
+	public void testShouldThrowAnExceptionInvalidCurrencyFormat() {
 		boolean exceptionCaught = attemptParse("$1,00.00.00");
 		assertEquals(true, exceptionCaught);
 	}
 	
 	@Test
-	public void testParseInputShouldThrowAnExceptionOnlyBeginningIsValid() {
+	public void testShouldThrowAnExceptionOnlyBeginningIsValid() {
 		boolean exceptionCaught = attemptParse("$0.45abcde");
 		assertEquals(true, exceptionCaught);
 	}
 	
 	@Test
-	public void testParseInputShouldThrowAnExceptionNegativeNumber() {
+	public void testShouldThrowAnExceptionNegativeNumber() {
 		boolean exceptionCaught = attemptParse("-$1.00");
 		assertEquals(true, exceptionCaught);
 	}
