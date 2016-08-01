@@ -2,6 +2,7 @@ package greedy;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -61,7 +62,13 @@ public class Greedy {
 	}
 	
 	int parseInput(String input) throws ParseException {
-		Number amountOfMoney = defaultLocaleCurrencyFormat.parse(input);
+		ParsePosition parsePosition = new ParsePosition(0);
+		Number amountOfMoney = 
+				(Number)defaultLocaleCurrencyFormat.parseObject(input, parsePosition);
+		if (input.length() == 0)
+			throw new ParseException("Empty string", 0);
+		if (parsePosition.getIndex() < input.length())
+			throw new ParseException("Did not parse entire string", 0);
 		double moneyValue = amountOfMoney.doubleValue();	
 		int moneyValueInCents = (int)Math.round(moneyValue * 100); 
 		return moneyValueInCents;
