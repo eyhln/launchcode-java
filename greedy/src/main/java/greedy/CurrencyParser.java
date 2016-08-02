@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Locale;
 
 public class CurrencyParser {
@@ -11,13 +12,16 @@ public class CurrencyParser {
 	String[] localeCodesForAcceptedCurrencyFormats;
 	ArrayList<NumberFormat> acceptedCurrencyFormats;
 	String input;
+	Currency currencyOfLastParsedInput;
+	ParsePosition parsePosition;
+	
 	
 	public CurrencyParser() {
 		acceptedCurrencyFormats = new ArrayList<NumberFormat>();
 	}
 	
-	public void setLocationCodesForAcceptedCurrencyFormats(String[] locations) {
-		this.localeCodesForAcceptedCurrencyFormats  = (String[])locations.clone();
+	public void setLocaleCodesForAcceptedCurrencyFormats(String[] locales) {
+		this.localeCodesForAcceptedCurrencyFormats  = (String[])locales.clone();
 	}
 	
 	int parseInput(String input) throws ParseException {
@@ -42,9 +46,24 @@ public class CurrencyParser {
 	}
 	
 	Number attemptParseUsingAllAcceptedCurrencyFormats(String input) throws ParseException {
-		this.input = input;
+		resetVariables(input);
 		throwExceptionForEmptyStringInput();
-		ParsePosition parsePosition = new ParsePosition(0);
+		Number amountOfMoney = tryParsingUsingAcceptedCurrencyFormats();
+		throwExceptionIfDidNotParseEntireString();
+		return amountOfMoney;
+	}
+	
+	void resetVariables(String input) {
+		this.input = input;
+		parsePosition = new ParsePosition(0);
+	}
+	
+	void throwExceptionForEmptyStringInput() throws ParseException {
+		if (input.length() == 0)
+			throw new ParseException("Empty string", 0);
+	}
+	
+	Number tryParsingUsingAcceptedCurrencyFormats() throws ParseException {
 		Number amountOfMoney = null;
 		for (NumberFormat currencyFormat : acceptedCurrencyFormats) {
 			Number parsedCurrency = null;
@@ -53,9 +72,8 @@ public class CurrencyParser {
 			} catch (NullPointerException e) {};
 			if (parsedCurrency != null)
 				amountOfMoney = parsedCurrency;
+				currencyOfLastParsedInput = currencyFormat.getCurrency();
 		}
-		if (parsePosition.getIndex() < input.length())
-			throw new ParseException("Did not parse entire string", 0);	
 		if (amountOfMoney == null) {
 			throw new ParseException("Did not successfully parse with any accepted "
 					+ "currency format", 0);
@@ -63,11 +81,10 @@ public class CurrencyParser {
 		return amountOfMoney;
 	}
 	
-	void throwExceptionForEmptyStringInput() throws ParseException {
-		if (input.length() == 0)
-			throw new ParseException("Empty string", 0);
+	void throwExceptionIfDidNotParseEntireString() throws ParseException {
+		if (parsePosition.getIndex() < input.length())
+			throw new ParseException("Did not parse entire string", 0);	
 	}
-	
 	
 	int convertNumberToInt(Number amountOfMoney) {
 		double moneyValue = amountOfMoney.doubleValue();	

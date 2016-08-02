@@ -3,6 +3,8 @@ package greedy;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
+import java.util.Currency;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +15,13 @@ public class CurrencyParserTest {
 	
 	@Before
 	public void initialize() {
-		String[] locations = {"_en_US", "_es_US"};
+		String[] localeCodes = {"_en_US", "_es_US"};
 		cp = new CurrencyParser();
-		cp.setLocationCodesForAcceptedCurrencyFormats(locations);
+		cp.setLocaleCodesForAcceptedCurrencyFormats(localeCodes);
+	}
+	
+	void setCurrencyParser(CurrencyParser cp) {
+		this.cp = cp;
 	}
 	
 	@Test
@@ -23,6 +29,12 @@ public class CurrencyParserTest {
 		cp.processLocaleInformation();
 		assertEquals("$100.00", cp.acceptedCurrencyFormats.get(0).format(100));
 		assertEquals("US$100.00", cp.acceptedCurrencyFormats.get(1).format(100));
+	}
+	
+	@Test
+	public void testRecordsCurrencyOfLastSuccessfulParse() throws ParseException {
+		cp.parseInput("$1.00");
+		assertEquals(Currency.getInstance(Locale.US), cp.currencyOfLastParsedInput);
 	}
 
 	@Test
@@ -38,6 +50,11 @@ public class CurrencyParserTest {
 	@Test
 	public void testSucessfullyParseNoDecimalEnUS() throws ParseException {
 		assertEquals(100, cp.parseInput("$1"));
+	}
+	
+	@Test
+	public void testSucessfullyParseNoDecimalEsUS() throws ParseException {
+		assertEquals(100, cp.parseInput("US$1"));
 	}
 	
 	@Test
