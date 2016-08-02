@@ -20,10 +20,11 @@ public class Greedy {
 	String[] varArgs;
 	
 	 public static void main(String[] varArgs) {
-		 ApplicationContext context = 
-				 new ClassPathXmlApplicationContext("application-context.xml");
-
-		 Greedy greedy = (Greedy)context.getBean("greedy");
+		 Greedy greedy;
+		 try (ClassPathXmlApplicationContext context = 
+				 new ClassPathXmlApplicationContext("application-context.xml")) {
+			  greedy = (Greedy)context.getBean("greedy");
+			}
 		 greedy.calculateLeastNumberOfCoins(varArgs);
 	    }
 
