@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.text.ParseException;
 import java.util.HashMap;
 
 public class GreedyTest {
@@ -17,11 +16,9 @@ public class GreedyTest {
 	private Greedy greedy;
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-	private ResourceBundleMessageSource messageSource;
 	
 	@Before
 	public void initialize() {
-		messageSource = new ResourceBundleMessageSource();
 		greedy = new Greedy(new CoinCalculatorImpl(), new ResourceBundleMessageSource(),
 				new CurrencyParser());
 	    System.setOut(new PrintStream(outContent));
@@ -32,14 +29,14 @@ public class GreedyTest {
 	public void testConvertInputToStringSimpleUS() {
 		String[] array = {"$", "1.00"};
 		greedy.varArgs = array;
-		assertEquals("$1.00", greedy.convertInputToString());	
+		assertEquals("$ 1.00", greedy.convertInputToString());	
 	}
 	
 	@Test
 	public void testConvertInputToStringSpaceThousandsSeparator() {
 		String[] array = {"$", "1", "000,00"};
 		greedy.varArgs = array;
-		assertEquals("$1000,00", greedy.convertInputToString());	
+		assertEquals("$ 1 000,00", greedy.convertInputToString());	
 	}
 	
 	@Test

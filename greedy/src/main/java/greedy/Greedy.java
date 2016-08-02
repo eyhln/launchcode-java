@@ -42,6 +42,7 @@ public class Greedy {
 			runProgram();
 		} catch (ParseException e) {
 			System.err.println(messageSource.getMessage("errorMsg", null, defaultLocale));
+			e.printStackTrace();
 		}
 	}
 	
@@ -55,7 +56,7 @@ public class Greedy {
 	String convertInputToString() {
 		String input = "";
 		for (String str : varArgs) 
-			input = input + str;
+			input = input + str + " ";
 		input = input.trim();
 		return input;
 	}
