@@ -2,38 +2,40 @@ package greedy;
 
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
+import greedy.calculator.CoinCalculator;
+import greedy.calculator.CoinCalculatorFactory;
+
 public class Greedy {
 	
+	private Locale locale;
 	private ResourceBundleMessageSource messageSource;
 	private CurrencyParser currencyParser;
-	private Locale defaultLocale;
-	
-	private CoinCalculator coinCalculator;
+	private CoinCalculatorFactory coinCalculatorFactory;
 	HashMap<String,Integer> coinsUsed;
 	String[] varArgs;
 	
-	 public static void main(String[] varArgs) {
-		 Greedy greedy;
-		 try (ClassPathXmlApplicationContext context = 
-				 new ClassPathXmlApplicationContext("application-context.xml")) {
-			  greedy = (Greedy)context.getBean("greedy");
-			}
-		 greedy.calculateLeastNumberOfCoins(varArgs);
-	    }
+	public static void main(String[] varArgs) {
+		Greedy greedy;
+		try (ClassPathXmlApplicationContext context = 
+			 new ClassPathXmlApplicationContext("application-context.xml")) {
+		greedy = (Greedy)context.getBean("greedy");
+		}
+		greedy.calculateLeastNumberOfCoins(varArgs);
+	}
 
-	public Greedy(CoinCalculator coinCalculator, ResourceBundleMessageSource messageSource,
+	public Greedy(CoinCalculatorFactory coinCalculatorFactory, ResourceBundleMessageSource messageSource,
 			CurrencyParser currencyParser) {
-		this.coinCalculator = coinCalculator;
+		this.coinCalculatorFactory = coinCalculatorFactory;
 		this.messageSource = messageSource;
 		this.currencyParser = currencyParser;
-		defaultLocale = Locale.getDefault();
+		locale = Locale.getDefault();
 		coinsUsed = new HashMap<String,Integer>();
 	}
 	
@@ -42,7 +44,7 @@ public class Greedy {
 		try {
 			runProgram();
 		} catch (ParseException e) {
-			System.err.println(messageSource.getMessage("errorMsg", null, defaultLocale));
+			System.err.println(messageSource.getMessage("errorMsg", null, locale));
 			e.printStackTrace();
 		}
 	}
@@ -50,7 +52,9 @@ public class Greedy {
 	private void runProgram() throws ParseException {
 		String input = convertInputToString();
 		int moneyValueInCents = currencyParser.parseInput(input);
-		coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
+		Currency currency = currencyParser.currencyOfLastParsedInput;
+		CoinCalculator coinCalc = coinCalculatorFactory.getCoinSpecification(currency);
+		coinsUsed = coinCalc.calculateChange(moneyValueInCents);
 		printOutput();
 	}
 	
@@ -66,7 +70,7 @@ public class Greedy {
 		Object[] coinCodes = coinsUsed.keySet().toArray();
 		Arrays.sort(coinCodes);
 		for (Object code : coinCodes) {
-			System.out.println(messageSource.getMessage((String)code, null, defaultLocale) + 
+			System.out.println(messageSource.getMessage((String)code, null, locale) + 
 					": " + coinsUsed.get(code));
 		}
 	}

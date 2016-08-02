@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
+import greedy.calculator.CoinCalculatorFactory;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -19,7 +21,7 @@ public class GreedyTest {
 	
 	@Before
 	public void initialize() {
-		greedy = new Greedy(new CoinCalculatorImpl(), new ResourceBundleMessageSource(),
+		greedy = new Greedy(new CoinCalculatorFactory(), new ResourceBundleMessageSource(),
 				new CurrencyParser());
 	    System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
