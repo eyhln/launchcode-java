@@ -14,11 +14,11 @@ public class USDollarCoinSpecification implements CoinSpecification {
 	
 	private void buildCoinMap() {
 		coins = new HashMap<Integer,String>();
-		coins.put(100, "coin.1");
-		coins.put(25, "coin.2");
-		coins.put(10, "coin.3");
-		coins.put(5, "coin.4");
-		coins.put(1, "coin.5");
+		coins.put(100, "USDollarCoin.1");
+		coins.put(25, "USDollarCoin.2");
+		coins.put(10, "USDollarCoin.3");
+		coins.put(5, "USDollarCoin.4");
+		coins.put(1, "USDollarCoin.5");
 	}
 	
 }
