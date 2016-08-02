@@ -10,7 +10,7 @@
 		<constructor-arg name="currencyParser" ref="currencyParser"/>
 	</bean>
 
-    <bean id="coinCalculatorFactory" class="greedy.CoinCalculatorFactory"></bean>
+    <bean id="coinCalculatorFactory" class="greedy.calculator.CoinCalculatorFactory"></bean>
     
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basename" value="i18n/messages"/>
