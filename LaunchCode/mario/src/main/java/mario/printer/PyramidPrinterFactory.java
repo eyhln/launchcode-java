@@ -2,11 +2,11 @@ package mario.printer;
 
 public class PyramidPrinterFactory {
 	
-	public static PyramidPrinter getPyramidToStandardOutputPrinter() {
+	public PyramidPrinter getPyramidToStandardOutputPrinter() {
 		return new PyramidToStandardOutputPrinter();
 	}
 	
-	public static PyramidPrinter getPyramidToFilePrinter() {
+	public PyramidPrinter getPyramidToFilePrinter() {
 		return new PyramidToFilePrinter();
 	}
 
