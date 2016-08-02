@@ -21,6 +21,10 @@
     		<array>
     			<value>_en_US</value>
     			<value>_es_US</value>
+    			<value>_de_DE</value>
+    			<value>_fr_FR</value>
+    			<value>_it_IT</value>
+    			<value>_en_IE</value>
     		</array>
     	</property>
     </bean>
