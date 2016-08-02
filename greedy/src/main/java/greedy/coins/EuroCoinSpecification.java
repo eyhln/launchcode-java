@@ -20,7 +20,8 @@ public class EuroCoinSpecification implements CoinSpecification {
 		coins.put(20, "EuroCoin.4");
 		coins.put(10, "EuroCoin.5");
 		coins.put(5, "EuroCoin.6");
-		coins.put(1, "EuroCoin.7");
+		coins.put(2, "EuroCoin.7");
+		coins.put(1, "EuroCoin.8");
 	}
 	
 }
