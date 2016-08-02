@@ -1,5 +1,8 @@
 package mario;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import mario.printer.PyramidPrinter;
 import mario.printer.PyramidPrinterFactory;
 import mario.pyramid.Pyramid;
@@ -11,29 +14,37 @@ public class Mario {
 	
 	private IntegerInputPrompt integerInputPrompt;
 	private TextBasedMenu menu;
+	private PyramidPrinterFactory pyramidPrinterFactory;
+	private PyramidFactory pyramidFactory;
 
-	public Mario() {
-		integerInputPrompt = new IntegerInputPrompt();
-		menu = new TextBasedMenu();
+	public Mario(IntegerInputPrompt integerInputPrompt, TextBasedMenu menu,
+			PyramidFactory pyramidFactory, PyramidPrinterFactory pyramidPrinterFactory) {
+		this.integerInputPrompt = integerInputPrompt;
+		this.menu = menu;
+		this.pyramidFactory = pyramidFactory;
+		this.pyramidPrinterFactory = pyramidPrinterFactory;
 	}
 	
 	public static void main (String[] args) {
-		Mario mpp = new Mario();
-		mpp.printPyramidToUserSpecification();
+		ApplicationContext context = 
+				 new ClassPathXmlApplicationContext("application-context.xml");
+
+		Mario mario = (Mario)context.getBean("mario");
+		mario.printPyramidToUserSpecification();
 	}
 	
 	public void printPyramidToUserSpecification() {
 		PyramidPrinter printer = promptUserForOutputType();
 		int heightInSteps = promptUserForPyramidHeight();
-		Pyramid pyramid = PyramidFactory.getPyramid(heightInSteps);
+		Pyramid pyramid = pyramidFactory.getPyramid(heightInSteps);
 		printer.print(pyramid);
 	}
 	
 	private PyramidPrinter promptUserForOutputType() {
 		menu.addOption("Print pyramid to standard output", 
-				PyramidPrinterFactory.getPyramidToStandardOutputPrinter());
+				pyramidPrinterFactory.getPyramidToStandardOutputPrinter());
 		menu.addOption("Print pyramid to file", 
-				PyramidPrinterFactory.getPyramidToFilePrinter());
+				pyramidPrinterFactory.getPyramidToFilePrinter());
 		PyramidPrinter printer = (PyramidPrinter)menu.getSelectionFromMenu();
 		return printer;
 	}
