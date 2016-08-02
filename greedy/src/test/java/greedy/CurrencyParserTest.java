@@ -15,7 +15,7 @@ public class CurrencyParserTest {
 	
 	@Before
 	public void initialize() {
-		String[] localeCodes = {"_en_US", "_es_US"};
+		String[] localeCodes = {"_en_US", "_es_US", "_en_IE", "_de_DE", "_fr_FR", "_it_IT"};
 		cp = new CurrencyParser();
 		cp.setLocaleCodesForAcceptedCurrencyFormats(localeCodes);
 	}
@@ -34,7 +34,9 @@ public class CurrencyParserTest {
 	@Test
 	public void testRecordsCurrencyOfLastSuccessfulParse() throws ParseException {
 		cp.parseInput("$1.00");
-		assertEquals(Currency.getInstance(Locale.US), cp.currencyOfLastParsedInput);
+		assertEquals(Currency.getInstance(Locale.US), cp.getCurrencyOfLastParsedInput());
+		cp.parseInput("€1.00" );
+		assertEquals(Currency.getInstance(Locale.GERMANY), cp.getCurrencyOfLastParsedInput());
 	}
 
 	@Test
@@ -45,6 +47,11 @@ public class CurrencyParserTest {
 	@Test
 	public void testSucessfullyParseStandardEsUS() throws ParseException {
 		assertEquals(100, cp.parseInput("US$1.00"));
+	}
+	
+	@Test
+	public void testSucessfullyParseStandardEnIE() throws ParseException {
+		assertEquals(100, cp.parseInput("€1.00"));
 	}
 	
 	@Test
@@ -74,7 +81,7 @@ public class CurrencyParserTest {
 	}
 	
 	@Test
-	public void testtShouldThrowAnExceptionForWords() {
+	public void testShouldThrowAnExceptionForWords() {
 		boolean exceptionCaught = attemptParse("hw$34-");
 		assertEquals(true, exceptionCaught);
 	}

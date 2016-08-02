@@ -12,8 +12,8 @@ public class CurrencyParser {
 	String[] localeCodesForAcceptedCurrencyFormats;
 	ArrayList<NumberFormat> acceptedCurrencyFormats;
 	String input;
-	Currency currencyOfLastParsedInput;
-	ParsePosition parsePosition;
+	private Currency currencyOfLastParsedInput;
+	private ParsePosition parsePosition;
 	
 	
 	public CurrencyParser() {
@@ -22,6 +22,10 @@ public class CurrencyParser {
 	
 	public void setLocaleCodesForAcceptedCurrencyFormats(String[] locales) {
 		this.localeCodesForAcceptedCurrencyFormats  = (String[])locales.clone();
+	}
+	
+	public Currency getCurrencyOfLastParsedInput() {
+		return currencyOfLastParsedInput;
 	}
 	
 	int parseInput(String input) throws ParseException {
@@ -70,9 +74,10 @@ public class CurrencyParser {
 			try {
 			parsedCurrency = (Number)currencyFormat.parseObject(input, parsePosition);
 			} catch (NullPointerException e) {};
-			if (parsedCurrency != null)
+			if (parsedCurrency != null) {
 				amountOfMoney = parsedCurrency;
 				currencyOfLastParsedInput = currencyFormat.getCurrency();
+			}
 		}
 		if (amountOfMoney == null) {
 			throw new ParseException("Did not successfully parse with any accepted "
