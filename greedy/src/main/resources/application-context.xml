@@ -27,10 +27,10 @@
     </bean>
     
     <bean id="currencyParser" class="greedy.CurrencyParser">
-    	<property name="locationCodesForAcceptedCurrencyFormats">
+    	<property name="localeCodesForAcceptedCurrencyFormats">
     		<array>
-    			<value>"_en_US"</value>
-    			<value>"_es_US"</value>
+    			<value>_en_US</value>
+    			<value>_es_US</value>
     		</array>
     	</property>
     </bean>
