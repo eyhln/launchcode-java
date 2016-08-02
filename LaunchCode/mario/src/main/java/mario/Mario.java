@@ -1,6 +1,5 @@
 package mario;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import mario.printer.PyramidPrinter;
@@ -26,10 +25,11 @@ public class Mario {
 	}
 	
 	public static void main (String[] args) {
-		ApplicationContext context = 
-				 new ClassPathXmlApplicationContext("application-context.xml");
-
-		Mario mario = (Mario)context.getBean("mario");
+		Mario mario;
+		 try (ClassPathXmlApplicationContext context = 
+				 new ClassPathXmlApplicationContext("application-context.xml")) {
+			  mario = (Mario)context.getBean("mario");
+			}
 		mario.printPyramidToUserSpecification();
 	}
 	
