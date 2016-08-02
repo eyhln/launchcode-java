@@ -30,8 +30,8 @@ public class Greedy {
 		greedy.calculateLeastNumberOfCoins(varArgs);
 	}
 
-	public Greedy(CoinCalculatorFactory coinCalculatorFactory, ResourceBundleMessageSource messageSource,
-			CurrencyParser currencyParser) {
+	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
+			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser) {
 		this.coinCalculatorFactory = coinCalculatorFactory;
 		this.messageSource = messageSource;
 		this.currencyParser = currencyParser;
@@ -52,7 +52,7 @@ public class Greedy {
 	private void runProgram() throws ParseException {
 		String input = convertInputToString();
 		int moneyValueInCents = currencyParser.parseInput(input);
-		Currency currency = currencyParser.currencyOfLastParsedInput;
+		Currency currency = currencyParser.getCurrencyOfLastParsedInput();
 		CoinCalculator coinCalc = coinCalculatorFactory.getCoinSpecification(currency);
 		coinsUsed = coinCalc.calculateChange(moneyValueInCents);
 		printOutput();
