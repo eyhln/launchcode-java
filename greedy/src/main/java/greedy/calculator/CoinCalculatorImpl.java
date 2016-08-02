@@ -1,8 +1,7 @@
-package greedy;
+package greedy.calculator;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CoinCalculatorImpl implements CoinCalculator {
 	
@@ -11,13 +10,9 @@ public class CoinCalculatorImpl implements CoinCalculator {
 	Object[] coinValues;
 	HashMap<String,Integer> coinsSelected;
 	
-	public CoinCalculatorImpl() {
-		coinTypesAvailable = new HashMap<Integer,String>();
+	public CoinCalculatorImpl(HashMap<Integer,String> coinSpecification) {
+		coinTypesAvailable = coinSpecification;
 		coinsSelected = new HashMap<String,Integer>();
-	}
-	
-	public void setCoinTypesAvailable(Map<Integer,String> coinSpecification) {
-		this.coinTypesAvailable = (HashMap<Integer, String>) coinSpecification;
 	}
 
     public HashMap<String,Integer> calculateChange(int nonNegativeAmountInCents) {

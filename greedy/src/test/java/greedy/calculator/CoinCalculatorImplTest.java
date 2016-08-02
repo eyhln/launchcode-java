@@ -1,6 +1,8 @@
-package greedy;
+package greedy.calculator;
 
 import org.junit.Test;
+
+import greedy.calculator.CoinCalculatorImpl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,8 +19,7 @@ public class CoinCalculatorImplTest {
 
 	@Before
 	public void initialize() {
-		cc = new CoinCalculatorImpl();
-		cc.setCoinTypesAvailable(coinSpecification);
+		cc = new CoinCalculatorImpl(coinSpecification);
 		coinsNeeded = new HashMap<String,Integer>();
 	}
 	
@@ -89,7 +90,7 @@ public class CoinCalculatorImplTest {
 		coinSpecification.put(10, "coin.3");
 		coinSpecification.put(5, "coin.4");
 		coinSpecification.put(1, "coin.5");
-		cc.setCoinTypesAvailable(coinSpecification);
+		cc = new CoinCalculatorImpl(coinSpecification);
 	}
 
 }

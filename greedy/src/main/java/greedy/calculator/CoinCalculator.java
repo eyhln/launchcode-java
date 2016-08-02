@@ -1,4 +1,4 @@
-package greedy;
+package greedy.calculator;
 
 import java.util.HashMap;
 
