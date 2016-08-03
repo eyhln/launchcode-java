@@ -1,24 +1,13 @@
 package greedy.coins;
 
-import java.util.HashMap;
-
-public class USDollarCoinSpecification implements CoinSpecification {
+public class USDollarCoinSpecification extends CoinSpecification  {
 	
-	HashMap<Integer,String> coins;
-
-	@Override
-	public HashMap<Integer, String> getCoinMap() {
-		buildCoinMap();
-		return coins;
-	}
+	int[] coinValuesInCents = {100, 25, 10, 5, 1};
 	
-	private void buildCoinMap() {
-		coins = new HashMap<Integer,String>();
-		coins.put(100, "USDollarCoin.1");
-		coins.put(25, "USDollarCoin.2");
-		coins.put(10, "USDollarCoin.3");
-		coins.put(5, "USDollarCoin.4");
-		coins.put(1, "USDollarCoin.5");
+	public USDollarCoinSpecification() {
+		coinValues = coinValuesInCents;
+		coinNameCodePrefix = "USDollar";
+		coinNameCodes = super.createNameCodes();
 	}
 	
 }
