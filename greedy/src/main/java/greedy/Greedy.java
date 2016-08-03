@@ -1,7 +1,6 @@
 package greedy;
 
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,7 +67,6 @@ public class Greedy {
 	
 	void printOutput() {
 		Object[] coinCodes = coinsUsed.keySet().toArray();
-		Arrays.sort(coinCodes);
 		for (Object code : coinCodes) {
 			System.out.println(messageSource.getMessage((String)code, null, locale) + 
 					": " + coinsUsed.get(code));
