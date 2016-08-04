@@ -7,19 +7,16 @@ import mario.printer.PyramidPrinterFactory;
 import mario.pyramid.Pyramid;
 import mario.pyramid.PyramidFactory;
 import mario.userinput.IntegerInputPrompt;
-import mario.userinput.TextBasedMenu;
 
 public class Mario {
 	
 	private IntegerInputPrompt integerInputPrompt;
-	private TextBasedMenu menu;
 	private PyramidPrinterFactory pyramidPrinterFactory;
 	private PyramidFactory pyramidFactory;
 
-	public Mario(IntegerInputPrompt integerInputPrompt, TextBasedMenu menu,
-			PyramidFactory pyramidFactory, PyramidPrinterFactory pyramidPrinterFactory) {
+	public Mario(IntegerInputPrompt integerInputPrompt, PyramidFactory pyramidFactory, 
+			PyramidPrinterFactory pyramidPrinterFactory) {
 		this.integerInputPrompt = integerInputPrompt;
-		this.menu = menu;
 		this.pyramidFactory = pyramidFactory;
 		this.pyramidPrinterFactory = pyramidPrinterFactory;
 	}
@@ -41,11 +38,8 @@ public class Mario {
 	}
 	
 	private PyramidPrinter promptUserForOutputType() {
-		menu.addOption("Print pyramid to standard output", 
-				pyramidPrinterFactory.getPyramidToStandardOutputPrinter());
-		menu.addOption("Print pyramid to file", 
-				pyramidPrinterFactory.getPyramidToFilePrinter());
-		PyramidPrinter printer = (PyramidPrinter)menu.getSelectionFromMenu();
+		printOptions();
+		PyramidPrinter printer = getUserPrintSelection();
 		return printer;
 	}
 	
@@ -55,6 +49,32 @@ public class Mario {
 		return heightInSteps;
 	}
 	
+	private void printOptions() {
+		System.out.println();
+		System.out.println("  (1) Print pyramid to standard output");
+		System.out.println("  (2) Print pyramid to file");
+		System.out.println();
+	}
+	
+	private PyramidPrinter getUserPrintSelection() {
+		int optionSelected = getOptionNumber();
+		PyramidPrinter printer = setPrinterType(optionSelected);
+		return printer;
+	}
+	
+	private int getOptionNumber() {
+		integerInputPrompt.setNotAnIntegerMessage("Error: Not a menu item number");
+		return integerInputPrompt.getBoundedIntegerInput(1, 2, "Select an option number: ");
+	}
+	
+	private PyramidPrinter setPrinterType(int optionSelected) {
+		PyramidPrinter printer;
+		if (optionSelected == 1) 
+			printer = pyramidPrinterFactory.getPyramidToStandardOutputPrinter();
+		else 
+			printer = pyramidPrinterFactory.getPyramidToFilePrinter();
+		return printer;
+	}
 	
 }
 		

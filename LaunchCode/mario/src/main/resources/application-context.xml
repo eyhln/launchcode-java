@@ -6,14 +6,11 @@
     
    <bean id="mario" class="mario.Mario">
    	<constructor-arg name="integerInputPrompt" ref="integerInputPrompt"/>
-   	<constructor-arg name="menu" ref="textBasedMenu"/>
    	<constructor-arg name="pyramidFactory" ref="pyramidFactory"/>
    	<constructor-arg name="pyramidPrinterFactory" ref="pyramidPrinterFactory"/>
    </bean>
    
    <bean id="integerInputPrompt" class="mario.userinput.IntegerInputPrompt"/>
-   
-   <bean id="textBasedMenu" class="mario.userinput.TextBasedMenu"/>
    
    <bean id="pyramidFactory" class="mario.pyramid.PyramidFactory"/>
    
