@@ -8,23 +8,26 @@
 		<constructor-arg name="coinCalculatorFactory" ref="coinCalculatorFactory"/>
 		<constructor-arg name="messageSource" ref="messageSource"/>
 		<constructor-arg name="currencyParser" ref="currencyParser"/>
+		<property name="languageCode">
+			<value>es</value>
+		</property>
 	</bean>
 
     <bean id="coinCalculatorFactory" class="greedy.calculator.CoinCalculatorFactory"></bean>
     
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-    	<property name="basename" value="i18n/messages"/>
+    	<property name="basename" value="languages/messages"/>
     </bean>
     
     <bean id="currencyParser" class="greedy.CurrencyParser">
     	<property name="localeCodesForAcceptedCurrencyFormats">
     		<array>
-    			<value>_en_US</value>
-    			<value>_es_US</value>
-    			<value>_de_DE</value>
-    			<value>_fr_FR</value>
-    			<value>_it_IT</value>
-    			<value>_en_IE</value>
+    			<array><value>en</value><value>US</value></array> <!-- $1,000.25 -->
+    			<array><value>es</value><value>US</value></array> <!-- US$1,000.25 -->
+    			<array><value>de</value><value>DE</value></array> <!-- 1.000,25 €  -->
+    			<array><value>fr</value><value>FR</value></array> <!-- 1 000,25 € -->
+    			<array><value>it</value><value>IT</value></array> <!-- € 1.000,25 -->
+    			<array><value>en</value><value>IE</value></array> <!-- €1,000.25 -->
     		</array>
     	</property>
     </bean>

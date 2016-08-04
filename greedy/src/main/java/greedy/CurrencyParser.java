@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class CurrencyParser {
 	
-	String[] localeCodesForAcceptedCurrencyFormats;
+	String[][] localeCodesForAcceptedCurrencyFormats;
 	ArrayList<NumberFormat> acceptedCurrencyFormats;
 	String input;
 	private Currency currencyOfLastParsedInput;
@@ -20,15 +20,15 @@ public class CurrencyParser {
 		acceptedCurrencyFormats = new ArrayList<NumberFormat>();
 	}
 	
-	public void setLocaleCodesForAcceptedCurrencyFormats(String[] locales) {
-		this.localeCodesForAcceptedCurrencyFormats  = (String[])locales.clone();
+	public void setTwoByTwoLocaleCodesForAcceptedCurrencyFormats(String[][] localeCodes) {
+		this.localeCodesForAcceptedCurrencyFormats  = (String[][])localeCodes.clone();
 	}
 	
 	public Currency getCurrencyOfLastParsedInput() {
 		return currencyOfLastParsedInput;
 	}
 	
-	int parseInput(String input) throws ParseException {
+	int parse(String input) throws ParseException {
 		processLocaleInformation();
 		Number amountOfMoney = attemptParseUsingAllAcceptedCurrencyFormats(input);
 		int moneyValueInCents = convertNumberToInt(amountOfMoney);
@@ -36,14 +36,14 @@ public class CurrencyParser {
 	}
 	
 	void processLocaleInformation() {
-		for (String localeCode: localeCodesForAcceptedCurrencyFormats) {
-			addNewAcceptedCurrencyFormat(localeCode);
+		for (String[] localeCodes: localeCodesForAcceptedCurrencyFormats) {
+			addNewAcceptedCurrencyFormat(localeCodes);
 		}
 	}
 	
-	private void addNewAcceptedCurrencyFormat(String localeCode) {
-		String language = localeCode.substring(1,3);
-		String country = localeCode.substring(4,6);
+	private void addNewAcceptedCurrencyFormat(String[] localeCodes) {
+		String language = localeCodes[0];
+		String country = localeCodes[1];
 		Locale locale = new Locale(language, country);
 		NumberFormat format = NumberFormat.getCurrencyInstance(locale);
 		acceptedCurrencyFormats.add(format);
