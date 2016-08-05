@@ -10,6 +10,12 @@ public class OutputEntry {
 		this.numberOfCoins = numberOfCoins;
 	}
 	
+	@Override
+	public String toString() {
+		String entry = coinType + ": " + numberOfCoins;
+		return entry;
+	}
+	
 	public String getCoinType() {
 		return coinType;
 	}
