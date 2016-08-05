@@ -2,10 +2,10 @@ package greedy.coins;
 
 public class USDollarCoinSpecification extends CoinSpecification  {
 	
-	int[] coinValuesInCents = {100, 25, 10, 5, 1};
+	int[] constructCoinValuesInCents = {100, 25, 10, 5, 1};
 	
 	public USDollarCoinSpecification() {
-		coinValues = coinValuesInCents;
+		coinValuesInCents = constructCoinValuesInCents;
 		coinNameCodePrefix = "USDollar";
 		coinNameCodes = super.createNameCodes();
 	}

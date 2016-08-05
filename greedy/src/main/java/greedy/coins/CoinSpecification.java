@@ -1,13 +1,13 @@
 package greedy.coins;
 
-public class CoinSpecification {
+public abstract class CoinSpecification {
 	
-	int[] coinValues;
+	int[] coinValuesInCents;
 	String coinNameCodePrefix;
 	String[] coinNameCodes;
 	
 	public int[] getCoinValues() {
-		return coinValues;
+		return coinValuesInCents;
 	}
 	
 	public String[] getCoinNameCodes() {
@@ -15,9 +15,9 @@ public class CoinSpecification {
 	}
 	
 	String[] createNameCodes() {
-		String[] nameCodes = new String[coinValues.length];
+		String[] nameCodes = new String[coinValuesInCents.length];
 		for (int i = 0; i < nameCodes.length; i++) {
-			nameCodes[i] = coinNameCodePrefix + "." + coinValues[i];
+			nameCodes[i] = coinNameCodePrefix + "." + coinValuesInCents[i];
 		}
 		return nameCodes;
 	}
