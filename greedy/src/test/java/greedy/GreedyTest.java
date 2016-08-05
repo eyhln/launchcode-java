@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 import greedy.calculator.CoinCalculatorFactory;
+import greedy.calculator.OutputEntry;
 import greedy.parse.CurrencyParser;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -67,9 +68,9 @@ public class GreedyTest {
 	
 	@Test
 	public void testPrintOutput() {
-		ArrayList<Object[]> test = new ArrayList<Object[]>();
-		Object[] entry1 = {"Euro.100", 10};
-		Object[] entry2 = {"Euro.50", 10};
+		ArrayList<OutputEntry> test = new ArrayList<OutputEntry>();
+		OutputEntry entry1 = new OutputEntry("Euro.100", 1);
+		OutputEntry entry2 = new OutputEntry("Euro.50", 10);
 		test.add(entry1);
 		test.add(entry2);
 		greedy.printOutput(test);

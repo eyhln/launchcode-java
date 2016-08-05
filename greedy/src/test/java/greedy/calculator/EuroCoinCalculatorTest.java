@@ -15,7 +15,7 @@ public class EuroCoinCalculatorTest {
 
 	@Before
 	public void initialize() {
-		cc = new CoinCalculator(null, null);
+		cc = new EuroCoinCalculator();
 		coinsNeeded = new HashMap<String,Integer>();
 	}
 	
