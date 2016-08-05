@@ -1,7 +1,6 @@
 package greedy.calculator;
 
 import java.util.Currency;
-import java.util.Locale;
 
 public class CoinCalculatorFactory {
 	
@@ -9,8 +8,8 @@ public class CoinCalculatorFactory {
 	Currency Euro;
 	
 	public CoinCalculatorFactory() {
-		USDollar = Currency.getInstance(Locale.US);
-		Euro = Currency.getInstance(Locale.GERMANY);
+		USDollar = Currency.getInstance("USD");
+		Euro = Currency.getInstance("EUR");
 	}
 	
 	public CoinCalculator getCoinCalculator(Currency currency) {
