@@ -7,15 +7,14 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CoinCalculatorTest {
+public class USDollarCoinCalculatorTest {
 
 	CoinCalculator cc;
 	HashMap<String,Integer> coinsNeeded;
 
-
 	@Before
 	public void initialize() {
-		cc = new CoinCalculator(null, null);
+		cc = new USDollarCoinCalculator();
 		coinsNeeded = new HashMap<String,Integer>();
 	}
 	
