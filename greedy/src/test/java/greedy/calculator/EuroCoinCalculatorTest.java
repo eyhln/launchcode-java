@@ -1,57 +1,47 @@
 package greedy.calculator;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
-
+import java.util.ArrayList;
 import org.junit.Before;
 
 public class EuroCoinCalculatorTest {
 	
-	CoinCalculator cc;
-	HashMap<String,Integer> coinsNeeded;
-
+	CoinCalculator coinCalculator;
+	ArrayList<OutputEntry> testOutput;
+	ArrayList<OutputEntry> output;
 
 	@Before
 	public void initialize() {
-		cc = new EuroCoinCalculator();
-		coinsNeeded = new HashMap<String,Integer>();
+		coinCalculator = new EuroCoinCalculator();
+		testOutput = new ArrayList<OutputEntry>();
 	}
 	
 	@Test
-	public void testCalculateChangeZero() {
-		assertEquals(coinsNeeded, cc.calculateChange(0));
+	public void testCalculateChangeThirtyNine() {
+		int valueInCents = 39;
+		testOutput.add(new OutputEntry("Euro.20", 1));
+		testOutput.add(new OutputEntry("Euro.10", 1));
+		testOutput.add(new OutputEntry("Euro.5", 1));
+		testOutput.add(new OutputEntry("Euro.2", 2));
+
+		output = coinCalculator.calculateChange(valueInCents);
+		
+		CoinCalculatorTest.assertAllEntriesMatch(testOutput, output);
 	}
 	
 	@Test
-	public void testCalculateChangeFive() {
-		coinsNeeded.put("coin.4", 1);
-		assertEquals(coinsNeeded, cc.calculateChange(5));
+	public void testCalculateChangeThreeHundredFiftyOne() {
+		int valueInCents = 351;
+		testOutput.add(new OutputEntry("Euro.200", 1));
+		testOutput.add(new OutputEntry("Euro.100", 1));
+		testOutput.add(new OutputEntry("Euro.50", 1));
+		testOutput.add(new OutputEntry("Euro.1", 1));
+
+		output = coinCalculator.calculateChange(valueInCents);
+		
+		CoinCalculatorTest.assertAllEntriesMatch(testOutput, output);
 	}
-	
-	@Test
-	public void testCalculateChangeSix() {
-		coinsNeeded.put("coin.4", 1);
-		coinsNeeded.put("coin.5", 1);
-		assertEquals(coinsNeeded, cc.calculateChange(6));
-	}
-	
-	@Test
-	public void testCalculateChangeThirtyTwo() {
-		coinsNeeded.put("coin.4", 1);
-		coinsNeeded.put("coin.2", 1);
-		coinsNeeded.put("coin.5", 2);
-		assertEquals(coinsNeeded, cc.calculateChange(32));
-	}
-	
-	@Test
-	public void testCalculateChangeFourHundredEleven() {
-		coinsNeeded.put("coin.1",400);
-		coinsNeeded.put("coin.3", 1);
-		coinsNeeded.put("coin.5", 1);
-		assertEquals(coinsNeeded, cc.calculateChange(40011));
-	}
-	
+
 
 }

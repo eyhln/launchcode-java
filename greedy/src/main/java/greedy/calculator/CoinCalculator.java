@@ -15,10 +15,10 @@ public abstract class CoinCalculator {
 	}
 
 	public ArrayList<OutputEntry> calculateChange(int nonNegativeAmountInCents) {
-	    	totalCentsRemaining = nonNegativeAmountInCents;
-	    	coinNameCodes = createNameCodes();
-	    	selectMinNumberOfCoins();
-			return coinsSelected;
+    	totalCentsRemaining = nonNegativeAmountInCents;
+    	coinNameCodes = createNameCodes();
+    	selectMinNumberOfCoins();
+		return coinsSelected;
 	}
 	
 	String[] createNameCodes() {

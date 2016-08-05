@@ -1,57 +1,43 @@
 package greedy.calculator;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class USDollarCoinCalculatorTest {
 
-	CoinCalculator cc;
-	HashMap<String,Integer> coinsNeeded;
+	CoinCalculator coinCalculator;
+	ArrayList<OutputEntry> testOutput;
+	ArrayList<OutputEntry> output;
 
 	@Before
 	public void initialize() {
-		cc = new USDollarCoinCalculator();
-		coinsNeeded = new HashMap<String,Integer>();
-	}
-	
-	@Test
-	public void testCalculateChangeZero() {
-		assertEquals(coinsNeeded, cc.calculateChange(0));
-	}
-	
-	@Test
-	public void testCalculateChangeFive() {
-		coinsNeeded.put("nickel", 1);
-		assertEquals(coinsNeeded, cc.calculateChange(5));
-	}
-	
-	@Test
-	public void testCalculateChangeSix() {
-		coinsNeeded.put("nickel", 1);
-		coinsNeeded.put("penny", 1);
-		assertEquals(coinsNeeded, cc.calculateChange(6));
+		coinCalculator = new USDollarCoinCalculator();
+		testOutput = new ArrayList<OutputEntry>();
 	}
 	
 	@Test
 	public void testCalculateChangeThirtyTwo() {
-		coinsNeeded.put("nickel", 1);
-		coinsNeeded.put("quarter", 1);
-		coinsNeeded.put("penny", 2);
-		assertEquals(coinsNeeded, cc.calculateChange(32));
+		int valueInCents = 32;
+		testOutput.add(new OutputEntry("USDollar.25", 1));
+		testOutput.add(new OutputEntry("USDollar.5", 1));
+		testOutput.add(new OutputEntry("USDollar.1", 2));
+
+		output = coinCalculator.calculateChange(valueInCents);
+		
+		CoinCalculatorTest.assertAllEntriesMatch(testOutput, output);
 	}
 	
 	@Test
 	public void testCalculateChangeFourHundredEleven() {
-		coinsNeeded.put("dollar",400);
-		coinsNeeded.put("dime", 1);
-		coinsNeeded.put("penny", 1);
-		assertEquals(coinsNeeded, cc.calculateChange(40011));
-	}
-	
+		int valueInCents = 410;
+		testOutput.add(new OutputEntry("USDollar.100", 4));
+		testOutput.add(new OutputEntry("USDollar.10", 1));
 
+		output = coinCalculator.calculateChange(valueInCents);
+		
+		CoinCalculatorTest.assertAllEntriesMatch(testOutput, output);
+	}
 
 }
