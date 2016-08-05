@@ -1,7 +1,9 @@
-package greedy;
+package greedy.parse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
@@ -9,20 +11,51 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
+import greedy.parse.CurrencyParser;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations="/test-application-context.xml")
 public class CurrencyParserTest {
 	
+	String[][] localeCodes;
 	CurrencyParser cp;
-	
+	NumberFormat testFormat0;
+	NumberFormat testFormat1;
+
 	@Before
 	public void initialize() {
-		String[] localeCodes = {"_en_US", "_es_US", "_en_IE", "_de_DE", "_fr_FR", "_it_IT"};
+		initializeLocaleCodes();
+		initializeCurrencyParser();
+		initializeTestFormats();
+	}
+	
+	private void initializeLocaleCodes() {
+		String[][] localeCodes = {	{"en", "US"}, //
+									{"es", "US"}, //
+									{"en", "IE"}, //
+									{"de", "DE"}, //
+									{"fr", "FR"}, //
+									{"it", "IT"}}; //
+		this.localeCodes = localeCodes;
+	}
+	
+	private void initializeCurrencyParser() {
 		cp = new CurrencyParser();
 		cp.setLocaleCodesForAcceptedCurrencyFormats(localeCodes);
 	}
 	
-	void setCurrencyParser(CurrencyParser cp) {
-		this.cp = cp;
+	private void initializeTestFormats() {
+		testFormat0 = setUpTestFormat(0);
+		testFormat1 = setUpTestFormat(1);
 	}
+	
+	private NumberFormat setUpTestFormat(int indexInLocaleCodes) {
+		Locale testLocale = new Locale(localeCodes[indexInLocaleCodes][0], 
+				localeCodes[indexInLocaleCodes][1]);
+		NumberFormat testFormat = NumberFormat.getCurrencyInstance(testLocale);
+		return testFormat;
+	}
+	
 	
 	@Test
 	public void testProcessLocaleInformation() {
@@ -32,92 +65,63 @@ public class CurrencyParserTest {
 	}
 	
 	@Test
+	public void testParseForEachAcceptedCurrency() throws ParseException {
+		for (String[] localeCode : localeCodes) {
+			Locale locale = new Locale(localeCode[0], localeCode[1]);
+			NumberFormat format = NumberFormat.getCurrencyInstance(locale);
+			String value = format.format(1200.25);
+			int valueInCents = cp.parse(value);
+			assertEquals(120025, valueInCents);
+		}
+	}
+	
+	@Test
 	public void testRecordsCurrencyOfLastSuccessfulParse() throws ParseException {
-		cp.parseInput("$1.00");
+		cp.parse("$1.00");
 		assertEquals(Currency.getInstance(Locale.US), cp.getCurrencyOfLastParsedInput());
-		cp.parseInput("€1.00" );
+		cp.parse("€1.00" );
 		assertEquals(Currency.getInstance(Locale.GERMANY), cp.getCurrencyOfLastParsedInput());
 	}
-
-	@Test
-	public void testSucessfullyParseStandardEnUS() throws ParseException {
-		assertEquals(100, cp.parseInput("$1.00"));
-	}
 	
 	@Test
-	public void testSucessfullyParseStandardEsUS() throws ParseException {
-		assertEquals(100, cp.parseInput("US$1.00"));
-	}
-	
-	@Test
-	public void testSucessfullyParseStandardEnIE() throws ParseException {
-		assertEquals(100, cp.parseInput("€1.00"));
-	}
-	
-	@Test
-	public void testSucessfullyParseNoDecimalEnUS() throws ParseException {
-		assertEquals(100, cp.parseInput("$1"));
-	}
-	
-	@Test
-	public void testSucessfullyParseNoDecimalEsUS() throws ParseException {
-		assertEquals(100, cp.parseInput("US$1"));
-	}
-	
-	@Test
-	public void testSucessfullyParseLeadingDecimalEnUS() throws ParseException {
-		assertEquals(80, cp.parseInput("$.8"));
-	}
-	
-	@Test
-	public void testSucessfullyParseThousandsSeparatorEnUS() throws ParseException {
-		assertEquals(100000, cp.parseInput("$1,000.00"));
-	}
-	
-	@Test
-	public void testShouldThrowAnExceptionForNoCurrencySymbol() {
-		boolean exceptionCaught = attemptParse("45.00");
-		assertEquals(true, exceptionCaught);
+	public void testShouldThrowAnExceptionForNonCurrencyFormat() {
+		assertParseThrowsException("4.56", "Did not successfully parse with any accepted "
+					+ "currency format");
 	}
 	
 	@Test
 	public void testShouldThrowAnExceptionForWords() {
-		boolean exceptionCaught = attemptParse("hw$34-");
-		assertEquals(true, exceptionCaught);
-	}
-	
-	@Test
-	public void testShouldThrowAnExceptionForNothing() {
-		boolean exceptionCaught = attemptParse("");
-		assertEquals(true, exceptionCaught);
-	}
-	
-	@Test
-	public void testShouldThrowAnExceptionInvalidCurrencyFormat() {
-		boolean exceptionCaught = attemptParse("$1,00.00.00");
-		assertEquals(true, exceptionCaught);
-	}
-	
-	@Test
-	public void testShouldThrowAnExceptionOnlyBeginningIsValid() {
-		boolean exceptionCaught = attemptParse("$0.45abcde");
-		assertEquals(true, exceptionCaught);
+		assertParseThrowsException("hello", "Did not successfully parse with any accepted "
+					+ "currency format");
 	}
 	
 	@Test
 	public void testShouldThrowAnExceptionNegativeNumber() {
-		boolean exceptionCaught = attemptParse("-$1.00");
-		assertEquals(true, exceptionCaught);
+		String test = testFormat0.format(1);
+		test = "-" + test;
+		assertParseThrowsException(test, "Did not successfully parse with any accepted "
+				+ "currency format");
 	}
 	
-	private boolean attemptParse(String toParse) {
-		boolean exceptionCaught = false;
+	@Test
+	public void testShouldThrowAnExceptionForNothing() {
+		String nothing = "";
+		assertParseThrowsException(nothing, "Empty string");
+	}
+	
+	@Test
+	public void testShouldThrowAnExceptionOnlyBeginningIsValid() {
+		
+		assertParseThrowsException("$0.45abcde", "Did not parse entire string");
+	}
+	
+	private void assertParseThrowsException(String toParse, String expectedMessage) {
 		try {
-			cp.parseInput(toParse);
-		} catch (ParseException e) {
-			exceptionCaught = true;
+			cp.parse(toParse);
+			fail("Failed to throw an exception");
+		} catch (ParseException expected) {
+			assertEquals(expectedMessage, expected.getMessage());
 		}
-		return exceptionCaught;
 	}
 
 }
