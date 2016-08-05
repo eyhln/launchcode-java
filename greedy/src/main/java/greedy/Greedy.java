@@ -10,6 +10,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 import greedy.calculator.CoinCalculator;
 import greedy.calculator.CoinCalculatorFactory;
+import greedy.calculator.OutputEntry;
 import greedy.parse.CurrencyParser;
 
 public class Greedy {
@@ -62,7 +63,7 @@ public class Greedy {
 	void calculateLeastNumberOfCoins() throws ParseException {
 		int moneyValueInCents = processInput();
 		CoinCalculator coinCalculator = getCoinCalculator();
-		ArrayList<Object[]> coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
+		ArrayList<OutputEntry> coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
 		printOutput(coinsUsed);
 	}
 	
@@ -87,10 +88,10 @@ public class Greedy {
 		return processedInput;
 	}
 	
-	void printOutput(ArrayList<Object[]> coinsUsed) {
-		for (Object[] entry : coinsUsed) {
-			System.out.println(messageSource.getMessage((String)entry[0], null, locale) + 
-					": " + (int)entry[1]);
+	void printOutput(ArrayList<OutputEntry> coinsUsed) {
+		for (OutputEntry entry : coinsUsed) {
+			System.out.println(messageSource.getMessage(entry.getCoinType(), null, locale) + 
+					": " + entry.getNumberOfCoins());
 		}
 	}
 	 
