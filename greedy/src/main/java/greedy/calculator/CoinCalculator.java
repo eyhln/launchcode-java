@@ -1,21 +1,21 @@
 package greedy.calculator;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class CoinCalculator {
 
 	private int[] coinValues;
 	private String[] coinNameCodes;
-	HashMap<String,Integer> coinsSelected;
+	ArrayList<Object[]> coinsSelected;
 	private int totalCentsRemaining;
 	
 	public CoinCalculator(int[] coinValues, String[] coinNameCodes) {
 		this.coinValues = coinValues;
 		this.coinNameCodes = coinNameCodes;
-		coinsSelected = new HashMap<String,Integer>();
+		coinsSelected = new ArrayList<Object[]>();
 	}
 
-	 public HashMap<String,Integer> calculateChange(int nonNegativeAmountInCents) {
+	 public ArrayList<Object[]> calculateChange(int nonNegativeAmountInCents) {
 	    	totalCentsRemaining = nonNegativeAmountInCents;
 	    	selectMinNumberOfCoins();
 			return coinsSelected;
@@ -39,7 +39,8 @@ public class CoinCalculator {
 	    
 	    private void addCoinNameAndAmountToOutput(int currCoinIndex, int coinsUsed) {
 			if (coinsUsed > 0) {
-				coinsSelected.put(coinNameCodes[currCoinIndex], coinsUsed);
+				Object[] entry = {coinNameCodes[currCoinIndex], coinsUsed};
+				coinsSelected.add(entry);
 			}
 	    }
 }

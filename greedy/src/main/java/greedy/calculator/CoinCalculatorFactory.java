@@ -16,7 +16,7 @@ public class CoinCalculatorFactory {
 		Euro = Currency.getInstance(Locale.GERMANY);
 	}
 	
-	public CoinCalculator getCoinSpecification(Currency currency) {
+	public CoinCalculator getCoinCalculator(Currency currency) {
 		if (currency.equals(USDollar)) {
 			USDollarCoinSpecification coinSpec = new USDollarCoinSpecification();
 			return new CoinCalculator(coinSpec.getCoinValues(), coinSpec.getCoinNameCodes());
