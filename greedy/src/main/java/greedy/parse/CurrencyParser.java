@@ -1,4 +1,4 @@
-package greedy;
+package greedy.parse;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -9,26 +9,33 @@ import java.util.Locale;
 
 public class CurrencyParser {
 	
+	private Currency currencyOfLastParsedInput;
 	String[][] localeCodesForAcceptedCurrencyFormats;
 	ArrayList<NumberFormat> acceptedCurrencyFormats;
 	String input;
-	private Currency currencyOfLastParsedInput;
-	private ParsePosition parsePosition;
+	ParsePosition parsePosition;
 	
 	
 	public CurrencyParser() {
 		acceptedCurrencyFormats = new ArrayList<NumberFormat>();
 	}
 	
-	public void setTwoByTwoLocaleCodesForAcceptedCurrencyFormats(String[][] localeCodes) {
+	public void setLocaleCodesForAcceptedCurrencyFormats(String[][] localeCodes) {
 		this.localeCodesForAcceptedCurrencyFormats  = (String[][])localeCodes.clone();
+	}
+	
+	public void setLocalesForAcceptedCurrencyFormats(Locale[] locales) {
+		
+		for (Locale locale : locales) {
+			
+		}
 	}
 	
 	public Currency getCurrencyOfLastParsedInput() {
 		return currencyOfLastParsedInput;
 	}
 	
-	int parse(String input) throws ParseException {
+	public int parse(String input) throws ParseException {
 		processLocaleInformation();
 		Number amountOfMoney = attemptParseUsingAllAcceptedCurrencyFormats(input);
 		int moneyValueInCents = convertNumberToInt(amountOfMoney);
