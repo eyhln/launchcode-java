@@ -1,8 +1,8 @@
 package greedy;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -10,68 +10,89 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 import greedy.calculator.CoinCalculator;
 import greedy.calculator.CoinCalculatorFactory;
+import greedy.parse.CurrencyParser;
 
 public class Greedy {
 	
-	private Locale locale;
-	private ResourceBundleMessageSource messageSource;
-	private CurrencyParser currencyParser;
 	private CoinCalculatorFactory coinCalculatorFactory;
-	HashMap<String,Integer> coinsUsed;
-	String[] varArgs;
+	private ResourceBundleMessageSource messageSource;
+	CurrencyParser currencyParser;
+	private StringBuilder stringBuilder;
+
+	private Locale locale;
+	private String[] input;
+
+	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
+			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser) {
+		
+		this.coinCalculatorFactory = coinCalculatorFactory;
+		this.messageSource = messageSource;
+		this.currencyParser = currencyParser;
+		this.stringBuilder = new StringBuilder();
+		
+		locale = Locale.getDefault();
+	}
 	
-	public static void main(String[] varArgs) {
+	public static void main(String[] args) {
 		Greedy greedy;
 		try (ClassPathXmlApplicationContext context = 
 			 new ClassPathXmlApplicationContext("application-context.xml")) {
 		greedy = (Greedy)context.getBean("greedy");
 		}
-		greedy.calculateLeastNumberOfCoins(varArgs);
-	}
-
-	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
-			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser) {
-		this.coinCalculatorFactory = coinCalculatorFactory;
-		this.messageSource = messageSource;
-		this.currencyParser = currencyParser;
-		locale = Locale.getDefault();
-		coinsUsed = new HashMap<String,Integer>();
+		greedy.setInput(args);
+		greedy.runProgram();
 	}
 	
-	public void calculateLeastNumberOfCoins(String[] varArgs) {
-		this.varArgs = varArgs;
+	void setInput(String[] args) {
+		input = args;
+	}
+	
+	public void setLanguageCode(String langCode) {
+		locale = new Locale(langCode);
+	}
+	
+	public void runProgram() {
 		try {
-			runProgram();
+			calculateLeastNumberOfCoins();
 		} catch (ParseException e) {
 			System.err.println(messageSource.getMessage("errorMsg", null, locale));
-			e.printStackTrace();
 		}
 	}
 	
-	private void runProgram() throws ParseException {
-		String input = convertInputToString();
-		int moneyValueInCents = currencyParser.parseInput(input);
-		Currency currency = currencyParser.getCurrencyOfLastParsedInput();
-		CoinCalculator coinCalc = coinCalculatorFactory.getCoinSpecification(currency);
-		coinsUsed = coinCalc.calculateChange(moneyValueInCents);
-		printOutput();
+	void calculateLeastNumberOfCoins() throws ParseException {
+		int moneyValueInCents = processInput();
+		CoinCalculator coinCalculator = getCoinCalculator();
+		ArrayList<Object[]> coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
+		printOutput(coinsUsed);
+	}
+	
+	int processInput() throws ParseException {
+		String moneyAmount = convertInputToString();
+		int moneyValueInCents = currencyParser.parse(moneyAmount);
+		return moneyValueInCents;
+	}
+	
+	private CoinCalculator getCoinCalculator() {
+		Currency currencyOfInput = currencyParser.getCurrencyOfLastParsedInput();
+		CoinCalculator coinCalc = coinCalculatorFactory.getCoinCalculator(currencyOfInput);
+		return coinCalc;
 	}
 	
 	String convertInputToString() {
-		String input = "";
-		for (String str : varArgs) 
-			input = input + str + " ";
-		input = input.trim();
-		return input;
+		for (String str : input) {
+			stringBuilder.append(str);
+			stringBuilder.append(" ");
+		}
+		String processedInput = stringBuilder.toString().trim();
+		return processedInput;
 	}
 	
-	void printOutput() {
-		Object[] coinCodes = coinsUsed.keySet().toArray();
-		for (Object code : coinCodes) {
-			System.out.println(messageSource.getMessage((String)code, null, locale) + 
-					": " + coinsUsed.get(code));
+	void printOutput(ArrayList<Object[]> coinsUsed) {
+		for (Object[] entry : coinsUsed) {
+			System.out.println(messageSource.getMessage((String)entry[0], null, locale) + 
+					": " + (int)entry[1]);
 		}
 	}
-   
+	 
 
 }
