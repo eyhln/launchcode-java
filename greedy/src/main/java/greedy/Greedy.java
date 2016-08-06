@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
-import greedy.calculator.CoinCalculatorTemplate;
+import greedy.calculator.CoinCalculator;
 import greedy.calculator.CoinCalculatorFactory;
 import greedy.calculator.OutputEntry;
 import greedy.parse.CurrencyParser;
@@ -17,21 +17,17 @@ public class Greedy {
 	
 	private CoinCalculatorFactory coinCalculatorFactory;
 	private ResourceBundleMessageSource messageSource;
-	CurrencyParser currencyParser;
-	private StringBuilder stringBuilder;
+	private CurrencyParser currencyParser;
 
 	private Locale language;
-	private String[] input;
+	String[] input;
 
 	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
 			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser,
 			String languageCode) {
-		
 		this.coinCalculatorFactory = coinCalculatorFactory;
 		this.messageSource = messageSource;
 		this.currencyParser = currencyParser;
-		this.stringBuilder = new StringBuilder();
-		
 		language = new Locale(languageCode);
 	}
 	
@@ -39,7 +35,7 @@ public class Greedy {
 		Greedy greedy;
 		try (ClassPathXmlApplicationContext context = 
 			 new ClassPathXmlApplicationContext("application-context.xml")) {
-		greedy = (Greedy)context.getBean("greedy");
+			greedy = (Greedy)context.getBean("greedy");
 		}
 		greedy.setInput(args);
 		greedy.runProgram();
@@ -59,7 +55,7 @@ public class Greedy {
 	
 	void calculateLeastNumberOfCoinsNeeded() throws ParseException {
 		int moneyValueInCents = processInput();
-		CoinCalculatorTemplate coinCalculator = getCoinCalculator();
+		CoinCalculator coinCalculator = getCoinCalculator();
 		ArrayList<OutputEntry> coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
 		printOutput(coinsUsed);
 	}
@@ -70,20 +66,11 @@ public class Greedy {
 		return moneyValueInCents;
 	}
 	
-	private CoinCalculatorTemplate getCoinCalculator() {
+	CoinCalculator getCoinCalculator() {
 		Currency currencyOfInput = currencyParser.getCurrencyOfLastParsedInput();
-		CoinCalculatorTemplate coinCalculator = 
+		CoinCalculator coinCalculator = 
 				coinCalculatorFactory.getCoinCalculator(currencyOfInput);
 		return coinCalculator;
-	}
-	
-	String convertInputToString() {
-		for (String str : input) {
-			stringBuilder.append(str);
-			stringBuilder.append(" ");
-		}
-		String processedInput = stringBuilder.toString().trim();
-		return processedInput;
 	}
 	
 	void printOutput(ArrayList<OutputEntry> coinsUsed) {
@@ -92,6 +79,14 @@ public class Greedy {
 				messageSource.getMessage(entry.getCoinCode(), null, language) + 
 				": " + entry.getNumberOfCoins());
 		}
+	}
+	
+	String convertInputToString() {
+		String processedInput = new String();
+		for (String str : input) {
+			processedInput += str;
+		}
+		return processedInput.trim();
 	}
 	 
 

@@ -19,14 +19,12 @@
     	<property name="basename" value="languages/messages"/>
     </bean>
     
-    <bean id="currencyParser" class="greedy.parse.CurrencyParser">
+    <bean id="currencyParser" class="greedy.parse.CurrencyParserImpl">
     	<property name="localeCodesForAcceptedCurrencyFormats">
     		<array>
     			<array><value>en</value><value>US</value></array> <!-- $1,000.00 -->
     			<array><value>es</value><value>US</value></array> <!-- US$1,000.00 -->
     			<array><value>de</value><value>DE</value></array> <!-- 1.000,00 €  -->
-    			<array><value>fr</value><value>FR</value></array> <!-- 1 000,00 € -->
-    			<array><value>it</value><value>IT</value></array> <!-- € 1.000,00 -->
     			<array><value>en</value><value>IE</value></array> <!-- €1,000.00 -->
     		</array>
     	</property>
