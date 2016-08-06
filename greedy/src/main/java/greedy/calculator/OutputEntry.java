@@ -2,16 +2,16 @@ package greedy.calculator;
 
 public class OutputEntry {
 	
-	String coinType;
+	String coinCode;
 	int numberOfCoins;
 	
-	public OutputEntry(String coinType, int numberOfCoins) {
-		this.coinType = coinType;
+	public OutputEntry(String coinCode, int numberOfCoins) {
+		this.coinCode = coinCode;
 		this.numberOfCoins = numberOfCoins;
 	}
 	
-	public String getCoinType() {
-		return coinType;
+	public String getCoinCode() {
+		return coinCode;
 	}
 	
 	public int getNumberOfCoins() {
@@ -20,7 +20,7 @@ public class OutputEntry {
 	
 	@Override
 	public String toString() {
-		String entry = coinType + ": " + numberOfCoins;
+		String entry = coinCode + ": " + numberOfCoins;
 		return entry;
 	}
 
