@@ -11,14 +11,14 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
-import greedy.parse.CurrencyParser;
+import greedy.parse.CurrencyParserImpl;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations="/test-application-context.xml")
-public class CurrencyParserTest {
+public class CurrencyParserImplTest {
 	
 	String[][] localeCodes;
-	CurrencyParser cp;
+	CurrencyParserImpl cp;
 	NumberFormat testFormat0;
 	NumberFormat testFormat1;
 
@@ -40,7 +40,7 @@ public class CurrencyParserTest {
 	}
 	
 	private void initializeCurrencyParser() {
-		cp = new CurrencyParser();
+		cp = new CurrencyParserImpl();
 		cp.setLocaleCodesForAcceptedCurrencyFormats(localeCodes);
 	}
 	
@@ -78,9 +78,9 @@ public class CurrencyParserTest {
 	@Test
 	public void testRecordsCurrencyOfLastSuccessfulParse() throws ParseException {
 		cp.parse("$1.00");
-		assertEquals(Currency.getInstance(Locale.US), cp.getCurrencyOfLastParsedInput());
+		assertEquals(Currency.getInstance("USD"), cp.getCurrencyOfLastParsedInput());
 		cp.parse("€1.00" );
-		assertEquals(Currency.getInstance(Locale.GERMANY), cp.getCurrencyOfLastParsedInput());
+		assertEquals(Currency.getInstance("EUR"), cp.getCurrencyOfLastParsedInput());
 	}
 	
 	@Test
@@ -124,4 +124,6 @@ public class CurrencyParserTest {
 		}
 	}
 
+	
+	
 }
