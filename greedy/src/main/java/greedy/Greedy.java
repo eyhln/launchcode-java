@@ -24,14 +24,15 @@ public class Greedy {
 	private String[] input;
 
 	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
-			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser) {
+			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser,
+			String languageCode) {
 		
 		this.coinCalculatorFactory = coinCalculatorFactory;
 		this.messageSource = messageSource;
 		this.currencyParser = currencyParser;
 		this.stringBuilder = new StringBuilder();
 		
-		language = Locale.getDefault();
+		language = new Locale(languageCode);
 	}
 	
 	public static void main(String[] args) {
@@ -48,19 +49,15 @@ public class Greedy {
 		input = args;
 	}
 	
-	public void setLanguageCode(String langCode) {
-		language = new Locale(langCode);
-	}
-	
 	public void runProgram() {
 		try {
-			calculateLeastNumberOfCoins();
+			calculateLeastNumberOfCoinsNeeded();
 		} catch (ParseException e) {
 			System.err.println(messageSource.getMessage("errorMsg", null, language));
 		}
 	}
 	
-	void calculateLeastNumberOfCoins() throws ParseException {
+	void calculateLeastNumberOfCoinsNeeded() throws ParseException {
 		int moneyValueInCents = processInput();
 		CoinCalculatorTemplate coinCalculator = getCoinCalculator();
 		ArrayList<OutputEntry> coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
@@ -92,8 +89,8 @@ public class Greedy {
 	void printOutput(ArrayList<OutputEntry> coinsUsed) {
 		for (OutputEntry entry : coinsUsed) {
 			System.out.println(
-					messageSource.getMessage(entry.getCoinCode(), null, language) + 
-					": " + entry.getNumberOfCoins());
+				messageSource.getMessage(entry.getCoinCode(), null, language) + 
+				": " + entry.getNumberOfCoins());
 		}
 	}
 	 
