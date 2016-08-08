@@ -1,16 +1,11 @@
 package greedy.parse;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Locale;
+import java.text.*;
+import java.util.*;
 
 public class CurrencyParserImpl implements CurrencyParser {
 	
 	private Currency currencyOfLastParsedInput;
-	String[][] localeCodesForAcceptedCurrencyFormats;
 	ArrayList<NumberFormat> acceptedCurrencyFormats;
 	String input;
 	ParsePosition parsePosition;
@@ -21,7 +16,17 @@ public class CurrencyParserImpl implements CurrencyParser {
 	}
 	
 	public void setLocaleCodesForAcceptedCurrencyFormats(String[][] localeCodes) {
-		this.localeCodesForAcceptedCurrencyFormats  = (String[][])localeCodes.clone();
+		for (String[] codes: localeCodes) {
+			addNewAcceptedCurrencyFormat(codes);
+		}
+	}
+	
+	void addNewAcceptedCurrencyFormat(String[] localeCodes) {
+		String language = localeCodes[0];
+		String country = localeCodes[1];
+		Locale locale = new Locale(language, country);
+		NumberFormat format = NumberFormat.getCurrencyInstance(locale);
+		acceptedCurrencyFormats.add(format);
 	}
 	
 	public Currency getCurrencyOfLastParsedInput() {
@@ -29,24 +34,9 @@ public class CurrencyParserImpl implements CurrencyParser {
 	}
 	
 	public int parse(String input) throws ParseException {
-		processLocaleInformation();
 		Number amountOfMoney = attemptParseUsingAllAcceptedCurrencyFormats(input);
 		int moneyValueInCents = convertNumberToInt(amountOfMoney);
 		return moneyValueInCents;
-	}
-	
-	void processLocaleInformation() {
-		for (String[] localeCodes: localeCodesForAcceptedCurrencyFormats) {
-			addNewAcceptedCurrencyFormat(localeCodes);
-		}
-	}
-	
-	private void addNewAcceptedCurrencyFormat(String[] localeCodes) {
-		String language = localeCodes[0];
-		String country = localeCodes[1];
-		Locale locale = new Locale(language, country);
-		NumberFormat format = NumberFormat.getCurrencyInstance(locale);
-		acceptedCurrencyFormats.add(format);
 	}
 	
 	Number attemptParseUsingAllAcceptedCurrencyFormats(String input) throws ParseException {
@@ -91,8 +81,10 @@ public class CurrencyParserImpl implements CurrencyParser {
 			throw new ParseException("Did not parse entire string", 0);	
 	}
 	
-	int convertNumberToInt(Number amountOfMoney) {
+	int convertNumberToInt(Number amountOfMoney) throws ParseException {
 		double moneyValue = amountOfMoney.doubleValue();	
+		if ((moneyValue * 100) > Integer.MAX_VALUE)
+				throw new ParseException("Value too large", 0);
 		int moneyValueInCents = (int)Math.round(moneyValue * 100); 
 		return moneyValueInCents;
 	}
