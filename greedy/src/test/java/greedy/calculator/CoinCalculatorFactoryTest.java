@@ -10,30 +10,32 @@ import org.junit.Test;
 public class CoinCalculatorFactoryTest {
 
 	CoinCalculatorFactory ccf;
-	Currency USDollar;
-	Currency Euro;
-	USDollarCoinCalculator USDcalc;
-	EuroCoinCalculator EURcalc;
 	
 	@Before
 	public void initialize() {
 		ccf = new CoinCalculatorFactory();
-		USDollar = Currency.getInstance("USD");
-		Euro = Currency.getInstance("EUR");
-		USDcalc = new USDollarCoinCalculator();
-		EURcalc = new EuroCoinCalculator();
 	}
 	
 	@Test
 	public void testReceiveCorrectClassUSD() {
-		CoinCalculator coinCalc = ccf.getCoinCalculator(USDollar);
-		assertSame(coinCalc.getClass(), USDcalc.getClass());
+		Currency USDollar = Currency.getInstance("USD");
+		USDollarCoinCalculator USDcalc = new USDollarCoinCalculator();
+		
+		assertClassReturnedMatchesInputCurrency(USDollar, USDcalc);
 	}
 	
 	@Test
 	public void testReceiveCorrectClassEuro() {
-		CoinCalculator coinCalc = ccf.getCoinCalculator(Euro);
-		assertSame(coinCalc.getClass(), EURcalc.getClass());
+		Currency Euro = Currency.getInstance("EUR");
+		EuroCoinCalculator EURcalc = new EuroCoinCalculator();
+		
+		assertClassReturnedMatchesInputCurrency(Euro, EURcalc);
+	}
+	
+	private void assertClassReturnedMatchesInputCurrency(Currency currency, 
+			CoinCalculator coinCalculator) {
+		CoinCalculator testCalculator = ccf.getCoinCalculator(currency);
+		assertSame(coinCalculator.getClass(), testCalculator.getClass());
 	}
 
 }
