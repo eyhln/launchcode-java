@@ -1,6 +1,6 @@
 package greedy.calculator;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,13 +8,13 @@ import org.junit.Test;
 public class USDollarCoinCalculatorTest {
 
 	CoinCalculator coinCalculator;
-	ArrayList<OutputEntry> testOutput;
-	ArrayList<OutputEntry> output;
+	List<OutputEntry> testOutput;
+	List<OutputEntry> output;
 
 	@Before
 	public void initialize() {
 		coinCalculator = new USDollarCoinCalculator();
-		testOutput = new ArrayList<OutputEntry>();
+		testOutput = new ArrayList<OutputEntry> ();
 	}
 	
 	@Test

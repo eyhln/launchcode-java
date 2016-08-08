@@ -2,14 +2,14 @@ package greedy.calculator;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.*;
 import org.junit.Before;
 
 public class EuroCoinCalculatorTest {
 	
 	CoinCalculator coinCalculator;
-	ArrayList<OutputEntry> testOutput;
-	ArrayList<OutputEntry> output;
+	List<OutputEntry> testOutput;
+	List<OutputEntry> output;
 
 	@Before
 	public void initialize() {

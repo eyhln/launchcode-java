@@ -2,7 +2,7 @@ package greedy.calculator;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +37,8 @@ public class CoinCalculatorTest {
 	}
 	
 	
-	static void assertAllEntriesMatch(ArrayList<OutputEntry> testOutput,
-			ArrayList<OutputEntry> output){
+	static void assertAllEntriesMatch(List<OutputEntry> testOutput,
+			List<OutputEntry> output){
 		for (int i = 0; i < output.size(); i++) {
 			assertEquals("Item number " + i+1 + " of the list does not match", 
 					testOutput.get(i).toString(), output.get(i).toString());

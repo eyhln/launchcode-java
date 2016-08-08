@@ -1,23 +1,25 @@
 package greedy.calculator;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public abstract class CoinCalculator {
 
 	int[] coinValues;
 	String coinNameCodePrefix;
-	String[] coinNameCodes;
-	ArrayList<OutputEntry> coinsSelected;
-	int totalCentsRemaining;
+	
+	private String[] coinNameCodes;
+	private List<OutputEntry> coinsSelected;
+	private int totalCentsRemaining;
 	
 	public CoinCalculator() {
 		coinsSelected = new ArrayList<OutputEntry>();
 	}
 
-	public ArrayList<OutputEntry> calculateChange(int nonNegativeAmountInCents) {
-    	totalCentsRemaining = nonNegativeAmountInCents;
-    	coinNameCodes = createNameCodes();
-    	selectMinNumberOfCoins();
+	public List<OutputEntry> calculateChange(int nonNegativeAmountInCents) {
+  	Arrays.sort(coinValues);
+  	totalCentsRemaining = nonNegativeAmountInCents;
+  	coinNameCodes = createNameCodes();
+  	selectMinNumberOfCoins();
 		return coinsSelected;
 	}
 	
@@ -29,26 +31,26 @@ public abstract class CoinCalculator {
 		return nameCodes;
 	}
 	    
-    void selectMinNumberOfCoins() {
-    	int currCoinIndex = 0;
+  void selectMinNumberOfCoins() {
+    int currCoinIndex = coinValues.length - 1;
 		while (totalCentsRemaining > 0) {
 			useAsManyOfCoinAtIndexAsPossible(currCoinIndex);	
-			currCoinIndex++;
+			currCoinIndex--;
 		}
-    }
+  }
     
-    private void useAsManyOfCoinAtIndexAsPossible(int currCoinIndex) {
-		int currCoin = (int)coinValues[currCoinIndex];
+  private void useAsManyOfCoinAtIndexAsPossible(int currCoinIndex) {
+		int currCoin = coinValues[currCoinIndex];
 		int remainder = totalCentsRemaining % currCoin;
 		int coinsUsed = (totalCentsRemaining - remainder) / currCoin;
 		addCoinNameAndAmountToOutput(currCoinIndex, coinsUsed);
 		totalCentsRemaining = remainder;
-    }
+  }
     
-    private void addCoinNameAndAmountToOutput(int currCoinIndex, int coinsUsed) {
+  private void addCoinNameAndAmountToOutput(int currCoinIndex, int coinsUsed) {
 		if (coinsUsed > 0) {
 			OutputEntry entry = new OutputEntry(coinNameCodes[currCoinIndex], coinsUsed);
 			coinsSelected.add(entry);
 		}
-    }
+  }
 }
