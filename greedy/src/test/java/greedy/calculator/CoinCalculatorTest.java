@@ -10,13 +10,21 @@ import org.junit.Test;
 public class CoinCalculatorTest {
 
 	CoinCalculator coinCalculator;
-	ArrayList<OutputEntry> testOutput;
-	ArrayList<OutputEntry> output;
+	List<OutputEntry> testOutput;
+	List<OutputEntry> output;
 
 	@Before
 	public void initialize() {
-		coinCalculator = new USDollarCoinCalculator();
+		coinCalculator = new CoinCalculatorTestImpl();
 		testOutput = new ArrayList<OutputEntry>();
+	}
+	
+	static void assertAllEntriesMatch(List<OutputEntry> testOutput,
+			List<OutputEntry> output){
+		for (int i = 0; i < output.size(); i++) {
+			assertEquals("Failure at index " + i , 
+					testOutput.get(i).toString(), output.get(i).toString());
+		}
 	}
 	
 	@Test
@@ -36,12 +44,22 @@ public class CoinCalculatorTest {
 		assertEquals(testOutput, coinCalculator.calculateChange(0));
 	}
 	
-	
-	static void assertAllEntriesMatch(List<OutputEntry> testOutput,
-			List<OutputEntry> output){
-		for (int i = 0; i < output.size(); i++) {
-			assertEquals("Item number " + i+1 + " of the list does not match", 
-					testOutput.get(i).toString(), output.get(i).toString());
+	@Test
+	public void testCalculateChangeEleven() {
+		int valueInCents = 11;
+		testOutput.add(new OutputEntry("Test.10", 1));
+		testOutput.add(new OutputEntry("Test.1", 1));
+
+		output = coinCalculator.calculateChange(valueInCents);
+		
+		CoinCalculatorTest.assertAllEntriesMatch(testOutput, output);
+	}
+		
+	private class CoinCalculatorTestImpl extends CoinCalculator {
+		
+		public CoinCalculatorTestImpl() {
+			coinValues = new int[] { 1, 10 };
+			coinNameCodePrefix = "Test";
 		}
 	}
 
