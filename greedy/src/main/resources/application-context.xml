@@ -13,7 +13,7 @@
 		</constructor-arg>
 	</bean>
 
-    <bean id="coinCalculatorFactory" class="greedy.calculator.CoinCalculatorFactory"></bean>
+    <bean id="coinCalculatorFactory" class="greedy.calculator.factory.CoinCalculatorFactoryImpl"></bean>
     
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basename" value="languages/messages"/>
