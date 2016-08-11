@@ -8,19 +8,25 @@ public abstract class CoinCalculator {
 	String coinNameCodePrefix;
 	
 	private String[] coinNameCodes;
-	private List<OutputEntry> coinsSelected;
 	private int totalCentsRemaining;
-	
+	private List<OutputEntry> coinsSelected;
+
 	public CoinCalculator() {
 		coinsSelected = new ArrayList<OutputEntry>();
 	}
 
-	public List<OutputEntry> calculateChange(int nonNegativeAmountInCents) {
-  	Arrays.sort(coinValues);
-  	totalCentsRemaining = nonNegativeAmountInCents;
-  	coinNameCodes = createNameCodes();
+	public List<OutputEntry> calculateChange(int amountInCents) {
+		setUpVariables(amountInCents);
   	selectMinNumberOfCoins();
 		return coinsSelected;
+	}
+	
+	private void setUpVariables(int amountInCents) {
+		Arrays.sort(coinValues);
+		if (amountInCents < 0)
+			throw new IllegalArgumentException("negative amount " + amountInCents);
+  	totalCentsRemaining = amountInCents;
+  	coinNameCodes = createNameCodes();
 	}
 	
 	String[] createNameCodes() {
