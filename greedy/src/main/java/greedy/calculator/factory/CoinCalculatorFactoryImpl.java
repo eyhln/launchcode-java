@@ -1,13 +1,17 @@
-package greedy.calculator;
+package greedy.calculator.factory;
 
 import java.util.Currency;
 
-public class CoinCalculatorFactory {
+import greedy.calculator.CoinCalculator;
+import greedy.calculator.EuroCoinCalculator;
+import greedy.calculator.USDollarCoinCalculator;
+
+public class CoinCalculatorFactoryImpl {
 	
 	Currency USDollar;
 	Currency Euro;
 	
-	public CoinCalculatorFactory() {
+	public CoinCalculatorFactoryImpl() {
 		USDollar = Currency.getInstance("USD");
 		Euro = Currency.getInstance("EUR");
 	}

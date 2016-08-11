@@ -7,13 +7,15 @@ import java.util.Currency;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CoinCalculatorFactoryTest {
+import greedy.calculator.factory.CoinCalculatorFactoryImpl;
 
-	CoinCalculatorFactory ccf;
+public class CoinCalculatorFactoryImplTest {
+
+	CoinCalculatorFactoryImpl ccf;
 	
 	@Before
 	public void initialize() {
-		ccf = new CoinCalculatorFactory();
+		ccf = new CoinCalculatorFactoryImpl();
 	}
 	
 	@Test
