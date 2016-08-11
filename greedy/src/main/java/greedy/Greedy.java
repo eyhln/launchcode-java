@@ -3,6 +3,7 @@ package greedy;
 import java.util.*;
 import java.text.ParseException;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.support.*;
 
 import greedy.calculator.*;
@@ -11,7 +12,7 @@ import greedy.parse.CurrencyParser;
 public class Greedy {
 	
 	private CoinCalculatorFactory coinCalculatorFactory;
-	private ResourceBundleMessageSource messageSource;
+	private MessageSource messageSource;
 	private CurrencyParser currencyParser;
 	private StringBuilder stringBuilder;
 
@@ -19,7 +20,7 @@ public class Greedy {
 	String[] input;
 
 	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
-			ResourceBundleMessageSource messageSource, CurrencyParser currencyParser,
+			MessageSource messageSource, CurrencyParser currencyParser,
 			String languageCode) {
 		this.coinCalculatorFactory = coinCalculatorFactory;
 		this.messageSource = messageSource;
@@ -51,17 +52,10 @@ public class Greedy {
 	}
 	
 	void calculateLeastNumberOfCoinsNeeded() throws ParseException {
-		rejectInputThatIsTooLong();
 		int moneyValueInCents = processInput();
 		CoinCalculator coinCalculator = getCoinCalculator(moneyValueInCents);
 		List<OutputEntry> coinsUsed = coinCalculator.calculateChange(moneyValueInCents);
 		printOutput(coinsUsed);
-	}
-	
-	void rejectInputThatIsTooLong() {
-		if (input.length > 8) {
-			throw new IllegalArgumentException();
-		}
 	}
 	
 	int processInput() throws ParseException {
