@@ -2,79 +2,56 @@ package greedy.parse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
+import org.junit.Before;
+import org.junit.Test;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import greedy.parse.CurrencyParserImpl;
 
 public class CurrencyParserImplTest {
 	
 	String[][] localeCodes;
 	CurrencyParserImpl cp;
-	NumberFormat testFormat0;
-	NumberFormat testFormat1;
+	NumberFormat testNumberFormat;
 
 	@Before
 	public void initialize() {
-		initializeLocaleCodes();
-		initializeCurrencyParser();
-		initializeTestFormats();
+		createLocaleCodes();
+		createCurrencyParser();
+		createTestNumberFormat();
 	}
 	
-	private void initializeLocaleCodes() {
-		String[][] localeCodes = {	{"en", "US"}, //
-									{"es", "US"}, //
-									{"en", "IE"}, //
-									{"de", "DE"}, //
-									{"fr", "FR"}, //
-									{"it", "IT"}}; //
+	private void createLocaleCodes() {
+		String[][] localeCodes = { {"en", "US"} };
 		this.localeCodes = localeCodes;
 	}
 	
-	private void initializeCurrencyParser() {
-		cp = new CurrencyParserImpl();
-		cp.setLocaleCodesForAcceptedCurrencyFormats(localeCodes);
+	private void createCurrencyParser() {
+		cp = new CurrencyParserImpl(localeCodes);
 	}
 	
-	private void initializeTestFormats() {
-		testFormat0 = setUpTestFormat(0);
-		testFormat1 = setUpTestFormat(1);
+	private void createTestNumberFormat() {
+		Locale testLocale = new Locale(localeCodes[0][0], 
+				localeCodes[0][1]);
+		testNumberFormat = NumberFormat.getCurrencyInstance(testLocale);
 	}
 	
-	private NumberFormat setUpTestFormat(int indexInLocaleCodes) {
-		Locale testLocale = new Locale(localeCodes[indexInLocaleCodes][0], 
-				localeCodes[indexInLocaleCodes][1]);
-		NumberFormat testFormat = NumberFormat.getCurrencyInstance(testLocale);
-		return testFormat;
-	}
-	
-	
-	@Test @Ignore("refactoring makes this test unintelligible")
-	public void testAddNewAcceptedCurrencyFormat() {
-		assertEquals("$100.00", cp.acceptedCurrencyFormats.get(0).format(100));
-		assertEquals("US$100.00", cp.acceptedCurrencyFormats.get(1).format(100));
-	}
-	
-	@Test
-	public void testParseForEachAcceptedCurrency() throws ParseException {
-		for (String[] localeCode : localeCodes) {
-			Locale locale = new Locale(localeCode[0], localeCode[1]);
-			NumberFormat format = NumberFormat.getCurrencyInstance(locale);
-			String value = format.format(1200.25);
-			int valueInCents = cp.parse(value);
-			assertEquals(120025, valueInCents);
-		}
+	@Test 
+	public void testParse() throws ParseException {
+		String value = testNumberFormat.format(1200.25);
+
+		int valueInCents = cp.parse(value);
+		
+		assertEquals(120025, valueInCents);
 	}
 	
 	@Test
 	public void testRecordsCurrencyOfLastSuccessfulParse() throws ParseException {
+		String[][] localeCodes = { {"en","US"}, {"en", "IE"} };
+		cp = new CurrencyParserImpl(localeCodes);
+		
 		cp.parse("$1.00");
 		assertEquals(Currency.getInstance("USD"), cp.getCurrencyOfLastParsedInput());
 		cp.parse("€1.00" );
@@ -95,7 +72,7 @@ public class CurrencyParserImplTest {
 	
 	@Test
 	public void testShouldThrowAnExceptionNegativeNumber() {
-		String test = testFormat0.format(1);
+		String test = testNumberFormat.format(1);
 		test = "-" + test;
 		assertParseThrowsException(test, "Did not successfully parse with any accepted "
 				+ "currency format");
