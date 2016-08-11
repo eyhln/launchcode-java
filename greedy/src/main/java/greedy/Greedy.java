@@ -7,6 +7,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.*;
 
 import greedy.calculator.*;
+import greedy.calculator.factory.CoinCalculatorFactory;
 import greedy.parse.CurrencyParser;
 
 public class Greedy {
@@ -19,9 +20,8 @@ public class Greedy {
 	private Locale language;
 	String[] input;
 
-	public Greedy(CoinCalculatorFactory coinCalculatorFactory, 
-			MessageSource messageSource, CurrencyParser currencyParser,
-			String languageCode) {
+	public Greedy(CoinCalculatorFactory coinCalculatorFactory, MessageSource messageSource, 
+			CurrencyParser currencyParser, String languageCode) {
 		this.coinCalculatorFactory = coinCalculatorFactory;
 		this.messageSource = messageSource;
 		this.currencyParser = currencyParser;
@@ -47,7 +47,7 @@ public class Greedy {
 		try {
 			calculateLeastNumberOfCoinsNeeded();
 		} catch (ParseException e) {
-			System.err.println(messageSource.getMessage("errorMsg", null, language));
+			System.err.println(messageSource.getMessage("errorMsg", null,  language));
 		}
 	}
 	
