@@ -1,9 +1,8 @@
 package greedy.calculator;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.fail;
 import java.util.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,6 +36,15 @@ public class CoinCalculatorTest {
 		
 		assertEquals("test.0", nameCodes[0]);
 		assertEquals("test.1", nameCodes[1]);
+	}
+	
+	@Test
+	public void testThrowsExceptionNegativeInput() {
+		try {
+			coinCalculator.calculateChange(-100);
+			fail("Failed to throw an exception");
+		} catch (IllegalArgumentException expected) {
+		}
 	}
 	
 	@Test
