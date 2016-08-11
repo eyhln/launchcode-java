@@ -11,11 +11,12 @@ public class CurrencyParserImpl implements CurrencyParser {
 	ParsePosition parsePosition;
 	
 	
-	public CurrencyParserImpl() {
+	public CurrencyParserImpl(String[][] localeCodesForAcceptedCurrencyFormats) {
 		acceptedCurrencyFormats = new ArrayList<NumberFormat>();
+		createCurrencyFormats(localeCodesForAcceptedCurrencyFormats);
 	}
 	
-	public void setLocaleCodesForAcceptedCurrencyFormats(String[][] localeCodes) {
+	public void createCurrencyFormats(String[][] localeCodes) {
 		for (String[] codes: localeCodes) {
 			addNewAcceptedCurrencyFormat(codes);
 		}
@@ -71,14 +72,15 @@ public class CurrencyParserImpl implements CurrencyParser {
 		}
 		if (amountOfMoney == null) {
 			throw new ParseException("Did not successfully parse with any accepted "
-					+ "currency format", 0);
+					+ "currency format", parsePosition.getIndex());
 		}
 		return amountOfMoney;
 	}
 	
 	void throwExceptionIfDidNotParseEntireString() throws ParseException {
-		if (parsePosition.getIndex() < input.length())
-			throw new ParseException("Did not parse entire string", 0);	
+		int position = parsePosition.getIndex();
+		if (position < input.length())
+			throw new ParseException("Did not parse entire string", position);	
 	}
 	
 	int convertNumberToInt(Number amountOfMoney) throws ParseException {
