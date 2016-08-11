@@ -9,7 +9,7 @@
 		<constructor-arg name="messageSource" ref="messageSource"/>
 		<constructor-arg name="currencyParser" ref="currencyParser"/>
 		<constructor-arg name="languageCode">
-			<value>de</value>
+			<value>en</value>
 		</constructor-arg>
 	</bean>
 
@@ -20,7 +20,7 @@
     </bean>
     
     <bean id="currencyParser" class="greedy.parse.CurrencyParserImpl">
-    	<property name="localeCodesForAcceptedCurrencyFormats">
+    	<constructor-arg name="localeCodesForAcceptedCurrencyFormats">
     		<array>
     			<array><value>en</value><value>US</value></array> <!-- $1,000.00 -->
     			<array><value>es</value><value>US</value></array> <!-- US$1,000.00 -->
@@ -29,7 +29,7 @@
     			<array><value>fr</value><value>FR</value></array> <!-- 1 000,00 € -->
     			<array><value>en</value><value>IE</value></array> <!-- €1,000.00 -->
     		</array>
-    	</property>
+    	</constructor-arg>
     </bean>
     	
 </beans>
