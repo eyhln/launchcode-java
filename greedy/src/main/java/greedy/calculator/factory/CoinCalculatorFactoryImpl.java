@@ -6,7 +6,7 @@ import greedy.calculator.CoinCalculator;
 import greedy.calculator.EuroCoinCalculator;
 import greedy.calculator.USDollarCoinCalculator;
 
-public class CoinCalculatorFactoryImpl {
+public class CoinCalculatorFactoryImpl implements CoinCalculatorFactory {
 	
 	Currency USDollar;
 	Currency Euro;
