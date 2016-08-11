@@ -5,22 +5,21 @@ import org.junit.*;
 import java.io.*;
 import java.text.*;
 import java.util.*;
-
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import greedy.calculator.*;
+import greedy.calculator.factory.CoinCalculatorFactory;
 import greedy.parse.*;
 
 public class GreedyTest {
 
 	private CoinCalculatorFactory coinCalculatorFactory;
 	private MessageSource messageSource;
-	private CurrencyParser parser;
 	private Greedy greedy;
 	private Greedy parseExceptionGreedy;
-	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+	private ByteArrayOutputStream outContent;
+	private ByteArrayOutputStream errContent;
 	
 	@Before
 	public void initialize() {
@@ -30,20 +29,21 @@ public class GreedyTest {
 	}
 	
 	private void createDependencies() {
-		coinCalculatorFactory = new CoinCalculatorFactory();
+		coinCalculatorFactory = new CoinCalculatorFactoryReturnsFixedOutput();
 		messageSource = new MessageSourceReturnsFixedOutput();
-		String[][] localeCodes = { {"en", "US"} };	
-		parser = new CurrencyParserImpl(localeCodes);
 	}
 	
 	private void createGreedyVariants() {
-		greedy = new Greedy(coinCalculatorFactory, messageSource, parser, "en");
+		greedy = new Greedy(coinCalculatorFactory, messageSource, 
+				new CurrencyParserReturnsFixedOutput(), "en");
 		parseExceptionGreedy = new Greedy(coinCalculatorFactory, messageSource, 
 				new CurrencyParserAlwaysThrowsException(), "en");
 	}
 	
 	private void setUpStreamsToTestOutputs() {
+		outContent  = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(outContent));
+		errContent  = new ByteArrayOutputStream();
 	  System.setErr(new PrintStream(errContent));
 	}
 	
@@ -74,6 +74,30 @@ public class GreedyTest {
 	}
 	
 	@Test
+	public void testProcessInput() throws ParseException {
+		greedy = new Greedy(coinCalculatorFactory, messageSource,
+				new CurrencyParserReturnsFixedOutput(), "en");
+		String[] args = {"test"};
+		greedy.setInput(args);
+		
+		int moneyValueInCents = greedy.processInput();
+		
+		assertEquals(100, moneyValueInCents);
+	}
+	
+	@Test 
+	public void testGetCoinCalculator() {
+		greedy = new Greedy(coinCalculatorFactory, messageSource,
+				new CurrencyParserReturnsUSDollarAsLastParsedCurrency(), "en");
+		int valueRequiredToEnforceTemporalOrder = 0;
+		
+		CoinCalculator coinCalculator = greedy.getCoinCalculator
+				(valueRequiredToEnforceTemporalOrder);
+		
+		assertEquals(CoinCalculatorTestImpl.class, coinCalculator.getClass());
+	}
+	
+	@Test
 	public void testConvertInputToString() {
 		String[] array = {"$", "1.00"};
 		greedy.setInput(array);
@@ -95,19 +119,7 @@ public class GreedyTest {
 		
 	  assertEquals("Test: 1\nTest: 10\n", outContent.toString());
 	}
-	
-	@Test
-	public void testProcessInput() throws ParseException {
-		greedy = new Greedy(coinCalculatorFactory, messageSource,
-				new CurrencyParserReturnsFixedOutput(), "en");
-		String[] args = {"test"};
-		greedy.setInput(args);
 		
-		int moneyValueInCents = greedy.processInput();
-		
-		assertEquals(100, moneyValueInCents);
-	}
-	
 	
 	private class CurrencyParserAlwaysThrowsException implements CurrencyParser {
 		@Override
@@ -131,6 +143,18 @@ public class GreedyTest {
 		}
 	}
 	
+	private class CurrencyParserReturnsUSDollarAsLastParsedCurrency implements CurrencyParser {
+		@Override
+		public int parse(String input) throws ParseException {
+			return 0;
+		}
+		@Override
+		public Currency getCurrencyOfLastParsedInput() {
+			Currency USDollar = Currency.getInstance("USD");
+			return USDollar;
+		}
+	}
+	
 	private class MessageSourceReturnsFixedOutput implements MessageSource {
 		@Override
 		public String getMessage(MessageSourceResolvable arg0, Locale arg1)
@@ -146,7 +170,15 @@ public class GreedyTest {
 		public String getMessage(String arg0, Object[] arg1, String arg2, Locale arg3) {
 			return "Test";
 		}
-		
 	}
 	
-}
+	private class CoinCalculatorFactoryReturnsFixedOutput implements CoinCalculatorFactory {
+		public CoinCalculator getCoinCalculator(Currency currency) {
+			return new CoinCalculatorTestImpl();
+		}
+	}
+	
+	private class CoinCalculatorTestImpl extends CoinCalculator {}
+	
+}	
+
