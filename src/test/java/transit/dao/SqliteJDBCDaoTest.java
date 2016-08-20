@@ -44,9 +44,21 @@ public class SqliteJDBCDaoTest {
 		LocalDateTime fiveAM = LocalDateTime.of(2016,01,01,05,00,00,00);
 		String format = "05:00:00";
 		
-		String testFormat = dao.formatCurrentTimeToMatchDatabase(fiveAM);
+		String testFormat = dao.formatTimeToMatchDatabase(fiveAM);
 		
 		assertEquals(format,testFormat);
+	}
+	
+	@Test
+	public void testHolidayScheduleChange() {
+		Stop unionSta = new Stop();
+		unionSta.setStopName("UNION STA");
+		LocalDateTime fourthOfJuly = LocalDateTime.of(2016,7,4,16,00,00);
+		LocalTime expected = LocalTime.of(16,06,00);
+		
+		LocalTime nextTrain = dao.getTimeOfNextTrain(unionSta, fourthOfJuly);
+		
+		assertEquals(expected, nextTrain);
 	}
 	
 	@Test

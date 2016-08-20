@@ -54,22 +54,25 @@ public class SqliteJDBCDao implements MetrolinkDao {
     	return matcher.replaceAll("");
     }
     
-    //TODO troubleshoot integrating holiday schedule changes
     public LocalTime getTimeOfNextTrain(Stop stop, LocalDateTime fromDayTime) {
     	String stopName = stop.getStopName();
-    	String currentTime = formatCurrentTimeToMatchDatabase(fromDayTime);
-    	String today = fromDayTime.getDayOfWeek().toString();
+    	String time = formatTimeToMatchDatabase(fromDayTime);
+    	String date = formatDateToMatchDatabase(fromDayTime);
+    	String dayName = fromDayTime.getDayOfWeek().toString();
       try (Connection connection = getConnection();) {
+      	String statement = 
+    				"SELECT min(arrival_time) AS next_train " +
+      			"FROM stops " +
+    				"INNER JOIN stop_times ON stops.stop_id = stop_times.stop_id " +
+    				"INNER JOIN trips ON stop_times.trip_id = trips.trip_id " +
+    				"INNER JOIN calendar ON trips.service_id = calendar.service_id " +
+    				"INNER JOIN calendar_dates ON calendar.service_id = calendar_dates.service_id " +
+    				"WHERE stop_name LIKE '" + stopName + "%' " +
+    				"AND arrival_time > '" + time + "' " +
+    				"AND ((date = " + date + " AND exception_type = 1) " +
+    				"OR ((date != " + date + ") AND " + dayName + "));";
       	PreparedStatement preparedStatement = 
-        		connection.prepareStatement(
-        				"SELECT min(arrival_time) AS next_train " +
-        				"FROM stops " +
-        				"INNER JOIN stop_times ON stops.stop_id = stop_times.stop_id " +
-        				"INNER JOIN trips ON stop_times.trip_id = trips.trip_id " +
-        				"INNER JOIN calendar ON trips.service_id = calendar.service_id " +
-        				"WHERE stop_name LIKE '" + stopName + "%' " +
-        				"AND arrival_time > '" + currentTime + "' " +
-        				"AND " + today + ";");
+        		connection.prepareStatement(statement);
         ResultSet resultSet = preparedStatement.executeQuery();
         LocalTime nextTrainArrivalTime = retrieveNextArrivalTime(resultSet);
         return nextTrainArrivalTime;
@@ -78,11 +81,18 @@ public class SqliteJDBCDao implements MetrolinkDao {
     	}
     }
     
-    String formatCurrentTimeToMatchDatabase(LocalDateTime currentDayTime) {
-    	LocalTime currentTime = currentDayTime.toLocalTime();
-    	DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
-    	String formattedTime = currentTime.format(formatter);
+    String formatTimeToMatchDatabase(LocalDateTime dateTime) {
+    	LocalTime time = dateTime.toLocalTime();
+    	DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
+    	String formattedTime = time.format(timeFormatter);
     	return formattedTime;
+    }
+    
+    String formatDateToMatchDatabase(LocalDateTime dateTime) {
+    	LocalDate date = dateTime.toLocalDate();
+    	DateTimeFormatter dateFormatter = DateTimeFormatter.BASIC_ISO_DATE;
+    	String formattedDate = date.format(dateFormatter);
+    	return formattedDate;
     }
     
     private LocalTime retrieveNextArrivalTime(ResultSet resultSet) throws SQLException {
