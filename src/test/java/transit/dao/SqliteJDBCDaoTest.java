@@ -22,19 +22,9 @@ public class SqliteJDBCDaoTest {
 	@Before
 	public void initialize() {
 		dao = new SqliteJDBCDao();
-		testAppOutput = new TestAppOutput();
-		dao.setAppOutput(testAppOutput);
 		testStop = new Stop();
 		testStop.setStopName("CONVENTION CENTER METROLINK STATION");
 		testDateTime = LocalDateTime.of(2016,01,01,04,00,00);
-	}
-	
-	@Test
-	public void testPrintsMessages() {
-		dao.getStopsAllStops();
-		assertEquals("Fetching metrolink stations...", ((TestAppOutput) testAppOutput).getString());
-		dao.getTimeOfNextTrain(testStop, LocalDateTime.now());
-		assertEquals("Fetching next train arrival time...", ((TestAppOutput) testAppOutput).getString());
 	}
 
 	@Test
@@ -50,26 +40,11 @@ public class SqliteJDBCDaoTest {
 	}
 	
 	@Test
-	public void testGetDayOfWeekCode() {
-		LocalDateTime monday = LocalDateTime.of(2016, 02, 01, 01, 00);
-		LocalDateTime saturday = LocalDateTime.of(2016, 02, 06, 01, 00);
-		LocalDateTime sunday = LocalDateTime.of(2016, 02, 07, 01, 00);
-		
-		int mondayCode = dao.getDayOfWeekCode(monday);
-		int saturdayCode = dao.getDayOfWeekCode(saturday);
-		int sundayCode = dao.getDayOfWeekCode(sunday);
-		
-		assertEquals(1,mondayCode);
-		assertEquals(2,saturdayCode);
-		assertEquals(3,sundayCode);
-	}
-	
-	@Test
 	public void testFormatCurrentTime() {
-		LocalDateTime fiveAM = LocalDateTime.of(2016,01,01,05,00);
+		LocalDateTime fiveAM = LocalDateTime.of(2016,01,01,05,00,00,00);
 		String format = "05:00:00";
 		
-		String testFormat = dao.formatCurrentTime(fiveAM);
+		String testFormat = dao.formatCurrentTimeToMatchDatabase(fiveAM);
 		
 		assertEquals(format,testFormat);
 	}
@@ -81,15 +56,10 @@ public class SqliteJDBCDaoTest {
 		assertEquals(expected, nextTrain);
 	}
 	
-	private class TestAppOutput implements AppOutput {
-		private String string;
-		@Override
-		public void print(String string) {
-			this.string = string;
-		}
-		public String getString() {
-			return string;
-		}
+	@Test (expected = RuntimeException.class)
+	public void testThrowsException() {
+		Stop namelessStop = new Stop();
+		dao.getTimeOfNextTrain(namelessStop, testDateTime);
 	}
 
 }
