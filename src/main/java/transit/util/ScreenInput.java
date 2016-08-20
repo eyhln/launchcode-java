@@ -14,7 +14,7 @@ public class ScreenInput implements AppInput {
 	@Override
 	public String getUserMetrolinkLocation() {
 		String input = scanner.nextLine();
-		return "CONVENTION CENTER METROLINK STATION";
+		return input;
 	}
 	
 }
