@@ -42,7 +42,8 @@ public class MetrolinkCommandLineApp {
   private void run() {
   	printListOfStops(); 
     userLocation = getUserLocation(); 
-    printArrivalTimeOfNextTrain();
+    if (userLocation.getStopName() != null)
+    	printArrivalTimeOfNextTrain();
   }
   
   void printListOfStops() {
@@ -55,15 +56,18 @@ public class MetrolinkCommandLineApp {
   
   Stop getUserLocation() {
   	appOutput.print("\nEnter the name of your current Metrolink Station location: ");
+    Stop currentUserLocationStop = new Stop();
     String location = appInput.getUserMetrolinkLocation();
     Pattern userInput = Pattern.compile(location.trim(), Pattern.CASE_INSENSITIVE);
-    Stop currentUserLocationStop = new Stop();
     for (Stop stop: stopsAllStops) {
     	Matcher matcher = userInput.matcher(stop.getStopName());
     	if (matcher.matches()) {
     		currentUserLocationStop = stop;
     	}
     } 
+    if (currentUserLocationStop.getStopName() == null) {
+	    appOutput.print("Error: not a valid stop name");
+    }
     return currentUserLocationStop;
   }
   
@@ -77,7 +81,7 @@ public class MetrolinkCommandLineApp {
     String messageSuffix = formatMessageSuffix(waitingTimeInMinutes);
     appOutput.print("The next train is arriving in " + messageSuffix + ".");
   	} catch (NullPointerException e) {
-  		appOutput.print("Error: no records for that name");
+  		appOutput.print("No train times found for today.");
   	}
   }
   
