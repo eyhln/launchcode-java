@@ -7,6 +7,7 @@ import java.time.*;
 import java.util.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import transit.AppOutput;
@@ -23,7 +24,7 @@ public class SqliteJDBCDaoTest {
 	public void initialize() {
 		dao = new SqliteJDBCDao();
 		testStop = new Stop();
-		testStop.setStopName("CONVENTION CENTER METROLINK STATION");
+		testStop.setStopName("UNION STA METROLINK STATION");
 		testDateTime = LocalDateTime.of(2016,01,01,04,00,00);
 	}
 
@@ -40,16 +41,6 @@ public class SqliteJDBCDaoTest {
 	}
 	
 	@Test
-	public void testFormatCurrentTime() {
-		LocalDateTime fiveAM = LocalDateTime.of(2016,01,01,05,00,00,00);
-		String format = "05:00:00";
-		
-		String testFormat = dao.formatTimeToMatchDatabase(fiveAM);
-		
-		assertEquals(format,testFormat);
-	}
-	
-	@Test
 	public void testHolidayScheduleChange() {
 		Stop unionSta = new Stop();
 		unionSta.setStopName("UNION STA");
@@ -63,12 +54,27 @@ public class SqliteJDBCDaoTest {
 	
 	@Test
 	public void testGetTimeOfNextTrain() {
-		LocalTime expected = LocalTime.of(04,19,00);
+		LocalTime expected = LocalTime.of(04,26,00);
 		LocalTime nextTrain = dao.getTimeOfNextTrain(testStop, testDateTime);
 		assertEquals(expected, nextTrain);
 	}
 	
-	@Test (expected = RuntimeException.class)
+	@Test
+	public void testGetSaturdayTrainTime() {
+		LocalTime expected = LocalTime.of(04, 22);
+		LocalTime nextTrain = dao.getTimeOfNextTrain(testStop, testDateTime);
+		assertEquals(expected, nextTrain);
+	}
+	
+	@Test
+	public void testLateNightTrainTime() {
+		LocalTime expected = LocalTime.of(01,12);
+		LocalDateTime lateDateTime = LocalDateTime.of(2016,8,01,01,00,00);
+		LocalTime nextTrain = dao.getTimeOfNextTrain(testStop, lateDateTime);
+		assertEquals(expected, nextTrain);
+	}
+	
+	@Test @Ignore //(expected = RuntimeException.class)
 	public void testThrowsException() {
 		Stop namelessStop = new Stop();
 		dao.getTimeOfNextTrain(namelessStop, testDateTime);
