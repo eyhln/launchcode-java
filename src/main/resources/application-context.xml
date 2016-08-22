@@ -7,14 +7,17 @@
    
 	<bean id="metrolinkCommandLineApp" class="transit.MetrolinkCommandLineApp">
         <property name="appOutput" ref="screenOutput"/>
-        <property name="metrolinkDao" ref="metrolinkDao"/>
         <property name="appInput" ref="screenInput"/>
+        <property name="metrolinkDao" ref="metrolinkDao"/>
     </bean>
 
     <bean id="screenOutput" class="transit.util.ScreenOutput"/>
     <bean id="screenInput" class="transit.util.ScreenInput"/>
 
-    <bean id="metrolinkDao" class="transit.dao.SqliteJDBCDao"/>
+    <bean id="metrolinkDao" class="transit.dao.SqliteJDBCDao">
+    	<property name="DaoDateTimeFormatter" ref="daoDateTimeFormatter"/>
+    </bean>
+    
+    <bean id="daoDateTimeFormatter" class="transit.dao.SqliteDaoDateTimeFormatter"/>	
 
-    	
 </beans>
