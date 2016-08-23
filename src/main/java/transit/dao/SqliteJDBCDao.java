@@ -2,7 +2,6 @@ package transit.dao;
 
 import java.sql.*;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.*;
 
@@ -56,11 +55,10 @@ public class SqliteJDBCDao implements MetrolinkDao {
     	return matcher.replaceAll("");
     }
     
-    //TODO resolve issue with late-night day cross
+    //TODO resolve issue with saturday train times
     public LocalTime getTimeOfNextTrain(Stop stop, LocalDateTime fromDayTime) {
     	String stopName = stop.getStopName();
     	String time = formatter.formatTimeToMatchDatabase(fromDayTime);
-    	System.out.println(time);
     	String date = formatter.formatDateToMatchDatabase(fromDayTime);
     	String dayName = fromDayTime.getDayOfWeek().toString();
       try (Connection connection = getConnection();) {
@@ -71,17 +69,16 @@ public class SqliteJDBCDao implements MetrolinkDao {
     				"INNER JOIN trips ON stop_times.trip_id = trips.trip_id \n" +
     				"INNER JOIN calendar ON trips.service_id = calendar.service_id \n" +
     				"INNER JOIN calendar_dates ON calendar.service_id = calendar_dates.service_id \n" +
-    				"WHERE stop_name LIKE '" + stopName + "%' \n" +
+    				"WHERE stop_name LIKE '" + stopName + " METROLINK STATION' \n" +
     				"AND ((date = " + date + " AND exception_type = 1) \n" +
     				"OR ((date != " + date + ") AND " + dayName + ")) \n" +
     				"AND (arrival_time > '" + time + "' \n" +
-    				"OR ('" + time + "' = (" +
-    				    "SELECT max(arrival_time) \n" + 
-    				    "FROM stops \n" + 
-    				    "INNER JOIN stop_times ON stops.stop_id = stop_times.stop_id \n" +
-    				    "WHERE stop_name LIKE '" + stopName + "%') \n" +
-    				    "AND arrival_time > '00:00:00'));\n"; 
-      	System.out.println(statement);
+    				"OR ('" + time + "' >= (" +
+    				    "\tSELECT max(arrival_time) \n" + 
+    				    "\tFROM stops \n" + 
+    				    "\tINNER JOIN stop_times ON stops.stop_id = stop_times.stop_id \n" +
+    				    "\tWHERE stop_name LIKE '" + stopName + " METROLINK STATION') \n" +
+    				    "\tAND arrival_time > '00:00:00'));\n"; 
       	PreparedStatement preparedStatement = 
         		connection.prepareStatement(statement);
         ResultSet resultSet = preparedStatement.executeQuery();
