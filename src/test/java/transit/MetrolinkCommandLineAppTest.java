@@ -97,9 +97,8 @@ public class MetrolinkCommandLineAppTest {
 	private class TestAppOutput implements AppOutput {
 		String string;
 		@Override
-		public String print(String format) {
+		public void print(String format) {
 			string = format;
-			return format;
 		}
 		public String getString() {
 			return string;
