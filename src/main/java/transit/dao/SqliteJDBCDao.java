@@ -22,8 +22,7 @@ public class SqliteJDBCDao implements MetrolinkDao {
         	PreparedStatement preparedStatement = 
           		connection.prepareStatement(
           				"SELECT DISTINCT stop_name FROM stops " +
-          				"WHERE stop_name LIKE '%METROLINK STATION' " +
-          				"OR stop_name LIKE 'U CITY%';");
+          				"WHERE stop_name LIKE '%METROLINK%STATION';");
           ResultSet resultSet = preparedStatement.executeQuery();
           List<Stop> stops = createListOfStops(resultSet);
           return stops;
