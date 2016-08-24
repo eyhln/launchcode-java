@@ -18,6 +18,6 @@
     	<property name="DaoDateTimeFormatter" ref="daoDateTimeFormatter"/>
     </bean>
     
-    <bean id="daoDateTimeFormatter" class="transit.dao.SqliteDaoDateTimeFormatter"/>	
+    <bean id="daoDateTimeFormatter" class="transit.dao.SqliteJDBCDaoDateTimeFormatter"/>	
 
 </beans>
