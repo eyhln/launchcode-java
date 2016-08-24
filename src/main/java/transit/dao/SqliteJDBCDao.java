@@ -66,7 +66,7 @@ public class SqliteJDBCDao implements MetrolinkDao {
     				"INNER JOIN trips ON stop_times.trip_id = trips.trip_id \n" +
     				"INNER JOIN calendar ON trips.service_id = calendar.service_id \n" +
     				"INNER JOIN calendar_dates ON calendar.service_id = calendar_dates.service_id \n" +
-    				"WHERE stop_name LIKE '" + stopName + " METROLINK STATION' \n" +
+    				"WHERE stop_name LIKE '" + stopName + " METROLINK%STATION' \n" +
     				"AND ((date = " + date + " AND exception_type = 1) \n" +
     				"OR ((date != " + date + ") AND " + dayName + ")) \n" +
     				"AND (arrival_time > '" + time + "' \n" +
@@ -74,7 +74,7 @@ public class SqliteJDBCDao implements MetrolinkDao {
     				    "\tSELECT max(arrival_time) \n" + 
     				    "\tFROM stops \n" + 
     				    "\tINNER JOIN stop_times ON stops.stop_id = stop_times.stop_id \n" +
-    				    "\tWHERE stop_name LIKE '" + stopName + " METROLINK STATION') \n" +
+    				    "\tWHERE stop_name LIKE '" + stopName + " METROLINK%STATION') \n" +
     				    "\tAND arrival_time > '00:00:00'));\n"; 
       	PreparedStatement preparedStatement = connection.prepareStatement(statement);
         ResultSet resultSet = preparedStatement.executeQuery();
