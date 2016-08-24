@@ -51,19 +51,6 @@ public class SqliteJDBCDaoTest {
 	}
 	
 	@Test
-	public void testHolidayScheduleChangeTrainTime() {
-		LocalDateTime fourthOfJuly = LocalDateTime.of(2016,7,4,16,00,00,123);
-		when(mockFormatter.formatDateToMatchDatabase(fourthOfJuly)).thenReturn("20160704");
-		when(mockFormatter.formatTimeToMatchDatabase(fourthOfJuly)).thenReturn("16:00:00.123");
-		LocalTime expected = LocalTime.of(16,06,00);
-		when(mockFormatter.formatReturnStringToLocalTime("16:06:00")).thenReturn(expected);
-
-		LocalTime nextTrain = dao.getTimeOfNextTrain(unionSta, fourthOfJuly);
-		
-		assertEquals(expected, nextTrain);
-	}
-	
-	@Test
 	public void testWeekdayAfternoonTrainTime() {
 		LocalDateTime mondayAfternoon = LocalDateTime.of(2016,8,8,16,00,00,123);
 		when(mockFormatter.formatDateToMatchDatabase(mondayAfternoon)).thenReturn("20160808");
@@ -96,6 +83,19 @@ public class SqliteJDBCDaoTest {
 		when(mockFormatter.formatReturnStringToLocalTime("25:12:00")).thenReturn(expected);
 
 		LocalTime nextTrain = dao.getTimeOfNextTrain(unionSta, weekdayWeeHours);
+		assertEquals(expected, nextTrain);
+	}
+	
+	@Test
+	public void testHolidayScheduleChangeTrainTime() {
+		LocalDateTime fourthOfJuly = LocalDateTime.of(2016,7,4,16,00,00,123);
+		when(mockFormatter.formatDateToMatchDatabase(fourthOfJuly)).thenReturn("20160704");
+		when(mockFormatter.formatTimeToMatchDatabase(fourthOfJuly)).thenReturn("16:00:00.123");
+		LocalTime expected = LocalTime.of(16,06,00);
+		when(mockFormatter.formatReturnStringToLocalTime("16:06:00")).thenReturn(expected);
+
+		LocalTime nextTrain = dao.getTimeOfNextTrain(unionSta, fourthOfJuly);
+		
 		assertEquals(expected, nextTrain);
 	}
 
