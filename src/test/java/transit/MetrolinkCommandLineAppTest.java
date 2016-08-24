@@ -79,7 +79,7 @@ public class MetrolinkCommandLineAppTest {
 		LocalTime testTrainArrivalTime = testTime.plus(tenMinutes);
 		when(mockDao.getTimeOfNextTrain(null, testDateTime)).thenReturn(testTrainArrivalTime);
 		
-		app.printWaitTimeToNextTrain(testDateTime);
+		app.printWaitTimeForNextTrain(testDateTime);
 		
 		assertEquals("The next train is arriving in 10 minutes.", 
 				((TestAppOutput) testAppOutput).getString());
@@ -89,7 +89,7 @@ public class MetrolinkCommandLineAppTest {
 	public void testPrintArrivalTimeOfNextTrainNoTimesFound() {
 		when(mockDao.getTimeOfNextTrain(null, null)).thenReturn(null);
 		
-		app.printWaitTimeToNextTrain(null);
+		app.printWaitTimeForNextTrain(null);
 		
 		assertEquals("No train times found for today.", ((TestAppOutput) testAppOutput).getString());
 	}
