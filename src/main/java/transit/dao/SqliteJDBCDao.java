@@ -15,15 +15,15 @@ public class SqliteJDBCDao implements MetrolinkDao {
     public static final String JDBC_SQLITE_METROLINK_DB = "jdbc:sqlite:/home/marie/metrolink.db";
     public static final String ORG_SQLITE_JDBC = "org.sqlite.JDBC";
   	private Pattern textToRemove = Pattern.compile(" METROLINK STATION");
-  	//TODO resolve wiring issue-result null pointer exception on formatter
-  	private DaoDateTimeFormatter formatter = new SqliteDaoDateTimeFormatter();
+  	private DaoDateTimeFormatter formatter;
 
     public List<Stop> getStopsAllStops() {
         try (Connection connection = getConnection();) {
         	PreparedStatement preparedStatement = 
           		connection.prepareStatement(
-          				"SELECT DISTINCT stop_name, stop_desc FROM stops " +
-          				"WHERE stop_name LIKE '%METROLINK STATION';");
+          				"SELECT DISTINCT stop_name FROM stops " +
+          				"WHERE stop_name LIKE '%METROLINK STATION' " +
+          				"OR stop_name LIKE 'U CITY%';");
           ResultSet resultSet = preparedStatement.executeQuery();
           List<Stop> stops = createListOfStops(resultSet);
           return stops;
@@ -32,35 +32,33 @@ public class SqliteJDBCDao implements MetrolinkDao {
         }
     }
     
-    private List<Stop> createListOfStops(ResultSet resultSet) throws SQLException {
-    	List<Stop> stops = new ArrayList<Stop>();
-      while (resultSet.next()) {
-      	Stop stop = createNewStop(resultSet);
-      	stops.add(stop);
-      }
-    	return stops;
-    }
+		    private List<Stop> createListOfStops(ResultSet resultSet) throws SQLException {
+		    	List<Stop> stops = new ArrayList<Stop>();
+		      while (resultSet.next()) {
+		      	Stop stop = createNewStop(resultSet);
+		      	stops.add(stop);
+		      }
+		    	return stops;
+		    }
+		    
+		    private Stop createNewStop(ResultSet resultSet) throws SQLException {
+		      Stop stop = new Stop();
+		      String stopName = resultSet.getString("stop_name");
+		      String truncatedStopName = removeMetrolinkStationFromName(stopName);
+		      stop.setStopName(truncatedStopName);
+		      return stop;
+		    }
+		    
+		    private String removeMetrolinkStationFromName(String stopName) {
+		    	Matcher matcher = textToRemove.matcher(stopName);
+		    	return matcher.replaceAll("");
+		    }
     
-    private Stop createNewStop(ResultSet resultSet) throws SQLException {
-      Stop stop = new Stop();
-      String stopName = resultSet.getString("stop_name");
-      String truncatedStopName = removeMetrolinkStationFromName(stopName);
-      stop.setStopName(truncatedStopName);
-      stop.setStopDescription(resultSet.getString("stop_desc"));
-      return stop;
-    }
-    
-    private String removeMetrolinkStationFromName(String stopName) {
-    	Matcher matcher = textToRemove.matcher(stopName);
-    	return matcher.replaceAll("");
-    }
-    
-    //TODO resolve issue with saturday train times
-    public LocalTime getTimeOfNextTrain(Stop stop, LocalDateTime fromDayTime) {
+    public LocalTime getTimeOfNextTrain(Stop stop, LocalDateTime dateTime) {
     	String stopName = stop.getStopName();
-    	String time = formatter.formatTimeToMatchDatabase(fromDayTime);
-    	String date = formatter.formatDateToMatchDatabase(fromDayTime);
-    	String dayName = fromDayTime.getDayOfWeek().toString();
+    	String time = formatter.formatTimeToMatchDatabase(dateTime);
+    	String date = formatter.formatDateToMatchDatabase(dateTime);
+    	String dayName = dateTime.getDayOfWeek().toString();
       try (Connection connection = getConnection();) {
       	String statement = 
     				"SELECT min(arrival_time) AS next_train \n" +
@@ -79,8 +77,7 @@ public class SqliteJDBCDao implements MetrolinkDao {
     				    "\tINNER JOIN stop_times ON stops.stop_id = stop_times.stop_id \n" +
     				    "\tWHERE stop_name LIKE '" + stopName + " METROLINK STATION') \n" +
     				    "\tAND arrival_time > '00:00:00'));\n"; 
-      	PreparedStatement preparedStatement = 
-        		connection.prepareStatement(statement);
+      	PreparedStatement preparedStatement = connection.prepareStatement(statement);
         ResultSet resultSet = preparedStatement.executeQuery();
        	String nextTrainTimeString = resultSet.getString("next_train");
         LocalTime nextTrainArrivalTime = 

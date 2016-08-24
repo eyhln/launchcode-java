@@ -42,7 +42,7 @@ public class SqliteJDBCDaoTest {
 	@Test
 	public void testStopListLength() {
 		List<Stop> stops = dao.getStopsAllStops();
-		assertTrue(stops.size() == 36);
+		assertTrue(stops.size() == 37);
 	}
 	
 	@Test (expected = RuntimeException.class)
