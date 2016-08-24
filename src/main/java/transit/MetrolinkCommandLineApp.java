@@ -1,31 +1,13 @@
 package transit;
 
 import java.time.*;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.util.regex.*;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MetrolinkCommandLineApp {
 	
-  private MetrolinkDao metrolinkDao;
-  private AppOutput appOutput;
-  private AppInput appInput;
-  
-
-  public void setMetrolinkDao(MetrolinkDao metrolinkDao) {
-      this.metrolinkDao = metrolinkDao;
-  }
-
-  public void setAppOutput(AppOutput appOutput) {
-      this.appOutput = appOutput;
-  }
-  
-  public void setAppInput(AppInput appInput) {
-  	this.appInput = appInput;
-  }
-
   public static void main(String[] varArgs) {
   	MetrolinkCommandLineApp metrolinkCommandLineApp;
 		try (ClassPathXmlApplicationContext context = 
@@ -36,6 +18,9 @@ public class MetrolinkCommandLineApp {
     metrolinkCommandLineApp.run();
   }
 
+  private MetrolinkDao metrolinkDao;
+  private AppOutput appOutput;
+  private AppInput appInput;
   private Stop userLocation;
   
   private void run() {
@@ -48,12 +33,13 @@ public class MetrolinkCommandLineApp {
   
 		  private void printWaitTimeForNextTrainFromNow() {
 		  	LocalDateTime currentDateTime = LocalDateTime.now(); 
-		  	printWaitTimeToNextTrain(currentDateTime);
+		  	printWaitTimeForNextTrain(currentDateTime);
 		  }
   
   public List<Stop> printAndReturnListOfStops() {
     appOutput.print("Fetching metrolink stations...");
   	List<Stop> stopsAllStops = metrolinkDao.getStopsAllStops();
+  	Collections.reverse(stopsAllStops);
   	for (Stop stop : stopsAllStops) {
       appOutput.print(String.format("--- %s ---", stop.getStopName()));
   	}
@@ -89,7 +75,7 @@ public class MetrolinkCommandLineApp {
 		     }
 		  }
 	  
-  public void printWaitTimeToNextTrain(LocalDateTime currentDateTime) {
+  public void printWaitTimeForNextTrain(LocalDateTime currentDateTime) {
   	try {
     appOutput.print("Fetching arrival time...");
     LocalTime arrivalTimeOfNextTrain = metrolinkDao.getTimeOfNextTrain(userLocation, currentDateTime);
@@ -112,5 +98,18 @@ public class MetrolinkCommandLineApp {
     	messageSuffix = waitingTimeInMinutes + " minutes";
     return messageSuffix;
   }
+  
+  
+  public void setMetrolinkDao(MetrolinkDao metrolinkDao) {
+    this.metrolinkDao = metrolinkDao;
+	}
+	
+	public void setAppOutput(AppOutput appOutput) {
+	    this.appOutput = appOutput;
+	}
+	
+	public void setAppInput(AppInput appInput) {
+		this.appInput = appInput;
+	}
   
 }
