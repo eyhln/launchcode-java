@@ -7,15 +7,15 @@ import java.time.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SqliteDaoDateTimeFormatterTest {
+public class SqliteJDBCDaoDateTimeFormatterTest {
 	
-	SqliteDaoDateTimeFormatter formatter;
+	SqliteJDBCDaoDateTimeFormatter formatter;
 	LocalDateTime test4pm2016July1;
 	LocalDateTime test1am2016July2;
 	
 	@Before
 	public void initialize() {
-		formatter = new SqliteDaoDateTimeFormatter();
+		formatter = new SqliteJDBCDaoDateTimeFormatter();
 		test4pm2016July1 = LocalDateTime.of(2016,07,01,16,00,00,00);
 		test1am2016July2 = LocalDateTime.of(2016,07,02,01,00,00,00);
 	}

@@ -3,7 +3,7 @@ package transit.dao;
 import java.time.*;
 import java.time.format.*;
 
-public class SqliteDaoDateTimeFormatter implements DaoDateTimeFormatter {
+public class SqliteJDBCDaoDateTimeFormatter implements DaoDateTimeFormatter {
 	
 	private final int NUMBER_CHARS_IN_DB_TIME_FORMAT = 8;
 	private String MIN_ARRIVAL_TIME_FOR_ALL_STOPS = "03:15:00";
