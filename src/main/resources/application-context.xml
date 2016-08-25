@@ -15,9 +15,9 @@
     <bean id="screenInput" class="transit.util.ScreenInput"/>
 
     <bean id="metrolinkDao" class="transit.dao.SqliteJDBCDao">
-    	<property name="DaoDateTimeFormatter" ref="daoDateTimeFormatter"/>
+    	<property name="daoFormatter" ref="daoFormatter"/>
     </bean>
     
-    <bean id="daoDateTimeFormatter" class="transit.dao.SqliteJDBCDaoDateTimeFormatter"/>	
+    <bean id="daoFormatter" class="transit.dao.SqliteJDBCDaoInputOuputFormatter"/>	
 
 </beans>
