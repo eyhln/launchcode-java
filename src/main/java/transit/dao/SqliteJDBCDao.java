@@ -12,10 +12,15 @@ import transit.Stop;
 public class SqliteJDBCDao implements MetrolinkDao {
 
 	//TODO resolve relative classpath issue
-    public static final String JDBC_SQLITE_METROLINK_DB = "jdbc:sqlite:/home/marie/metrolink.db";
+    public static final String JDBC_SQLITE_METROLINK_DB = "jdbc:sqlite:src/main/resources/metrolink.db";
     public static final String ORG_SQLITE_JDBC = "org.sqlite.JDBC";
+    
   	private Pattern textToRemove = Pattern.compile(" METROLINK[ ]*STATION");
   	private DaoDateTimeFormatter formatter;
+  	
+  	public void SqliteJDBCDao() {
+  		
+  	}
 
     public List<Stop> getStopsAllStops() {
         try (Connection connection = getConnection();) {
