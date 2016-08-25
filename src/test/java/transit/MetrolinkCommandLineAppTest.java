@@ -61,18 +61,16 @@ public class MetrolinkCommandLineAppTest {
 		assertEquals("TEST", stop.getStopName());
 	}
 	
-	@Test 
+	@Test (expected = IllegalArgumentException.class)
 	public void testGetUserLocationInvalidName() {
 		when(mockAppInput.getUserMetrolinkLocation()).thenReturn("Invalid");
 		List<Stop> testStopList = buildListOfStops();
 		
 		app.getUserLocation(testStopList);
-		
-		assertEquals("Error: not a valid stop name", ((TestAppOutput) testAppOutput).getString());
 	}
 	
 	@Test
-	public void testPrintArrivalTimeOfNextTrain() {
+	public void testPrintArrivalTimeOfNextTrain() throws NoTrainTimesException {
 		LocalDateTime testDateTime = LocalDateTime.of(2016,01,01,04,00,00);
 		LocalTime testTime = testDateTime.toLocalTime();
 		Duration tenMinutes = Duration.ofMinutes(10);
@@ -85,13 +83,11 @@ public class MetrolinkCommandLineAppTest {
 				((TestAppOutput) testAppOutput).getString());
 	}
 	
-	@Test
-	public void testPrintArrivalTimeOfNextTrainNoTimesFound() {
+	@Test (expected = NoTrainTimesException.class)
+	public void testPrintArrivalTimeOfNextTrainNoTimesFound() throws NoTrainTimesException {
 		when(mockDao.getTimeOfNextTrain(null, null)).thenReturn(null);
 		
 		app.printWaitTimeForNextTrain(null);
-		
-		assertEquals("No train times found for today.", ((TestAppOutput) testAppOutput).getString());
 	}
 	
 	private class TestAppOutput implements AppOutput {

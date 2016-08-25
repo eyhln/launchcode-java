@@ -24,17 +24,23 @@ public class MetrolinkCommandLineApp {
   private Stop userLocation;
   
   private void run() {
+  	try {
+  		printWaitingTimeForTrainAtUserLocationStop();
+  	} catch (IllegalArgumentException e) {
+ 	    	appOutput.print("Error: not a valid stop name");
+  	} catch (NoTrainTimesException e) {
+  		appOutput.print("No train times found for today.");
+  	}
+  }	
+  	
+  private void printWaitingTimeForTrainAtUserLocationStop() throws NoTrainTimesException {	
   	List<Stop> stopsAllStops = printAndReturnListOfStops(); 
     userLocation = getUserLocation(stopsAllStops); 
     if (userLocation.getStopName() != null) {
-    	printWaitTimeForNextTrainFromNow();
+	  	LocalDateTime currentDateTime = LocalDateTime.now(); 
+	  	printWaitTimeForNextTrain(currentDateTime);
     }
   }
-  
-		  private void printWaitTimeForNextTrainFromNow() {
-		  	LocalDateTime currentDateTime = LocalDateTime.now(); 
-		  	printWaitTimeForNextTrain(currentDateTime);
-		  }
   
   public List<Stop> printAndReturnListOfStops() {
     appOutput.print("Fetching metrolink stations...");
@@ -49,7 +55,6 @@ public class MetrolinkCommandLineApp {
   public Stop getUserLocation(List<Stop> stopsAllStops) {
   	String location = promptUserForCurrentLocation();
     Stop currentUserLocation = testInputNameAgainstAllStops(location, stopsAllStops);
-    printErrorMessageIfLocationNameIsNull(currentUserLocation);
     return currentUserLocation;
   }
   
@@ -59,8 +64,19 @@ public class MetrolinkCommandLineApp {
 		  }
 		  
 		  private Stop testInputNameAgainstAllStops(String location, List<Stop> stopsAllStops) {
+		  	Pattern userInput = createUserInputPattern(location);
+		    Stop currentUserLocation = selectStopBasedOnNameMatch(userInput, stopsAllStops);
+		    throwExceptionIfInputDoesNotMatchAnyStop(currentUserLocation);
+		    return currentUserLocation;
+		  } 
+		  
+		  private Pattern createUserInputPattern(String location) {
 		  	Pattern userInput = Pattern.compile(location.trim(), Pattern.CASE_INSENSITIVE);
-		    Stop currentUserLocation = new Stop();
+		  	return userInput;
+		  }
+		  
+		  private Stop selectStopBasedOnNameMatch(Pattern userInput, List<Stop> stopsAllStops) {
+		  	Stop currentUserLocation = new Stop();
 		    for (Stop stop: stopsAllStops) {
 		    	Matcher matcher = userInput.matcher(stop.getStopName());
 		    	if (matcher.matches()) 
@@ -69,35 +85,51 @@ public class MetrolinkCommandLineApp {
 		    return currentUserLocation;
 		  }
 		  
-		  private void printErrorMessageIfLocationNameIsNull(Stop currentUserLocation) {
+		  private void throwExceptionIfInputDoesNotMatchAnyStop(Stop currentUserLocation) {
 		  	 if (currentUserLocation.getStopName() == null) {
-		 	    appOutput.print("Error: not a valid stop name");
+		  		 throw new IllegalArgumentException();
 		     }
 		  }
 	  
-  public void printWaitTimeForNextTrain(LocalDateTime currentDateTime) {
-  	try {
-    appOutput.print("Fetching arrival time...");
-    LocalTime arrivalTimeOfNextTrain = metrolinkDao.getTimeOfNextTrain(userLocation, currentDateTime);
-    LocalTime currentTime = currentDateTime.toLocalTime();
-    Long waitingTimeInMinutes = Duration.between(currentTime, arrivalTimeOfNextTrain).toMinutes();
-    String messageSuffix = formatMessageSuffix(waitingTimeInMinutes);
-    appOutput.print("The next train is arriving in " + messageSuffix + ".");
-  	} catch (NullPointerException e) {
-  		appOutput.print("No train times found for today.");
-  	}
+  public void printWaitTimeForNextTrain(LocalDateTime currentDateTime) throws NoTrainTimesException {
+    printProcessHasBegunMessage();
+    LocalTime arrivalTimeOfNextTrain = getArrivalTimeOfNextTrain(currentDateTime);
+    Long waitingTimeInMinutes = calculateWaitingTime(currentDateTime, arrivalTimeOfNextTrain);
+    printWaitingTimeMessage(waitingTimeInMinutes);
   }
   
-  private String formatMessageSuffix(Long waitingTimeInMinutes) {
-  	String messageSuffix;
-    if (waitingTimeInMinutes < 1) 
-    	messageSuffix = "less than 1 minute";
-    else if (waitingTimeInMinutes < 2)
-    	messageSuffix = "1 minute";
-    else
-    	messageSuffix = waitingTimeInMinutes + " minutes";
-    return messageSuffix;
-  }
+  		private void printProcessHasBegunMessage() {
+  	    appOutput.print("Fetching arrival time...");
+  		}
+  		
+  		private LocalTime getArrivalTimeOfNextTrain(LocalDateTime currentDateTime) throws NoTrainTimesException {
+  			LocalTime arrivalTimeOfNextTrain = metrolinkDao.getTimeOfNextTrain(userLocation, currentDateTime);
+ 			 	if(arrivalTimeOfNextTrain == null) {
+		    	throw new NoTrainTimesException();
+		    }
+ 			 	return arrivalTimeOfNextTrain;
+  		}
+  		
+  		private Long calculateWaitingTime(LocalDateTime currentDateTime, LocalTime arrivalTimeOfNextTrain) {
+  			LocalTime currentTime = currentDateTime.toLocalTime();
+  	    return Duration.between(currentTime, arrivalTimeOfNextTrain).toMinutes();
+  		}
+  		
+  		private void printWaitingTimeMessage(Long waitingTimeInMinutes) {
+  			 String messageSuffix = formatMessageSuffix(waitingTimeInMinutes);
+  		    appOutput.print("The next train is arriving in " + messageSuffix + ".");
+  		}
+  		
+		  private String formatMessageSuffix(Long waitingTimeInMinutes) {
+		  	String messageSuffix;
+		    if (waitingTimeInMinutes < 1) 
+		    	messageSuffix = "less than 1 minute";
+		    else if (waitingTimeInMinutes < 2)
+		    	messageSuffix = "1 minute";
+		    else
+		    	messageSuffix = waitingTimeInMinutes + " minutes";
+		    return messageSuffix;
+		  }
   
   
   public void setMetrolinkDao(MetrolinkDao metrolinkDao) {
