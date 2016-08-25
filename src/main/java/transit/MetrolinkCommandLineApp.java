@@ -21,11 +21,13 @@ public class MetrolinkCommandLineApp {
   private MetrolinkDao metrolinkDao;
   private AppOutput appOutput;
   private AppInput appInput;
+  
+  private List<Stop> stopsAllStops;
   private Stop userLocation;
   
   private void run() {
   	try {
-  		printWaitingTimeForTrainAtUserLocationStop();
+  		printWaitingTimeForNextTrainAtUserLocationStop();
   	} catch (IllegalArgumentException e) {
  	    	appOutput.print("Error: not a valid stop name");
   	} catch (NoTrainTimesException e) {
@@ -33,9 +35,9 @@ public class MetrolinkCommandLineApp {
   	}
   }	
   	
-  private void printWaitingTimeForTrainAtUserLocationStop() throws NoTrainTimesException {	
-  	List<Stop> stopsAllStops = printAndReturnListOfStops(); 
-    userLocation = getUserLocation(stopsAllStops); 
+  private void printWaitingTimeForNextTrainAtUserLocationStop() throws NoTrainTimesException {	
+  	stopsAllStops = printAndReturnListOfStops(); 
+    userLocation = getUserLocation(); 
 	  LocalDateTime currentDateTime = LocalDateTime.now(); 
 	  printWaitTimeForNextTrain(currentDateTime);
   }
@@ -50,9 +52,9 @@ public class MetrolinkCommandLineApp {
   	return stopsAllStops;
   }
   
-  public Stop getUserLocation(List<Stop> stopsAllStops) {
+  public Stop getUserLocation() {
   	String location = promptUserForCurrentLocation();
-    Stop currentUserLocation = testInputNameAgainstAllStops(location, stopsAllStops);
+    Stop currentUserLocation = testInputNameAgainstAllStops(location);
     return currentUserLocation;
   }
   
@@ -61,9 +63,9 @@ public class MetrolinkCommandLineApp {
 		  	return appInput.getUserMetrolinkLocation();
 		  }
 		  
-		  private Stop testInputNameAgainstAllStops(String location, List<Stop> stopsAllStops) {
+		  private Stop testInputNameAgainstAllStops(String location) {
 		  	Pattern userInput = createUserInputPattern(location);
-		    Stop currentUserLocation = selectStopBasedOnNameMatch(userInput, stopsAllStops);
+		    Stop currentUserLocation = selectStopBasedOnNameMatch(userInput);
 		    throwExceptionIfInputDoesNotMatchAnyStop(currentUserLocation);
 		    return currentUserLocation;
 		  } 
@@ -73,7 +75,7 @@ public class MetrolinkCommandLineApp {
 		  	return userInput;
 		  }
 		  
-		  private Stop selectStopBasedOnNameMatch(Pattern userInput, List<Stop> stopsAllStops) {
+		  private Stop selectStopBasedOnNameMatch(Pattern userInput) {
 		  	Stop currentUserLocation = new Stop();
 		    for (Stop stop: stopsAllStops) {
 		    	Matcher matcher = userInput.matcher(stop.getStopName());
