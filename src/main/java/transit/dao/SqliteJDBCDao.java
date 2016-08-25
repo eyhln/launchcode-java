@@ -11,17 +11,12 @@ import transit.Stop;
 
 public class SqliteJDBCDao implements MetrolinkDao {
 
-	//TODO resolve relative classpath issue
     public static final String JDBC_SQLITE_METROLINK_DB = "jdbc:sqlite:src/main/resources/metrolink.db";
     public static final String ORG_SQLITE_JDBC = "org.sqlite.JDBC";
     
-  	private Pattern textToRemove = Pattern.compile(" METROLINK[ ]*STATION");
-  	private DaoDateTimeFormatter formatter;
-  	
-  	public void SqliteJDBCDao() {
-  		
-  	}
+  	private DaoInputOutputFormatter formatter;
 
+  	
     public List<Stop> getStopsAllStops() {
         try (Connection connection = getConnection();) {
         	PreparedStatement preparedStatement = 
@@ -48,16 +43,11 @@ public class SqliteJDBCDao implements MetrolinkDao {
 		    private Stop createNewStop(ResultSet resultSet) throws SQLException {
 		      Stop stop = new Stop();
 		      String stopName = resultSet.getString("stop_name");
-		      String truncatedStopName = removeMetrolinkStationFromName(stopName);
+		      String truncatedStopName = formatter.removeMetrolinkStationFromName(stopName);
 		      stop.setStopName(truncatedStopName);
 		      return stop;
 		    }
 		    
-		    private String removeMetrolinkStationFromName(String stopName) {
-		    	Matcher matcher = textToRemove.matcher(stopName);
-		    	return matcher.replaceAll("");
-		    }
-    
     public LocalTime getTimeOfNextTrain(Stop stop, LocalDateTime dateTime) {
     	String stopName = stop.getStopName();
     	String time = formatter.formatTimeToMatchDatabase(dateTime);
@@ -101,7 +91,7 @@ public class SqliteJDBCDao implements MetrolinkDao {
         return DriverManager.getConnection(JDBC_SQLITE_METROLINK_DB);
     }
 
-    public void setDaoDateTimeFormatter(DaoDateTimeFormatter formatter) {
+    public void setDaoFormatter(DaoInputOutputFormatter formatter) {
     	this.formatter = formatter;
     }
 }
