@@ -36,10 +36,8 @@ public class MetrolinkCommandLineApp {
   private void printWaitingTimeForTrainAtUserLocationStop() throws NoTrainTimesException {	
   	List<Stop> stopsAllStops = printAndReturnListOfStops(); 
     userLocation = getUserLocation(stopsAllStops); 
-    if (userLocation.getStopName() != null) {
-	  	LocalDateTime currentDateTime = LocalDateTime.now(); 
-	  	printWaitTimeForNextTrain(currentDateTime);
-    }
+	  LocalDateTime currentDateTime = LocalDateTime.now(); 
+	  printWaitTimeForNextTrain(currentDateTime);
   }
   
   public List<Stop> printAndReturnListOfStops() {
