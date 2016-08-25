@@ -9,9 +9,9 @@ public class SqliteJDBCDaoInputOuputFormatter implements DaoInputOutputFormatter
 	
 	private Pattern textToRemove = Pattern.compile(" METROLINK[ ]+STATION");
 	private final int NUMBER_CHARS_IN_DB_TIME_FORMAT = 8;
-	private String MIN_ARRIVAL_TIME_FOR_ALL_STOPS = "03:15:00";
 	private String MAX_ARRIVAL_TIME_FOR_ALL_STOPS = "26:24:00";
-	
+	private String MIN_ARRIVAL_TIME_FOR_ALL_STOPS = "03:15:00";
+
 	
 	public String removeMetrolinkStationFromName(String stopName) {
   	Matcher matcher = textToRemove.matcher(stopName);
