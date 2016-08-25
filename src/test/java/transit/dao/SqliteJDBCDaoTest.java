@@ -13,7 +13,7 @@ import transit.Stop;
 public class SqliteJDBCDaoTest {
 	
 	SqliteJDBCDao dao;
-	DaoDateTimeFormatter mockFormatter;
+	DaoInputOutputFormatter mockFormatter;
 	Stop unionSta;
 	
 	@Before
@@ -24,14 +24,15 @@ public class SqliteJDBCDaoTest {
 	}
 	
 	private void setUpMockDependency() {
-		mockFormatter = mock(DaoDateTimeFormatter.class);
-		dao.setDaoDateTimeFormatter(mockFormatter);
+		mockFormatter = mock(DaoInputOutputFormatter.class);
+		dao.setDaoFormatter(mockFormatter);
 	}
 	
 	private void setUpTestStop() {
 		unionSta = new Stop();
 		unionSta.setStopName("UNION STA");
 	}
+
 
 	@Test
 	public void testEstablishesConnection() throws SQLException {
@@ -49,6 +50,7 @@ public class SqliteJDBCDaoTest {
 	public void testThrowsException() {
 		dao.getTimeOfNextTrain(null, null);
 	}
+	
 	
 	@Test
 	public void testWeekdayAfternoonTrainTime() {
@@ -83,6 +85,18 @@ public class SqliteJDBCDaoTest {
 		when(mockFormatter.formatReturnStringToLocalTime("25:12:00")).thenReturn(expected);
 
 		LocalTime nextTrain = dao.getTimeOfNextTrain(unionSta, weekdayWeeHours);
+		assertEquals(expected, nextTrain);
+	}
+	
+	@Test
+	public void testBetweenLastAndFirstTrainsTime() {
+		LocalDateTime weekdayEarlyMorning = LocalDateTime.of(2016,8,8,3,00,00,123);
+		when(mockFormatter.formatDateToMatchDatabase(weekdayEarlyMorning)).thenReturn("20160808");
+		when(mockFormatter.formatTimeToMatchDatabase(weekdayEarlyMorning)).thenReturn("27:00:00.123");
+		LocalTime expected = LocalTime.of(04,26,00);
+		when(mockFormatter.formatReturnStringToLocalTime("04:26:00")).thenReturn(expected);
+
+		LocalTime nextTrain = dao.getTimeOfNextTrain(unionSta, weekdayEarlyMorning);
 		assertEquals(expected, nextTrain);
 	}
 	
