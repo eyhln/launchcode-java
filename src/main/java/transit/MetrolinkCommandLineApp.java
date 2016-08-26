@@ -22,7 +22,6 @@ public class MetrolinkCommandLineApp {
   private AppOutput appOutput;
   private AppInput appInput;
   
-  private List<Stop> stopsAllStops;
   private Stop userLocation;
   
   private void run() {
@@ -36,7 +35,7 @@ public class MetrolinkCommandLineApp {
   }	
   	
   private void printWaitingTimeForNextTrainAtUserLocationStop() throws NoTrainTimesException {	
-  	stopsAllStops = printAndReturnListOfStops(); 
+  	List <Stop> stopsAllStops = printAndReturnListOfStops(); 
     userLocation = getUserLocation(stopsAllStops); 
 	  LocalDateTime currentDateTime = LocalDateTime.now(); 
 	  printWaitTimeForNextTrain(currentDateTime);
@@ -55,7 +54,7 @@ public class MetrolinkCommandLineApp {
   
   public Stop getUserLocation(List<Stop> stopsAllStops) {
   	String location = promptUserForCurrentLocation();
-    Stop currentUserLocation = selectStopBasedOnNameMatch(location);
+    Stop currentUserLocation = selectStopBasedOnNameMatch(location, stopsAllStops);
     return currentUserLocation;
   }
   
@@ -64,9 +63,10 @@ public class MetrolinkCommandLineApp {
 		  	return appInput.getUserMetrolinkLocation();
 		  }
 		  
-		  private Stop selectStopBasedOnNameMatch(String location) {
+		  private Stop selectStopBasedOnNameMatch(String location, List<Stop> stopsAllStops) {
 		  	Pattern userInput = createUserInputPattern(location);
-		    Stop currentUserLocation = selectStopByTestingInputAgainstAllStopNames(userInput);
+		    Stop currentUserLocation = 
+		    		selectStopByTestingInputAgainstAllStopNames(userInput, stopsAllStops);
 		    throwExceptionIfInputDoesNotMatchAnyStop(currentUserLocation);
 		    return currentUserLocation;
 		  } 
@@ -76,7 +76,8 @@ public class MetrolinkCommandLineApp {
 		  	return userInput;
 		  }
 		  
-		  private Stop selectStopByTestingInputAgainstAllStopNames(Pattern userInput) {
+		  private Stop selectStopByTestingInputAgainstAllStopNames
+		  																			(Pattern userInput, List<Stop> stopsAllStops) {
 		  	Stop currentUserLocation = new Stop();
 		    for (Stop stop: stopsAllStops) {
 		    	Matcher matcher = userInput.matcher(stop.getStopName());
