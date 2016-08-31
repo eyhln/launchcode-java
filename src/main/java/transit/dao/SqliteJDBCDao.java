@@ -10,7 +10,7 @@ import transit.Stop;
 
 public class SqliteJDBCDao implements MetrolinkDao {
 
-    public static final String JDBC_SQLITE_METROLINK_DB = "jdbc:sqlite:src/main/resources/metrolink.db";
+    public static final String JDBC_SQLITE_METROLINK_DB = "jdbc:sqlite:src/main/resources/metrolinkTrains.db";
     public static final String ORG_SQLITE_JDBC = "org.sqlite.JDBC";
     
   	private DaoInputOutputFormatter formatter;
